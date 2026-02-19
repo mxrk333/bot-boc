@@ -26,6 +26,15 @@ export const db: Firestore = getFirestore(app)
 import { getStorage, FirebaseStorage } from 'firebase/storage'
 export const storage: FirebaseStorage = getStorage(app)
 
+// Functions (region must match the deployed function region)
+import { getFunctions, Functions, connectFunctionsEmulator } from 'firebase/functions'
+export const functions: Functions = getFunctions(app, 'asia-southeast1')
+
+// Connect to emulator in development
+if (location.hostname === 'localhost') {
+  connectFunctionsEmulator(functions, 'localhost', 5001)
+}
+
 // Analytics (safe)
 export let analytics: Analytics | undefined
 if (typeof window !== 'undefined') {

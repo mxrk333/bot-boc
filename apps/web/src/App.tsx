@@ -48,6 +48,7 @@
 
 import { useState } from 'react'
 import './style.css'
+import { askVertexAI } from './lib/vertexAI'
 
 // Importing from @repo/ui - the "shared component closet"
 // These components live in packages/ui/ and can be used by any app!
@@ -75,6 +76,30 @@ import reactLogo from '/react.svg'
 export function App() {
   // React State - like a scoreboard that updates the display automatically
   const [count, setCount] = useState(0)
+
+  // Vertex AI state
+  const [aiQuery, setAiQuery] = useState('')
+  const [aiAnswer, setAiAnswer] = useState('')
+  const [aiLoading, setAiLoading] = useState(false)
+  const [aiError, setAiError] = useState('')
+
+  const handleAskAI = async () => {
+    if (!aiQuery.trim()) return
+
+    setAiLoading(true)
+    setAiAnswer('')
+    setAiError('')
+
+    try {
+      const answer = await askVertexAI(aiQuery)
+      setAiAnswer(answer)
+    } catch (err: unknown) {
+      console.error('AI query error:', err)
+      setAiError(err instanceof Error ? err.message : 'Failed to get response from AI.')
+    } finally {
+      setAiLoading(false)
+    }
+  }
 
   return (
     <div className="min-h-screen py-8 px-4">
@@ -234,6 +259,53 @@ export function App() {
               <Button variant="secondary">Shadcn UI Docs</Button>
             </a>
           </CardFooter>
+        </Card>
+
+        {/* Vertex AI Test Card */}
+        <Card className="md:col-span-2">
+          <CardHeader>
+            <CardTitle>🤖 Ask Vertex AI</CardTitle>
+            <CardDescription>
+              Test the Vertex AI Cloud Function integration. Type a question and get an AI-powered
+              response!
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="flex gap-3">
+              <input
+                type="text"
+                value={aiQuery}
+                onChange={e => setAiQuery(e.target.value)}
+                onKeyDown={e => e.key === 'Enter' && handleAskAI()}
+                placeholder="Ask anything... e.g. Explain RAG in simple terms"
+                className="flex-1 px-4 py-2 rounded-md border border-input bg-background text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                disabled={aiLoading}
+              />
+              <Button onClick={handleAskAI} disabled={aiLoading || !aiQuery.trim()}>
+                {aiLoading ? 'Thinking...' : 'Ask AI'}
+              </Button>
+            </div>
+
+            {aiLoading && (
+              <div className="mt-4 text-sm text-muted-foreground animate-pulse">
+                ⏳ Getting response from Vertex AI...
+              </div>
+            )}
+
+            {aiAnswer && (
+              <div className="mt-4 p-4 rounded-lg bg-muted">
+                <p className="text-sm font-semibold text-primary mb-1">AI Response:</p>
+                <p className="text-sm whitespace-pre-wrap">{aiAnswer}</p>
+              </div>
+            )}
+
+            {aiError && (
+              <div className="mt-4 p-4 rounded-lg bg-destructive/10 text-destructive">
+                <p className="text-sm font-semibold mb-1">Error:</p>
+                <p className="text-sm">{aiError}</p>
+              </div>
+            )}
+          </CardContent>
         </Card>
       </div>
 

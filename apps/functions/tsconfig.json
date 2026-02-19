@@ -5,7 +5,9 @@
     "moduleResolution": "bundler",
     "target": "ES2022",
     "outDir": "./dist",
-    "rootDir": "./src"
+    "rootDir": "./src",
+    "noEmit": false,
+    "allowImportingTsExtensions": false
   },
   "include": ["src"]
 }

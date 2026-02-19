@@ -1,7 +1,18 @@
 {
   "permissions": {
     "allow": [
-      "Bash(firebase deploy:*)"
+      "Bash(firebase deploy:*)",
+      "Bash(pnpm add:*)",
+      "Bash(lsof:*)",
+      "Bash(curl:*)",
+      "Bash(npx tsc:*)",
+      "Bash(gcloud services list:*)",
+      "Bash(gcloud services enable:*)",
+      "Bash(/opt/homebrew/share/google-cloud-sdk/bin/gcloud services enable:*)",
+      "Bash(pnpm --filter @repo/functions run build:*)",
+      "Bash(pnpm --filter web run build:*)",
+      "Bash(/opt/homebrew/share/google-cloud-sdk/bin/gcloud functions add-invoker-policy-binding:*)",
+      "Bash(/opt/homebrew/share/google-cloud-sdk/bin/gcloud:*)"
     ]
   }
 }
