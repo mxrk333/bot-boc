@@ -1,319 +1,242 @@
-/**
- * =============================================================================
- * WELCOME TO THE HYTEL WAY: MONOREPO STACK
- * =============================================================================
- *
- * This file demonstrates the key concepts of our tech stack using friendly
- * analogies. Think of building a web app like putting on a theater production!
- *
- * THE STACK EXPLAINED (Theater Analogy):
- *
- * PNPM (Package Manager)
- *    -> "The super-organized prop master"
- *    -> Manages all the tools/packages we need, storing them efficiently
- *    -> Unlike npm, it doesn't duplicate packages - saves space!
- *
- * TURBOREPO (Monorepo Build System)
- *    -> "The stage manager who coordinates everything"
- *    -> Runs tasks (build, test, dev) across multiple packages smartly
- *    -> Caches results so repeated tasks are lightning fast!
- *
- * REACT + VITE (Frontend Framework + Build Tool)
- *    -> "The stage and lighting system"
- *    -> React: Builds the interactive UI (the actors on stage)
- *    -> Vite: Super-fast dev server (instant lighting changes!)
- *
- * TAILWIND CSS + SHADCN UI (Styling)
- *    -> "The costume designer"
- *    -> Tailwind: Utility classes for quick styling (fabric swatches)
- *    -> Shadcn UI: Pre-made, beautiful component patterns (costume templates)
- *
- * @repo/ui (Shared Component Package)
- *    -> "The shared costume closet"
- *    -> Components here (Header, Button, Card) can be used by ANY app!
- *    -> Located in: packages/ui/
- *
- * @repo/shared (Shared Types & Schemas)
- *    -> "The spellbook of shared rules"
- *    -> Zod schemas define what data looks like (validation spells!)
- *    -> Located in: packages/shared/
- *
- * tRPC + TanStack Query (API Layer)
- *    -> "The messenger system between actors"
- *    -> tRPC: Type-safe communication with backend (no lost messages!)
- *    -> TanStack Query: Smart caching of server data (remembers the script!)
- *
- * =============================================================================
- */
-
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import './style.css'
+
 import { askVertexAI } from './lib/vertexAI'
+import { ChatBubble } from './components/ChatBubble'
+import { ChatInput } from './components/ChatInput'
+import { QuickChip } from './components/QuickChip'
+import { SuggestionCard } from './components/SuggestionCard'
 
-// Importing from @repo/ui - the "shared component closet"
-// These components live in packages/ui/ and can be used by any app!
-import { Header } from '@repo/ui/Header'
-import { Button } from '@repo/ui/Button'
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardContent,
-  CardFooter,
-} from '@repo/ui/Card'
+/* ------------------------------------------------------------------ */
+/*  Types                                                              */
+/* ------------------------------------------------------------------ */
 
-// Assets
-import viteLogo from '/vite.svg'
-import reactLogo from '/react.svg'
+interface Message {
+  id: string
+  role: 'bot' | 'user'
+  content: string
+  timestamp: string
+}
 
-/**
- * Main App Component
- *
- * This is the "main stage" of our application. Everything you see
- * in the browser starts here!
- */
+/* ------------------------------------------------------------------ */
+/*  Constants                                                          */
+/* ------------------------------------------------------------------ */
+
+const WELCOME_MSG =
+  'Hello! I am your AI Customs Assistant. I can help you with questions about Balikbayan boxes, tariff rates, OFW exemption privileges, de minimis value rules, and more.\n\nWhat would you like to know today?'
+
+const SUGGESTIONS = [
+  {
+    icon: 'inventory_2',
+    iconBg: 'bg-blue-50 dark:bg-blue-900/20',
+    iconColor: 'text-primary',
+    title: 'What can I send?',
+    subtitle: 'Check restricted items list',
+    prompt: 'What items are restricted from Balikbayan boxes?',
+  },
+  {
+    icon: 'payments',
+    iconBg: 'bg-amber-50 dark:bg-amber-900/20',
+    iconColor: 'text-amber-600 dark:text-amber-400',
+    title: 'Is it tax-free?',
+    subtitle: 'Rules for Balikbayan boxes',
+    prompt: 'Are Balikbayan boxes tax-free? What are the exemption rules?',
+  },
+] as const
+
+const QUICK_CHIPS = [
+  {
+    label: '📦 Box Size Limits',
+    prompt: 'What are the standard Balikbayan box size and weight limits?',
+  },
+  {
+    label: '🥫 Prohibited Food Items',
+    prompt: 'What food items are prohibited in Balikbayan boxes?',
+  },
+  {
+    label: '📱 Sending Gadgets',
+    prompt: 'Can I send gadgets like a laptop or phone in a Balikbayan box? Are there taxes?',
+  },
+  {
+    label: '✈️ Commercial Shipments',
+    prompt: 'What are the rules for commercial shipments to the Philippines?',
+  },
+] as const
+
+/* ------------------------------------------------------------------ */
+/*  Helpers                                                            */
+/* ------------------------------------------------------------------ */
+
+function createId() {
+  return Date.now().toString(36) + Math.random().toString(36).slice(2, 7)
+}
+
+function timeLabel() {
+  return new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+}
+
+/* ------------------------------------------------------------------ */
+/*  App                                                                */
+/* ------------------------------------------------------------------ */
+
 export function App() {
-  // React State - like a scoreboard that updates the display automatically
-  const [count, setCount] = useState(0)
+  const [messages, setMessages] = useState<Message[]>([
+    { id: 'welcome', role: 'bot', content: WELCOME_MSG, timestamp: 'Just now' },
+  ])
+  const [query, setQuery] = useState('')
+  const [loading, setLoading] = useState(false)
+  const chatEndRef = useRef<HTMLDivElement>(null)
 
-  // Vertex AI state
-  const [aiQuery, setAiQuery] = useState('')
-  const [aiAnswer, setAiAnswer] = useState('')
-  const [aiLoading, setAiLoading] = useState(false)
-  const [aiError, setAiError] = useState('')
+  // Auto-scroll to bottom when messages change
+  useEffect(() => {
+    chatEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+  }, [messages, loading])
 
-  const handleAskAI = async () => {
-    if (!aiQuery.trim()) return
+  /* ---- Send a message ---- */
+  const send = async (text: string) => {
+    const trimmed = text.trim()
+    if (!trimmed || loading) return
 
-    setAiLoading(true)
-    setAiAnswer('')
-    setAiError('')
+    // Add user message
+    const userMsg: Message = {
+      id: createId(),
+      role: 'user',
+      content: trimmed,
+      timestamp: timeLabel(),
+    }
+    setMessages(prev => [...prev, userMsg])
+    setQuery('')
+    setLoading(true)
 
     try {
-      const answer = await askVertexAI(aiQuery)
-      setAiAnswer(answer)
-    } catch (err: unknown) {
-      console.error('AI query error:', err)
-      setAiError(err instanceof Error ? err.message : 'Failed to get response from AI.')
+      const answer = await askVertexAI(trimmed)
+      const botMsg: Message = {
+        id: createId(),
+        role: 'bot',
+        content: answer || 'Sorry, I could not generate a response. Please try again.',
+        timestamp: timeLabel(),
+      }
+      setMessages(prev => [...prev, botMsg])
+    } catch (err) {
+      const errText = err instanceof Error ? err.message : 'Something went wrong.'
+      const errMsg: Message = {
+        id: createId(),
+        role: 'bot',
+        content: `⚠️ ${errText}`,
+        timestamp: timeLabel(),
+      }
+      setMessages(prev => [...prev, errMsg])
     } finally {
-      setAiLoading(false)
+      setLoading(false)
     }
   }
 
+  const showWelcome = messages.length <= 1
+
   return (
-    <div className="min-h-screen py-8 px-4">
-      {/* 
-        Header Component from @repo/ui
-        This comes from our shared "costume closet" (packages/ui)
-        Any app in the monorepo can use this same Header!
-      */}
-      <Header title="The Hytel Way" />
+    <div className="flex h-screen w-full">
+      {/* ---- Main Column ---- */}
+      <main className="flex-1 flex flex-col relative">
+        {/* Header */}
+        <header className="flex items-center justify-between px-6 py-3 border-b border-border bg-card/80 backdrop-blur-md sticky top-0 z-10">
+          <div className="flex items-center gap-3">
+            <div className="size-8 rounded-lg bg-primary flex items-center justify-center shadow-sm">
+              <span className="material-symbols-outlined filled text-primary-foreground text-base">
+                smart_toy
+              </span>
+            </div>
+            <h1 className="text-base font-bold text-foreground">
+              BOC Tariff &amp; Balikbayan Guide
+            </h1>
+          </div>
+        </header>
 
-      {/* Logo Section */}
-      <div className="flex justify-center gap-8 my-8">
-        <a href="https://vitejs.dev" target="_blank" rel="noopener noreferrer">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank" rel="noopener noreferrer">
-          <img src={reactLogo} className="logo" alt="React logo" />
-        </a>
-      </div>
-
-      {/* Main Content Grid */}
-      <div className="max-w-4xl mx-auto grid gap-6 md:grid-cols-2">
-        {/* 
-          Interactive Counter Card
-          Demonstrates React state + Shadcn UI components
-        */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Interactive Counter</CardTitle>
-            <CardDescription>
-              Click the buttons to change the count. This demonstrates React state management - when
-              count changes, the UI updates automatically!
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="text-center">
-              <p className="text-6xl font-bold text-primary mb-6">{count}</p>
-              <div className="flex justify-center gap-4">
-                {/* 
-                  Shadcn UI Buttons
-                  These come from packages/ui/components/ui/button.tsx
-                  The "variant" prop changes the button style (like costume options!)
-                */}
-                <Button
-                  variant="outline"
-                  size="lg"
-                  onClick={() => setCount(c => c - 1)}
-                  aria-label="Decrement counter"
-                >
-                  - Decrease
-                </Button>
-                <Button
-                  variant="default"
-                  size="lg"
-                  onClick={() => setCount(c => c + 1)}
-                  aria-label="Increment counter"
-                >
-                  + Increase
-                </Button>
-              </div>
-            </div>
-          </CardContent>
-          <CardFooter className="justify-center">
-            <Button variant="ghost" onClick={() => setCount(0)}>
-              Reset to Zero
-            </Button>
-          </CardFooter>
-        </Card>
-
-        {/* 
-          Stack Info Card
-          Educational content about the monorepo structure
-        */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Stack Overview</CardTitle>
-            <CardDescription>
-              What powers this template? Here's the cast of characters!
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-3 text-sm">
-            <div className="flex items-start gap-2">
-              <div>
-                <strong>pnpm</strong> - Fast, disk-efficient package manager
-              </div>
-            </div>
-            <div className="flex items-start gap-2">
-              <div>
-                <strong>Turborepo</strong> - Smart monorepo build system
-              </div>
-            </div>
-            <div className="flex items-start gap-2">
-              <div>
-                <strong>React + Vite</strong> - Fast UI development
-              </div>
-            </div>
-            <div className="flex items-start gap-2">
-              <div>
-                <strong>Tailwind + Shadcn</strong> - Beautiful styling
-              </div>
-            </div>
-            <div className="flex items-start gap-2">
-              <div>
-                <strong>tRPC</strong> - Type-safe API layer
-              </div>
-            </div>
-            <div className="flex items-start gap-2">
-              <div>
-                <strong>TanStack Query</strong> - Server state management
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* 
-          Monorepo Structure Card
-        */}
-        <Card className="md:col-span-2">
-          <CardHeader>
-            <CardTitle>Monorepo Structure</CardTitle>
-            <CardDescription>Where to find things in this project</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="grid md:grid-cols-2 gap-6 text-sm font-mono">
-              <div>
-                <h4 className="font-bold text-primary mb-2">apps/</h4>
-                <ul className="space-y-1 text-muted-foreground">
-                  <li>
-                    |-- web/ <span className="text-xs">(this React app)</span>
-                  </li>
-                  <li>
-                    |-- functions/ <span className="text-xs">(tRPC backend)</span>
-                  </li>
-                </ul>
-              </div>
-              <div>
-                <h4 className="font-bold text-primary mb-2">packages/</h4>
-                <ul className="space-y-1 text-muted-foreground">
-                  <li>
-                    |-- ui/ <span className="text-xs">(shared components)</span>
-                  </li>
-                  <li>
-                    |-- shared/ <span className="text-xs">(Zod schemas)</span>
-                  </li>
-                  <li>
-                    |-- config/ <span className="text-xs">(TypeScript config)</span>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </CardContent>
-          <CardFooter className="justify-center gap-4">
-            <a href="https://turbo.build/repo/docs" target="_blank" rel="noopener noreferrer">
-              <Button variant="secondary">Turborepo Docs</Button>
-            </a>
-            <a href="https://ui.shadcn.com" target="_blank" rel="noopener noreferrer">
-              <Button variant="secondary">Shadcn UI Docs</Button>
-            </a>
-          </CardFooter>
-        </Card>
-
-        {/* Vertex AI Test Card */}
-        <Card className="md:col-span-2">
-          <CardHeader>
-            <CardTitle>🤖 Ask Vertex AI</CardTitle>
-            <CardDescription>
-              Test the Vertex AI Cloud Function integration. Type a question and get an AI-powered
-              response!
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="flex gap-3">
-              <input
-                type="text"
-                value={aiQuery}
-                onChange={e => setAiQuery(e.target.value)}
-                onKeyDown={e => e.key === 'Enter' && handleAskAI()}
-                placeholder="Ask anything... e.g. Explain RAG in simple terms"
-                className="flex-1 px-4 py-2 rounded-md border border-input bg-background text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                disabled={aiLoading}
-              />
-              <Button onClick={handleAskAI} disabled={aiLoading || !aiQuery.trim()}>
-                {aiLoading ? 'Thinking...' : 'Ask AI'}
-              </Button>
-            </div>
-
-            {aiLoading && (
-              <div className="mt-4 text-sm text-muted-foreground animate-pulse">
-                ⏳ Getting response from Vertex AI...
+        {/* Chat messages */}
+        <div className="flex-1 overflow-y-auto chat-scroll p-4 md:p-6">
+          <div className="max-w-3xl mx-auto space-y-6">
+            {/* Welcome hero (only when there's just the initial message) */}
+            {showWelcome && (
+              <div className="text-center pt-8 pb-4 px-4">
+                <div className="size-16 bg-primary/10 text-primary rounded-2xl flex items-center justify-center mx-auto mb-5 shadow-sm border border-primary/20">
+                  <span className="material-symbols-outlined filled text-3xl">smart_toy</span>
+                </div>
+                <h2 className="text-xl font-bold mb-2">Mabuhay! Welcome to the Guide</h2>
+                <p className="text-muted-foreground text-sm max-w-md mx-auto mb-6">
+                  Get instant answers about your Balikbayan boxes and Philippines Customs
+                  regulations.
+                </p>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-lg mx-auto">
+                  {SUGGESTIONS.map(s => (
+                    <SuggestionCard
+                      key={s.title}
+                      icon={s.icon}
+                      iconBg={s.iconBg}
+                      iconColor={s.iconColor}
+                      title={s.title}
+                      subtitle={s.subtitle}
+                      onClick={() => send(s.prompt)}
+                    />
+                  ))}
+                </div>
               </div>
             )}
 
-            {aiAnswer && (
-              <div className="mt-4 p-4 rounded-lg bg-muted">
-                <p className="text-sm font-semibold text-primary mb-1">AI Response:</p>
-                <p className="text-sm whitespace-pre-wrap">{aiAnswer}</p>
-              </div>
+            {/* Messages */}
+            {messages.map(msg => (
+              <ChatBubble key={msg.id} role={msg.role} timestamp={msg.timestamp}>
+                <p className="whitespace-pre-wrap">{msg.content}</p>
+              </ChatBubble>
+            ))}
+
+            {/* Loading indicator */}
+            {loading && (
+              <ChatBubble role="bot">
+                <div className="flex items-center gap-2 text-muted-foreground">
+                  <span className="inline-flex gap-1">
+                    <span className="size-1.5 rounded-full bg-current animate-bounce [animation-delay:0ms]" />
+                    <span className="size-1.5 rounded-full bg-current animate-bounce [animation-delay:150ms]" />
+                    <span className="size-1.5 rounded-full bg-current animate-bounce [animation-delay:300ms]" />
+                  </span>
+                  <span className="text-xs">Thinking…</span>
+                </div>
+              </ChatBubble>
             )}
 
-            {aiError && (
-              <div className="mt-4 p-4 rounded-lg bg-destructive/10 text-destructive">
-                <p className="text-sm font-semibold mb-1">Error:</p>
-                <p className="text-sm">{aiError}</p>
-              </div>
-            )}
-          </CardContent>
-        </Card>
-      </div>
+            {/* Scroll anchor */}
+            <div ref={chatEndRef} />
+          </div>
+        </div>
 
-      {/* Footer */}
-      <p className="text-center text-muted-foreground mt-8 text-sm">
-        Edit <code className="bg-muted px-1 rounded">apps/web/src/App.tsx</code> and save to see hot
-        reload in action!
-      </p>
+        {/* Input area */}
+        <div className="border-t border-border bg-gradient-to-t from-background via-background/95 to-background/80 px-4 pb-4 pt-3">
+          <div className="max-w-3xl mx-auto space-y-3">
+            {/* Quick chips */}
+            <div className="flex gap-2 overflow-x-auto no-scrollbar pb-1">
+              {QUICK_CHIPS.map(c => (
+                <QuickChip
+                  key={c.label}
+                  label={c.label}
+                  onClick={() => send(c.prompt)}
+                  disabled={loading}
+                />
+              ))}
+            </div>
+
+            {/* Text input */}
+            <ChatInput
+              value={query}
+              onChange={setQuery}
+              onSend={() => send(query)}
+              disabled={loading}
+              placeholder="Type your question about customs here…"
+            />
+
+            <p className="text-center text-[10px] text-muted-foreground">
+              AI information is for guidance only. Consult official BOC rulings for final decisions.
+            </p>
+          </div>
+        </div>
+      </main>
     </div>
   )
 }

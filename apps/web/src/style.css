@@ -3,60 +3,54 @@
 @tailwind utilities;
 
 /* =============================================================================
-   Shadcn UI Theme Variables
-   =============================================================================
-   🎨 ANALOGY: These CSS variables are like the "color palette" for a painter.
-   Instead of hardcoding colors everywhere, we define them once here,
-   and all Shadcn components automatically use these colors!
-   
-   This makes it easy to change the entire look of your app by just
-   updating these values - like changing the mood lighting in a theater!
+   BOC Chatbot Theme
+   Deep purple primary with gold accent
    ============================================================================= */
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    --background: 270 8% 97%; /* #f7f6f8 */
+    --foreground: 222 84% 5%;
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 222 84% 5%;
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-    --primary: 221.2 83.2% 53.3%;
-    --primary-foreground: 210 40% 98%;
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 221.2 83.2% 53.3%;
-    --radius: 0.5rem;
+    --popover-foreground: 222 84% 5%;
+    --primary: 278 86% 27%; /* #500a7c */
+    --primary-foreground: 0 0% 100%;
+    --secondary: 270 10% 94%;
+    --secondary-foreground: 270 20% 20%;
+    --muted: 270 10% 94%;
+    --muted-foreground: 270 5% 45%;
+    --accent: 43 66% 52%; /* #d4af37 gold */
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 270 10% 90%;
+    --input: 270 10% 90%;
+    --ring: 278 86% 27%;
+    --radius: 0.75rem;
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-    --primary: 217.2 91.2% 59.8%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 224.3 76.3% 48%;
+    --background: 275 40% 8%; /* #1b1022 */
+    --foreground: 270 10% 95%;
+    --card: 275 30% 12%;
+    --card-foreground: 270 10% 95%;
+    --popover: 275 30% 12%;
+    --popover-foreground: 270 10% 95%;
+    --primary: 278 70% 55%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 275 20% 18%;
+    --secondary-foreground: 270 10% 90%;
+    --muted: 275 20% 18%;
+    --muted-foreground: 270 10% 60%;
+    --accent: 43 66% 52%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 63% 31%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 275 20% 18%;
+    --input: 275 20% 18%;
+    --ring: 278 70% 55%;
   }
 }
 
@@ -66,45 +60,58 @@
   }
   body {
     @apply bg-background text-foreground;
-    font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
+    font-family:
+      'IBM Plex Sans',
+      system-ui,
+      -apple-system,
+      sans-serif;
     font-synthesis: none;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    margin: 0;
+    overflow: hidden;
   }
 }
 
 /* =============================================================================
-   Custom Styles
+   Scrollbar
    ============================================================================= */
 
-body {
-  margin: 0;
-  min-width: 320px;
-  min-height: 100vh;
+.chat-scroll::-webkit-scrollbar {
+  width: 5px;
+}
+.chat-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.chat-scroll::-webkit-scrollbar-thumb {
+  background: hsl(var(--muted-foreground) / 0.2);
+  border-radius: 9999px;
+}
+.chat-scroll::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--muted-foreground) / 0.35);
 }
 
-#app {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+/* Hide scrollbar utility */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
-.logo {
-  height: 5em;
-  padding: 1em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em hsl(var(--primary) / 0.5));
-}
+/* =============================================================================
+   Material Symbols helper
+   ============================================================================= */
 
-a {
-  font-weight: 500;
-  color: hsl(var(--primary));
-  text-decoration: inherit;
+.material-symbols-outlined {
+  font-variation-settings:
+    'FILL' 0,
+    'wght' 400,
+    'GRAD' 0,
+    'opsz' 24;
 }
-a:hover {
-  text-decoration: underline;
+.material-symbols-outlined.filled {
+  font-variation-settings: 'FILL' 1;
 }
