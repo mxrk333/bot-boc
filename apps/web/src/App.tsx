@@ -1,11 +1,19 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, useCallback } from 'react'
+import { useNavigate } from 'react-router-dom'
 import './style.css'
 
 import { askVertexAI } from './lib/vertexAI'
+import { useAuth } from './hooks/useAuth'
+import { useConversations, type ChatMessage } from './hooks/useConversations'
+import { AuthButton } from './components/AuthButton'
 import { ChatBubble } from './components/ChatBubble'
 import { ChatInput } from './components/ChatInput'
+import { ConversationSidebar } from './components/ConversationSidebar'
 import { QuickChip } from './components/QuickChip'
 import { SuggestionCard } from './components/SuggestionCard'
+import { UserMenu } from './components/UserMenu'
+import { doc, getDoc } from 'firebase/firestore'
+import { db } from './lib/firebase'
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
@@ -63,6 +71,13 @@ const QUICK_CHIPS = [
   },
 ] as const
 
+const WELCOME_MESSAGE: Message = {
+  id: 'welcome',
+  role: 'bot',
+  content: WELCOME_MSG,
+  timestamp: 'Just now',
+}
+
 /* ------------------------------------------------------------------ */
 /*  Helpers                                                            */
 /* ------------------------------------------------------------------ */
@@ -75,22 +90,72 @@ function timeLabel() {
   return new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
 }
 
+/** Build a short title from the first user message */
+function titleFromMessage(text: string) {
+  const clean = text.replace(/\n/g, ' ').trim()
+  return clean.length > 40 ? clean.slice(0, 40) + '…' : clean
+}
+
 /* ------------------------------------------------------------------ */
 /*  App                                                                */
 /* ------------------------------------------------------------------ */
 
 export function App() {
-  const [messages, setMessages] = useState<Message[]>([
-    { id: 'welcome', role: 'bot', content: WELCOME_MSG, timestamp: 'Just now' },
-  ])
+  const navigate = useNavigate()
+  const { user, loading: authLoading } = useAuth()
+  const { conversations, createConversation, saveMessages, deleteConversation } = useConversations(
+    user?.uid
+  )
+
+  const [messages, setMessages] = useState<Message[]>([WELCOME_MESSAGE])
   const [query, setQuery] = useState('')
   const [loading, setLoading] = useState(false)
+  const [activeConvId, setActiveConvId] = useState<string | null>(null)
+  const [sidebarOpen, setSidebarOpen] = useState(false)
   const chatEndRef = useRef<HTMLDivElement>(null)
+
+  // Redirect to onboarding if user hasn't completed it
+  useEffect(() => {
+    if (!user || authLoading) return
+    const checkOnboarding = async () => {
+      try {
+        const snap = await getDoc(doc(db, 'users', user.uid))
+        if (!snap.exists() || !snap.data().onboardingComplete) {
+          navigate('/onboarding', { replace: true })
+        }
+      } catch {
+        // If Firestore check fails, don't block — let them use the app
+      }
+    }
+    checkOnboarding()
+  }, [user, authLoading, navigate])
 
   // Auto-scroll to bottom when messages change
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [messages, loading])
+
+  /* ---- Load a conversation from Firestore ---- */
+  const loadConversation = useCallback(async (convId: string) => {
+    try {
+      const snap = await getDoc(doc(db, 'conversations', convId))
+      if (snap.exists()) {
+        const data = snap.data()
+        const msgs: Message[] = data.messages || []
+        setMessages(msgs.length > 0 ? msgs : [WELCOME_MESSAGE])
+        setActiveConvId(convId)
+      }
+    } catch (err) {
+      console.error('Failed to load conversation:', err)
+    }
+  }, [])
+
+  /* ---- Start a new chat ---- */
+  const startNewChat = useCallback(() => {
+    setMessages([WELCOME_MESSAGE])
+    setActiveConvId(null)
+    setQuery('')
+  }, [])
 
   /* ---- Send a message ---- */
   const send = async (text: string) => {
@@ -104,7 +169,8 @@ export function App() {
       content: trimmed,
       timestamp: timeLabel(),
     }
-    setMessages(prev => [...prev, userMsg])
+    const newMessages = [...messages, userMsg]
+    setMessages(newMessages)
     setQuery('')
     setLoading(true)
 
@@ -116,7 +182,29 @@ export function App() {
         content: answer || 'Sorry, I could not generate a response. Please try again.',
         timestamp: timeLabel(),
       }
-      setMessages(prev => [...prev, botMsg])
+      const finalMessages = [...newMessages, botMsg]
+      setMessages(finalMessages)
+
+      // Persist conversation if user is logged in
+      if (user) {
+        const chatMsgs: ChatMessage[] = finalMessages
+          .filter(m => m.id !== 'welcome')
+          .map(m => ({ id: m.id, role: m.role, content: m.content, timestamp: m.timestamp }))
+
+        // Find the first user message for the title
+        const firstUserMsg = finalMessages.find(m => m.role === 'user')
+        const title = firstUserMsg ? titleFromMessage(firstUserMsg.content) : 'New chat'
+
+        if (activeConvId) {
+          // Update existing conversation
+          await saveMessages(activeConvId, chatMsgs, title)
+        } else {
+          // Create new conversation
+          const newId = await createConversation(title)
+          setActiveConvId(newId)
+          await saveMessages(newId, chatMsgs, title)
+        }
+      }
     } catch (err) {
       const errText = err instanceof Error ? err.message : 'Something went wrong.'
       const errMsg: Message = {
@@ -131,23 +219,100 @@ export function App() {
     }
   }
 
+  const handleDeleteConversation = async (convId: string) => {
+    await deleteConversation(convId)
+    if (activeConvId === convId) {
+      startNewChat()
+    }
+  }
+
   const showWelcome = messages.length <= 1
+  const isLoggedIn = !!user
+
+  // Show a loading spinner while auth initializes
+  if (authLoading) {
+    return (
+      <div className="flex h-screen w-full items-center justify-center bg-background">
+        <div className="flex flex-col items-center gap-3">
+          <div className="size-10 rounded-full border-2 border-primary border-t-transparent animate-spin" />
+          <p className="text-sm text-muted-foreground">Loading…</p>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="flex h-screen w-full">
+      {/* ---- Conversation Sidebar (logged in only) ---- */}
+      {isLoggedIn && (
+        <ConversationSidebar
+          conversations={conversations}
+          activeId={activeConvId}
+          onSelect={loadConversation}
+          onNew={startNewChat}
+          onDelete={handleDeleteConversation}
+          open={sidebarOpen}
+          onClose={() => setSidebarOpen(false)}
+        />
+      )}
+
       {/* ---- Main Column ---- */}
-      <main className="flex-1 flex flex-col relative">
+      <main className="flex-1 flex flex-col relative min-w-0">
         {/* Header */}
-        <header className="flex items-center justify-between px-6 py-3 border-b border-border bg-card/80 backdrop-blur-md sticky top-0 z-10">
+        <header className="flex items-center justify-between px-4 md:px-6 py-3 border-b border-border bg-card/80 backdrop-blur-md sticky top-0 z-10">
           <div className="flex items-center gap-3">
+            {/* Sidebar toggle (logged in only) */}
+            {isLoggedIn && (
+              <button
+                onClick={() => setSidebarOpen(prev => !prev)}
+                className="size-8 rounded-lg flex items-center justify-center hover:bg-muted transition-colors cursor-pointer text-muted-foreground hover:text-foreground md:hidden"
+                aria-label="Toggle sidebar"
+              >
+                <span className="material-symbols-outlined text-xl">menu</span>
+              </button>
+            )}
+            {isLoggedIn && (
+              <button
+                onClick={() => setSidebarOpen(prev => !prev)}
+                className="hidden md:flex size-8 rounded-lg items-center justify-center hover:bg-muted transition-colors cursor-pointer text-muted-foreground hover:text-foreground"
+                aria-label="Toggle sidebar"
+              >
+                <span className="material-symbols-outlined text-xl">
+                  {sidebarOpen ? 'side_navigation' : 'menu'}
+                </span>
+              </button>
+            )}
             <div className="size-8 rounded-lg bg-primary flex items-center justify-center shadow-sm">
               <span className="material-symbols-outlined filled text-primary-foreground text-base">
                 smart_toy
               </span>
             </div>
-            <h1 className="text-base font-bold text-foreground">
+            <h1 className="text-base font-bold text-foreground hidden sm:block">
               BOC Tariff &amp; Balikbayan Guide
             </h1>
+          </div>
+
+          {/* Right side: auth buttons OR user menu */}
+          <div className="flex items-center gap-2">
+            {isLoggedIn ? (
+              <>
+                {/* New chat button */}
+                <button
+                  onClick={startNewChat}
+                  className="inline-flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors cursor-pointer"
+                  title="New chat"
+                >
+                  <span className="material-symbols-outlined text-base">add</span>
+                  <span className="hidden sm:inline">New chat</span>
+                </button>
+                <UserMenu />
+              </>
+            ) : (
+              <>
+                <AuthButton variant="login" />
+                <AuthButton variant="signup" />
+              </>
+            )}
           </div>
         </header>
 
@@ -160,10 +325,15 @@ export function App() {
                 <div className="size-16 bg-primary/10 text-primary rounded-2xl flex items-center justify-center mx-auto mb-5 shadow-sm border border-primary/20">
                   <span className="material-symbols-outlined filled text-3xl">smart_toy</span>
                 </div>
-                <h2 className="text-xl font-bold mb-2">Mabuhay! Welcome to the Guide</h2>
+                <h2 className="text-xl font-bold mb-2">
+                  {isLoggedIn
+                    ? `Welcome back, ${user.displayName?.split(' ')[0] || 'there'}!`
+                    : 'Mabuhay! Welcome to the Guide'}
+                </h2>
                 <p className="text-muted-foreground text-sm max-w-md mx-auto mb-6">
-                  Get instant answers about your Balikbayan boxes and Philippines Customs
-                  regulations.
+                  {isLoggedIn
+                    ? 'Your conversations are being saved. Pick up where you left off, or start a new chat.'
+                    : 'Get instant answers about your Balikbayan boxes and Philippines Customs regulations.'}
                 </p>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-lg mx-auto">
                   {SUGGESTIONS.map(s => (
