@@ -1,20 +1,18 @@
+/**
+ * Auth navigation button for the header bar.
+ *
+ * variant="login"  → outlined "Log in" button
+ * variant="signup" → filled primary "Sign up" button
+ */
+
 import { useNavigate } from 'react-router-dom'
 import { cn } from '@repo/ui/utils'
 
 interface AuthButtonProps {
-  /** Which page to link to */
   variant?: 'login' | 'signup'
   className?: string
 }
 
-/**
- * Reusable Auth button for the navbar.
- * Links to /login or /signup.
- *
- * Usage:
- *   <AuthButton />                  -> "Log in" (outlined)
- *   <AuthButton variant="signup" /> -> "Sign up" (filled primary)
- */
 export function AuthButton({ variant = 'login', className }: AuthButtonProps) {
   const navigate = useNavigate()
 

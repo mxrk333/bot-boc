@@ -1,3 +1,11 @@
+/**
+ * Hook for managing chat conversations in Firestore.
+ *
+ * Subscribes to real-time updates via onSnapshot so the sidebar
+ * stays in sync across tabs. Provides CRUD helpers that the chat
+ * UI calls when the user sends messages or deletes conversations.
+ */
+
 import { useState, useEffect, useCallback } from 'react'
 import {
   collection,
@@ -10,7 +18,7 @@ import {
   orderBy,
   onSnapshot,
   serverTimestamp,
-  Timestamp,
+  type Timestamp,
 } from 'firebase/firestore'
 import { db } from '../lib/firebase'
 
@@ -41,7 +49,7 @@ export function useConversations(uid: string | undefined) {
   const [conversations, setConversations] = useState<Conversation[]>([])
   const [loadingConversations, setLoadingConversations] = useState(true)
 
-  // Listen to the user's conversations in real-time
+  // Real-time listener: fetches this user's conversations ordered by most recent
   useEffect(() => {
     if (!uid) {
       setConversations([])
@@ -73,7 +81,7 @@ export function useConversations(uid: string | undefined) {
     return unsub
   }, [uid])
 
-  /** Create a new conversation and return its Firestore doc ID */
+  /** Create a new conversation doc and return its Firestore ID */
   const createConversation = useCallback(
     async (title = 'New chat'): Promise<string> => {
       if (!uid) throw new Error('Not authenticated')
@@ -90,22 +98,29 @@ export function useConversations(uid: string | undefined) {
     [uid]
   )
 
-  /** Save the full messages array to a conversation */
+  /** Overwrite the messages array on an existing conversation */
   const saveMessages = useCallback(
     async (conversationId: string, messages: ChatMessage[], title?: string) => {
       if (!uid) return
-      const updateData: Record<string, unknown> = {
+
+      const payload: {
+        messages: ChatMessage[]
+        messageCount: number
+        updatedAt: ReturnType<typeof serverTimestamp>
+        title?: string
+      } = {
         messages,
         messageCount: messages.length,
         updatedAt: serverTimestamp(),
       }
-      if (title) updateData.title = title
-      await updateDoc(doc(db, 'conversations', conversationId), updateData)
+      if (title) payload.title = title
+
+      await updateDoc(doc(db, 'conversations', conversationId), payload)
     },
     [uid]
   )
 
-  /** Delete a conversation */
+  /** Permanently remove a conversation */
   const deleteConversation = useCallback(
     async (conversationId: string) => {
       if (!uid) return

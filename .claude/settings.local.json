@@ -12,7 +12,12 @@
       "Bash(pnpm --filter @repo/functions run build:*)",
       "Bash(pnpm --filter web run build:*)",
       "Bash(/opt/homebrew/share/google-cloud-sdk/bin/gcloud functions add-invoker-policy-binding:*)",
-      "Bash(/opt/homebrew/share/google-cloud-sdk/bin/gcloud:*)"
+      "Bash(/opt/homebrew/share/google-cloud-sdk/bin/gcloud:*)",
+      "Bash(pnpm --filter web typecheck:*)",
+      "Bash(pnpm --filter @repo/functions typecheck:*)",
+      "Bash(pnpm test:*)",
+      "Bash(pnpm --filter web exec tsc:*)",
+      "Bash(pnpm --filter web build:*)"
     ]
   }
 }

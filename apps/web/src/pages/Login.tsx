@@ -1,10 +1,15 @@
+/**
+ * Login page.
+ *
+ * Supports email/password and Google OAuth via Firebase Auth.
+ * On success, navigates to the home chat screen.
+ * Firebase error codes are translated into user-friendly messages.
+ */
+
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth'
 
-/**
- * Login page – Connected to Firebase Authentication.
- */
 export function Login() {
   const navigate = useNavigate()
   const { login, loginWithGoogle } = useAuth()
@@ -13,6 +18,7 @@ export function Login() {
   const [error, setError] = useState('')
   const [busy, setBusy] = useState(false)
 
+  /* ---- Email / password submit ---- */
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setError('')
@@ -22,7 +28,6 @@ export function Login() {
       navigate('/')
     } catch (err) {
       const msg = err instanceof Error ? err.message : 'Login failed'
-      // Make Firebase error messages friendlier
       if (
         msg.includes('invalid-credential') ||
         msg.includes('wrong-password') ||
@@ -39,6 +44,7 @@ export function Login() {
     }
   }
 
+  /* ---- Google OAuth ---- */
   const handleGoogle = async () => {
     setError('')
     setBusy(true)
@@ -47,9 +53,8 @@ export function Login() {
       navigate('/')
     } catch (err) {
       const msg = err instanceof Error ? err.message : 'Google sign-in failed'
-      if (!msg.includes('popup-closed')) {
-        setError(msg)
-      }
+      // Silently ignore the user closing the popup
+      if (!msg.includes('popup-closed')) setError(msg)
     } finally {
       setBusy(false)
     }
@@ -69,7 +74,7 @@ export function Login() {
           </p>
         </div>
 
-        {/* Error */}
+        {/* Error banner */}
         {error && (
           <div className="rounded-lg bg-destructive/10 border border-destructive/20 px-4 py-3 text-sm text-destructive flex items-start gap-2">
             <span className="material-symbols-outlined text-base mt-0.5 shrink-0">error</span>
@@ -149,7 +154,7 @@ export function Login() {
           </button>
         </form>
 
-        {/* Footer */}
+        {/* Link to sign up */}
         <p className="text-center text-sm text-muted-foreground">
           Don&apos;t have an account?{' '}
           <button
@@ -160,7 +165,6 @@ export function Login() {
           </button>
         </p>
 
-        {/* Back link */}
         <button
           onClick={() => navigate('/')}
           className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors mx-auto cursor-pointer"

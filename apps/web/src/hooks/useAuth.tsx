@@ -1,3 +1,13 @@
+/**
+ * Authentication context & hook.
+ *
+ * Wraps Firebase Auth in a React context so any component can access
+ * the current user and auth actions via `useAuth()`.
+ *
+ * Provides: login, signup, Google OAuth, logout, email verification,
+ * and a way to refresh the cached user object.
+ */
+
 import { createContext, useContext, useEffect, useState, useCallback, type ReactNode } from 'react'
 import {
   onAuthStateChanged,
@@ -13,7 +23,7 @@ import {
 import { auth, googleProvider } from '../lib/firebase'
 
 /* ------------------------------------------------------------------ */
-/*  Context shape                                                     */
+/*  Context shape                                                      */
 /* ------------------------------------------------------------------ */
 
 interface AuthContextValue {
@@ -24,19 +34,20 @@ interface AuthContextValue {
   loginWithGoogle: () => Promise<void>
   logout: () => Promise<void>
   sendVerification: () => Promise<void>
-  refreshUser: () => Promise<void>
+  refreshUser: () => Promise<User | null>
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null)
 
 /* ------------------------------------------------------------------ */
-/*  Provider                                                          */
+/*  Provider                                                           */
 /* ------------------------------------------------------------------ */
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null)
   const [loading, setLoading] = useState(true)
 
+  // Subscribe to auth state changes (login / logout / token refresh)
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, u => {
       setUser(u)
@@ -51,10 +62,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const signup = useCallback(async (email: string, password: string, displayName?: string) => {
     const cred = await createUserWithEmailAndPassword(auth, email, password)
-    if (displayName) {
-      await updateProfile(cred.user, { displayName })
-    }
-    // Send verification email immediately after signup
+    if (displayName) await updateProfile(cred.user, { displayName })
     await sendEmailVerification(cred.user)
   }, [])
 
@@ -66,20 +74,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     await signOut(auth)
   }, [])
 
-  /** Resend the email verification link */
   const sendVerification = useCallback(async () => {
-    if (auth.currentUser) {
-      await sendEmailVerification(auth.currentUser)
-    }
+    if (auth.currentUser) await sendEmailVerification(auth.currentUser)
   }, [])
 
-  /** Reload user from Firebase to pick up emailVerified changes */
-  const refreshUser = useCallback(async () => {
-    if (auth.currentUser) {
-      await reload(auth.currentUser)
-      // Force a re-render with the updated user object
-      setUser({ ...auth.currentUser } as User)
-    }
+  /**
+   * Reload the user from Firebase (picks up emailVerified etc.) and
+   * return the updated user so callers can read fresh values immediately
+   * without waiting for a re-render.
+   */
+  const refreshUser = useCallback(async (): Promise<User | null> => {
+    if (!auth.currentUser) return null
+    await reload(auth.currentUser)
+    // Trigger a re-render by setting a new reference
+    setUser(Object.assign(Object.create(Object.getPrototypeOf(auth.currentUser)), auth.currentUser))
+    return auth.currentUser
   }, [])
 
   return (
@@ -101,7 +110,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 }
 
 /* ------------------------------------------------------------------ */
-/*  Hook                                                              */
+/*  Hook                                                               */
 /* ------------------------------------------------------------------ */
 
 export function useAuth() {

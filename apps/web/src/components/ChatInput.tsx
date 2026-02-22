@@ -1,3 +1,10 @@
+/**
+ * Chat text input with auto-resize, camera button, and send button.
+ *
+ * Enter sends the message; Shift+Enter inserts a newline.
+ * The textarea grows up to ~4 lines then scrolls internally.
+ */
+
 import { useRef, useEffect } from 'react'
 import { cn } from '@repo/ui/utils'
 import { IconButton } from './IconButton'
@@ -11,12 +18,8 @@ interface ChatInputProps {
   className?: string
 }
 
-/**
- * Auto-resizing textarea with a send button.
- *
- * Usage:
- *   <ChatInput value={query} onChange={setQuery} onSend={handleSend} />
- */
+const MAX_HEIGHT_PX = 120 // roughly 4 lines
+
 export function ChatInput({
   value,
   onChange,
@@ -27,12 +30,12 @@ export function ChatInput({
 }: ChatInputProps) {
   const textareaRef = useRef<HTMLTextAreaElement>(null)
 
-  // Auto-resize the textarea to fit content (up to ~4 lines)
+  // Auto-resize to fit content (capped at MAX_HEIGHT_PX)
   useEffect(() => {
     const el = textareaRef.current
     if (!el) return
     el.style.height = 'auto'
-    el.style.height = `${Math.min(el.scrollHeight, 120)}px`
+    el.style.height = `${Math.min(el.scrollHeight, MAX_HEIGHT_PX)}px`
   }, [value])
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -54,7 +57,7 @@ export function ChatInput({
           disabled={disabled}
           rows={1}
           className={cn(
-            'w-full pl-5 pr-14 py-4 rounded-2xl resize-none',
+            'w-full pl-14 pr-14 py-4 rounded-2xl resize-none',
             'bg-card border border-border shadow-lg',
             'text-sm text-foreground placeholder:text-muted-foreground',
             'focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary',
@@ -63,6 +66,23 @@ export function ChatInput({
             'disabled:opacity-50'
           )}
         />
+
+        {/* Camera / upload button (left) */}
+        <IconButton
+          icon="photo_camera"
+          onClick={() => alert('Multimodal image upload coming soon!')}
+          disabled={disabled}
+          className={cn(
+            'absolute left-3 bottom-2.5',
+            'text-muted-foreground hover:text-foreground hover:bg-muted/50',
+            'transition-colors'
+          )}
+          size="sm"
+          aria-label="Upload image"
+          title="Take a photo or upload an image"
+        />
+
+        {/* Send button (right) */}
         <IconButton
           icon="send"
           onClick={onSend}

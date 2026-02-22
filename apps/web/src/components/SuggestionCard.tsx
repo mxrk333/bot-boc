@@ -1,27 +1,18 @@
+/**
+ * Clickable suggestion tile shown in the welcome hero section.
+ * Each card has a Material Symbol icon, a title, and a subtitle.
+ */
+
 import { cn } from '@repo/ui/utils'
 
 interface SuggestionCardProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   icon: string
-  /** Tailwind bg class for the icon circle, e.g. "bg-blue-50 dark:bg-blue-900/20" */
   iconBg?: string
-  /** Tailwind text color for the icon */
   iconColor?: string
   title: string
   subtitle: string
 }
 
-/**
- * A clickable suggestion tile shown in the welcome hero.
- *
- * Usage:
- *   <SuggestionCard
- *     icon="inventory_2"
- *     iconColor="text-primary"
- *     title="What can I send?"
- *     subtitle="Check restricted items list"
- *     onClick={() => ask('What items can I send in a Balikbayan box?')}
- *   />
- */
 export function SuggestionCard({
   icon,
   iconBg = 'bg-primary/10',

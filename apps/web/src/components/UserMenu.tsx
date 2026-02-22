@@ -1,31 +1,37 @@
+/**
+ * User avatar + dropdown menu (header, top-right).
+ *
+ * Shows the user's photo or initials. Clicking opens a dropdown
+ * with their name, email, and a logout button.
+ * Closes on outside click.
+ */
+
 import { useState, useRef, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { cn } from '@repo/ui/utils'
 import { useAuth } from '../hooks/useAuth'
 
-/**
- * User avatar + dropdown menu shown when logged in.
- * Displays user photo / initials, name, email, and logout button.
- */
 export function UserMenu() {
   const { user, logout } = useAuth()
   const navigate = useNavigate()
   const [open, setOpen] = useState(false)
   const menuRef = useRef<HTMLDivElement>(null)
 
-  // Close menu on outside click
+  // Close dropdown when clicking outside of it
   useEffect(() => {
+    if (!open) return
     function handleClick(e: MouseEvent) {
       if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
         setOpen(false)
       }
     }
-    if (open) document.addEventListener('mousedown', handleClick)
+    document.addEventListener('mousedown', handleClick)
     return () => document.removeEventListener('mousedown', handleClick)
   }, [open])
 
   if (!user) return null
 
+  // Build initials from display name or email (e.g. "Juan Dela Cruz" → "JD")
   const initials = (user.displayName || user.email || '?')
     .split(/[\s@]/)
     .filter(Boolean)
@@ -60,10 +66,9 @@ export function UserMenu() {
         )}
       </button>
 
-      {/* Dropdown */}
+      {/* Dropdown panel */}
       {open && (
         <div className="absolute right-0 top-12 w-64 rounded-xl border border-border bg-card shadow-xl z-50 overflow-hidden animate-in fade-in slide-in-from-top-1 duration-150">
-          {/* User info */}
           <div className="px-4 py-3 border-b border-border">
             <p className="text-sm font-semibold text-foreground truncate">
               {user.displayName || 'User'}
@@ -71,7 +76,6 @@ export function UserMenu() {
             <p className="text-xs text-muted-foreground truncate">{user.email}</p>
           </div>
 
-          {/* Actions */}
           <div className="p-1.5">
             <button
               onClick={handleLogout}

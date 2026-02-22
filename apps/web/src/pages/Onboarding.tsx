@@ -1,5 +1,18 @@
+/**
+ * Multi-step onboarding wizard (5 steps).
+ *
+ * 1. Verify Email   — checks emailVerified via Firebase Auth
+ * 2. About You      — sender type (OFW, family, business, curious)
+ * 3. Your Needs     — send frequency + top concern
+ * 4. Items          — multi-select item types
+ * 5. All Set        — summary + save to Firestore
+ *
+ * Google users (already verified) skip step 1 automatically.
+ * Unauthenticated visitors are redirected to /signup.
+ */
+
 import { useState, useEffect, useCallback } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Navigate } from 'react-router-dom'
 import { doc, setDoc, getDoc } from 'firebase/firestore'
 import { cn } from '@repo/ui/utils'
 import { useAuth } from '../hooks/useAuth'
@@ -97,7 +110,7 @@ const CONCERNS = [
 ]
 
 /* ------------------------------------------------------------------ */
-/*  Onboarding Component                                               */
+/*  Component                                                          */
 /* ------------------------------------------------------------------ */
 
 export function Onboarding() {
@@ -114,34 +127,30 @@ export function Onboarding() {
     topConcern: '',
   })
 
-  // If the user already completed onboarding, redirect to home
+  // If the user already completed onboarding, send them home
   useEffect(() => {
     if (!user) return
-    const checkOnboarding = async () => {
+    const check = async () => {
       const snap = await getDoc(doc(db, 'users', user.uid))
       if (snap.exists() && snap.data().onboardingComplete) {
         navigate('/', { replace: true })
       }
     }
-    checkOnboarding()
+    check()
   }, [user, navigate])
 
-  // If Google user (already verified), skip verification step
+  // Google users arrive with emailVerified === true; skip the verify step
   useEffect(() => {
-    if (user?.emailVerified && step === 0) {
-      setStep(1)
-    }
+    if (user?.emailVerified && step === 0) setStep(1)
   }, [user?.emailVerified, step])
 
-  // Redirect if not authenticated
-  if (!user) {
-    navigate('/signup', { replace: true })
-    return null
-  }
+  // FIX: use <Navigate> instead of calling navigate() during render
+  if (!user) return <Navigate to="/signup" replace />
 
   const currentStepId = STEPS[step]?.id
 
-  /* ---- Verification helpers ---- */
+  /* ---- Email verification helpers ---- */
+
   const handleResend = async () => {
     setBusy(true)
     try {
@@ -157,9 +166,10 @@ export function Onboarding() {
   const handleCheckVerification = async () => {
     setChecking(true)
     try {
-      await refreshUser()
-      // After refresh, check if verified
-      if (user.emailVerified) {
+      // FIX: use the returned user from refreshUser() so we read the
+      // freshly-reloaded emailVerified flag instead of stale state
+      const freshUser = await refreshUser()
+      if (freshUser?.emailVerified) {
         setStep(1)
       } else {
         setVerifyMsg('Email not verified yet. Please check your inbox and click the link.')
@@ -172,6 +182,7 @@ export function Onboarding() {
   }
 
   /* ---- Step navigation ---- */
+
   const canProceed = () => {
     switch (currentStepId) {
       case 'verify':
@@ -192,7 +203,7 @@ export function Onboarding() {
   }
 
   const prevStep = () => {
-    // Don't go back to verification step if already verified
+    // Don't go back to the verification step once it's been passed
     if (step > 1 || (step === 1 && !user.emailVerified)) {
       setStep(s => s - 1)
     }
@@ -207,7 +218,8 @@ export function Onboarding() {
     }))
   }
 
-  /* ---- Finish onboarding ---- */
+  /* ---- Save answers and finish ---- */
+
   const handleFinish = useCallback(async () => {
     if (!user) return
     setBusy(true)
@@ -231,8 +243,13 @@ export function Onboarding() {
     }
   }, [user, answers, navigate])
 
-  /* ---- Progress bar ---- */
+  /* ---- Progress ---- */
+
   const progress = ((step + 1) / STEPS.length) * 100
+
+  /* ================================================================ */
+  /*  Render                                                          */
+  /* ================================================================ */
 
   return (
     <div className="min-h-screen w-full bg-background flex flex-col">
@@ -265,7 +282,7 @@ export function Onboarding() {
         />
       </div>
 
-      {/* Step indicator */}
+      {/* Step indicator dots */}
       <div className="flex justify-center px-4 pt-6 pb-2">
         <div className="flex items-center gap-2">
           {STEPS.map((s, i) => (
@@ -401,7 +418,7 @@ export function Onboarding() {
           )}
 
           {/* ============================================ */}
-          {/* STEP 2 — Send Frequency                      */}
+          {/* STEP 2 — Send Frequency + Top Concern        */}
           {/* ============================================ */}
           {currentStepId === 'usage' && (
             <div className="space-y-6">
@@ -417,6 +434,7 @@ export function Onboarding() {
                 </p>
               </div>
 
+              {/* Frequency grid */}
               <div className="grid grid-cols-2 gap-3">
                 {FREQUENCIES.map(opt => (
                   <button
@@ -476,7 +494,7 @@ export function Onboarding() {
           )}
 
           {/* ============================================ */}
-          {/* STEP 3 — Item Types                          */}
+          {/* STEP 3 — Item Types (multi-select)           */}
           {/* ============================================ */}
           {currentStepId === 'items' && (
             <div className="space-y-6">
@@ -525,7 +543,7 @@ export function Onboarding() {
           )}
 
           {/* ============================================ */}
-          {/* STEP 4 — Done!                               */}
+          {/* STEP 4 — All Set (summary + save)            */}
           {/* ============================================ */}
           {currentStepId === 'done' && (
             <div className="rounded-2xl border border-border bg-card p-8 shadow-lg space-y-6 text-center">
@@ -540,7 +558,7 @@ export function Onboarding() {
                 </p>
               </div>
 
-              {/* Summary */}
+              {/* Profile summary */}
               <div className="rounded-xl bg-muted/50 border border-border p-4 text-left space-y-2">
                 <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
                   Your Profile
@@ -582,7 +600,7 @@ export function Onboarding() {
           )}
 
           {/* ============================================ */}
-          {/* Navigation buttons                           */}
+          {/* Back / Continue navigation                   */}
           {/* ============================================ */}
           {currentStepId !== 'verify' && currentStepId !== 'done' && (
             <div className="flex items-center justify-between pt-6">

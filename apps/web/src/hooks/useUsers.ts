@@ -1,3 +1,11 @@
+/**
+ * tRPC-powered hooks for the User endpoints.
+ *
+ * These wrap the auto-generated tRPC React-Query hooks so components
+ * don't need to import `trpc` directly. Requires <QueryProvider> in
+ * the component tree.
+ */
+
 import { trpc } from '../lib/trpc'
 
 export function useUsers() {

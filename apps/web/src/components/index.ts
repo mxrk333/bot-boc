@@ -1,3 +1,5 @@
+/** Barrel file — re-exports every component for cleaner imports. */
+
 export { AuthButton } from './AuthButton'
 export { ChatBubble } from './ChatBubble'
 export { ChatInput } from './ChatInput'

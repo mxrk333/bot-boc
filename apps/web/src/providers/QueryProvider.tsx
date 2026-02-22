@@ -1,3 +1,10 @@
+/**
+ * Combined tRPC + React-Query provider.
+ *
+ * Wraps the app so that both `trpc.*.useQuery()` hooks and
+ * standalone `useQuery()` calls share the same query client.
+ */
+
 import { QueryClientProvider } from '@tanstack/react-query'
 import { queryClient } from '../lib/queryClient'
 import { trpc, trpcClient } from '../lib/trpc'

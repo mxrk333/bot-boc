@@ -1,12 +1,10 @@
 /**
- * Sends a query to the Vertex AI Cloud Function and returns the AI-generated answer.
+ * Client wrapper for the Gemini AI Cloud Function.
  *
- * In dev, Vite proxies /generateResponse to the Firebase emulator.
- * In production, Firebase Hosting rewrites /generateResponse to the Cloud Function.
- *
- * @param query - The user's question or prompt to send to Vertex AI.
- * @returns The AI-generated answer string.
+ * In dev  → Vite proxies /generateResponse to the Cloud Function URL.
+ * In prod → Firebase Hosting rewrites /generateResponse to the function.
  */
+
 export async function askVertexAI(query: string): Promise<string> {
   const response = await fetch('/generateResponse', {
     method: 'POST',
@@ -14,20 +12,24 @@ export async function askVertexAI(query: string): Promise<string> {
     body: JSON.stringify({ query }),
   })
 
+  // Read the body once as text so we can safely attempt JSON parsing
   const text = await response.text()
+
   let data: { answer?: string }
   try {
     data = JSON.parse(text)
   } catch {
-    throw new Error(
-      response.ok
-        ? 'Invalid response from server'
-        : `Server error (${response.status}). Please try again later.`
-    )
+    return [
+      '**[Error]**',
+      "I'm your AI guide! The backend isn't reachable right now.",
+      '',
+      '*Please ensure you have internet access and the production server is up.*',
+    ].join('\n')
   }
 
+  // Surface server-side errors as user-visible markdown
   if (!response.ok) {
-    throw new Error(data.answer || `HTTP error! Status: ${response.status}`)
+    return `**[Error]**\nBackend error: \`${data.answer || response.statusText}\``
   }
 
   return data.answer ?? ''

@@ -1,18 +1,25 @@
-// Firebase Functions entry point
-// This file serves as the entry point for Firebase Cloud Functions
+/**
+ * Firebase Cloud Functions — entry point.
+ *
+ * Exports:
+ *  - generateResponse : HTTPS callable that forwards a user query to Gemini AI
+ *  - appRouter / AppRouter : tRPC router + its type (consumed by the web app)
+ */
 
 import { onRequest } from 'firebase-functions/v2/https'
-import { VertexAI } from '@google-cloud/vertexai'
+import { GoogleGenAI } from '@google/genai'
 
+// Re-export tRPC router so the web app can import the type via @repo/functions
 export { appRouter, type AppRouter } from './trpc/router.js'
 
-const project = process.env.GCLOUD_PROJECT || 'boc-bot'
-const functionRegion = 'asia-southeast1'
-const vertexLocation = 'us-central1'
+/* ------------------------------------------------------------------ */
+/*  generateResponse — Gemini AI HTTP function                        */
+/* ------------------------------------------------------------------ */
 
-// Gemini AI - generateResponse HTTP function
+const MAX_RETRIES = 2
+
 export const generateResponse = onRequest(
-  { cors: true, region: functionRegion },
+  { cors: true, region: 'asia-southeast1', secrets: ['GOOGLE_API_KEY'] },
   async (req, res) => {
     const userQuery = req.body.query
 
@@ -21,16 +28,22 @@ export const generateResponse = onRequest(
       return
     }
 
-    const vertexAI = new VertexAI({ project, location: vertexLocation })
-    const model = vertexAI.getGenerativeModel({ model: 'gemini-2.0-flash' })
+    const apiKey = process.env.GOOGLE_API_KEY
+    if (!apiKey) {
+      res.status(500).json({ answer: 'Gemini server missing API key' })
+      return
+    }
 
-    const maxRetries = 2
-    for (let attempt = 0; attempt <= maxRetries; attempt++) {
+    const ai = new GoogleGenAI({ apiKey })
+
+    for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
       try {
-        const result = await model.generateContent(userQuery)
-        const answer =
-          result.response?.candidates?.[0]?.content?.parts?.map(part => part.text).join('') ?? ''
+        const result = await ai.models.generateContent({
+          model: 'gemini-2.0-flash',
+          contents: userQuery,
+        })
 
+        const answer = result.text ?? ''
         console.log('Query received:', userQuery)
         console.log('Gemini response:', answer)
 
@@ -40,18 +53,18 @@ export const generateResponse = onRequest(
         const message = error instanceof Error ? error.message : 'Unknown error'
         const isRateLimit = message.includes('429') || message.includes('quota')
 
-        if (isRateLimit && attempt < maxRetries) {
-          const delay = (attempt + 1) * 15_000 // 15s, 30s
+        // Retry with exponential back-off on rate-limit errors
+        if (isRateLimit && attempt < MAX_RETRIES) {
+          const delay = (attempt + 1) * 15_000 // 15 s, 30 s
           console.warn(
-            `Rate limited (attempt ${attempt + 1}/${maxRetries + 1}), retrying in ${delay / 1000}s...`
+            `Rate limited (attempt ${attempt + 1}/${MAX_RETRIES + 1}), retrying in ${delay / 1000}s...`
           )
           await new Promise(resolve => setTimeout(resolve, delay))
           continue
         }
 
         console.error('Gemini AI error:', error)
-        const status = isRateLimit ? 429 : 500
-        res.status(status).json({ answer: `Gemini AI error: ${message}` })
+        res.status(isRateLimit ? 429 : 500).json({ answer: `Gemini AI error: ${message}` })
         return
       }
     }

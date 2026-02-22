@@ -1,15 +1,14 @@
+/**
+ * Pill-shaped action chip displayed in the horizontal quick-action bar
+ * beneath the chat input.
+ */
+
 import { cn } from '@repo/ui/utils'
 
 interface QuickChipProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   label: string
 }
 
-/**
- * A horizontally-scrollable action chip.
- *
- * Usage:
- *   <QuickChip label="📦 Box Size Limits" onClick={() => ask('...')} />
- */
 export function QuickChip({ label, className, ...props }: QuickChipProps) {
   return (
     <button

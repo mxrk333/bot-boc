@@ -1,7 +1,21 @@
-import { initializeApp, getApps, getApp, FirebaseApp } from 'firebase/app'
-import { getAuth, GoogleAuthProvider, Auth } from 'firebase/auth'
-import { getFirestore, Firestore } from 'firebase/firestore'
-import { getAnalytics, isSupported, Analytics } from 'firebase/analytics'
+/**
+ * Firebase SDK initialisation.
+ *
+ * All Firebase services used by the app are initialised here and
+ * exported as singletons. Import from this file rather than calling
+ * getAuth() / getFirestore() etc. elsewhere.
+ */
+
+import { initializeApp, getApps, getApp, type FirebaseApp } from 'firebase/app'
+import { getAuth, GoogleAuthProvider, type Auth } from 'firebase/auth'
+import { getFirestore, type Firestore } from 'firebase/firestore'
+import { getStorage, type FirebaseStorage } from 'firebase/storage'
+import { getFunctions, type Functions } from 'firebase/functions'
+import { getAnalytics, isSupported, type Analytics } from 'firebase/analytics'
+
+/* ------------------------------------------------------------------ */
+/*  Config (pulled from Vite env vars at build time)                  */
+/* ------------------------------------------------------------------ */
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -12,30 +26,30 @@ const firebaseConfig = {
   appId: import.meta.env.VITE_FIREBASE_APP_ID,
 }
 
-// Prevent duplicate initialization
-export const app: FirebaseApp = !getApps().length ? initializeApp(firebaseConfig) : getApp()
+/* ------------------------------------------------------------------ */
+/*  App instance (prevents duplicate init on hot-reload)              */
+/* ------------------------------------------------------------------ */
 
-// Auth
+export const app: FirebaseApp = getApps().length ? getApp() : initializeApp(firebaseConfig)
+
+/* ------------------------------------------------------------------ */
+/*  Service singletons                                                */
+/* ------------------------------------------------------------------ */
+
 export const auth: Auth = getAuth(app)
 export const googleProvider = new GoogleAuthProvider()
 
-// Firestore
 export const db: Firestore = getFirestore(app)
 
-// Storage
-import { getStorage, FirebaseStorage } from 'firebase/storage'
 export const storage: FirebaseStorage = getStorage(app)
 
-// Functions (region must match the deployed function region)
-import { getFunctions, Functions, connectFunctionsEmulator } from 'firebase/functions'
+// Region must match where the Cloud Functions are deployed
 export const functions: Functions = getFunctions(app, 'asia-southeast1')
 
-// Connect to emulator in development
-if (location.hostname === 'localhost') {
-  connectFunctionsEmulator(functions, 'localhost', 5001)
-}
+/* ------------------------------------------------------------------ */
+/*  Analytics (only initialised when the browser supports it)         */
+/* ------------------------------------------------------------------ */
 
-// Analytics (safe)
 export let analytics: Analytics | undefined
 if (typeof window !== 'undefined') {
   isSupported().then(yes => {

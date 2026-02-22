@@ -1,10 +1,15 @@
+/**
+ * Signup page.
+ *
+ * Supports email/password (with optional display name) and Google OAuth.
+ * After signup a verification email is sent automatically (via useAuth),
+ * then the user is routed to /onboarding.
+ */
+
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth'
 
-/**
- * Signup page – Connected to Firebase Authentication.
- */
 export function Signup() {
   const navigate = useNavigate()
   const { signup, loginWithGoogle } = useAuth()
@@ -14,6 +19,7 @@ export function Signup() {
   const [error, setError] = useState('')
   const [busy, setBusy] = useState(false)
 
+  /* ---- Email / password submit ---- */
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setError('')
@@ -43,6 +49,7 @@ export function Signup() {
     }
   }
 
+  /* ---- Google OAuth ---- */
   const handleGoogle = async () => {
     setError('')
     setBusy(true)
@@ -51,9 +58,7 @@ export function Signup() {
       navigate('/onboarding')
     } catch (err) {
       const msg = err instanceof Error ? err.message : 'Google sign-in failed'
-      if (!msg.includes('popup-closed')) {
-        setError(msg)
-      }
+      if (!msg.includes('popup-closed')) setError(msg)
     } finally {
       setBusy(false)
     }
@@ -73,7 +78,7 @@ export function Signup() {
           </p>
         </div>
 
-        {/* Error */}
+        {/* Error banner */}
         {error && (
           <div className="rounded-lg bg-destructive/10 border border-destructive/20 px-4 py-3 text-sm text-destructive flex items-start gap-2">
             <span className="material-symbols-outlined text-base mt-0.5 shrink-0">error</span>
@@ -114,7 +119,7 @@ export function Signup() {
           <div className="flex-1 h-px bg-border" />
         </div>
 
-        {/* Form */}
+        {/* Registration form */}
         <form className="space-y-4" onSubmit={handleSubmit}>
           <div className="space-y-1.5">
             <label htmlFor="name" className="text-sm font-medium text-foreground">
@@ -167,7 +172,7 @@ export function Signup() {
           </button>
         </form>
 
-        {/* Footer */}
+        {/* Link to login */}
         <p className="text-center text-sm text-muted-foreground">
           Already have an account?{' '}
           <button
@@ -178,7 +183,6 @@ export function Signup() {
           </button>
         </p>
 
-        {/* Back link */}
         <button
           onClick={() => navigate('/')}
           className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors mx-auto cursor-pointer"

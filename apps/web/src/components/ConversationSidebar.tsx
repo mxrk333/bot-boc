@@ -1,3 +1,12 @@
+/**
+ * Conversation history sidebar.
+ *
+ * On mobile it slides in as a drawer (with a dark overlay).
+ * On desktop (md+) it sits as a static column on the left.
+ * Each row shows the conversation title, message count, and
+ * a delete button that appears on hover.
+ */
+
 import { cn } from '@repo/ui/utils'
 import type { Conversation } from '../hooks/useConversations'
 
@@ -11,10 +20,6 @@ interface ConversationSidebarProps {
   onClose: () => void
 }
 
-/**
- * ChatGPT-style sidebar showing conversation history.
- * Slides in from the left on mobile, always visible on desktop.
- */
 export function ConversationSidebar({
   conversations,
   activeId,
@@ -26,7 +31,7 @@ export function ConversationSidebar({
 }: ConversationSidebarProps) {
   return (
     <>
-      {/* Mobile overlay */}
+      {/* Dark overlay behind drawer on mobile */}
       {open && <div className="fixed inset-0 bg-black/40 z-30 md:hidden" onClick={onClose} />}
 
       <aside
@@ -39,7 +44,7 @@ export function ConversationSidebar({
           open ? 'translate-x-0' : '-translate-x-full'
         )}
       >
-        {/* Header */}
+        {/* Sidebar header */}
         <div className="flex items-center justify-between px-4 py-3 border-b border-border">
           <h2 className="text-sm font-semibold text-foreground">Conversations</h2>
           <div className="flex items-center gap-1">
@@ -54,6 +59,7 @@ export function ConversationSidebar({
             >
               <span className="material-symbols-outlined text-lg">add</span>
             </button>
+            {/* Close button — mobile only */}
             <button
               onClick={onClose}
               className={cn(
@@ -67,7 +73,7 @@ export function ConversationSidebar({
           </div>
         </div>
 
-        {/* Conversation list */}
+        {/* Scrollable conversation list */}
         <div className="flex-1 overflow-y-auto chat-scroll p-2 space-y-0.5">
           {conversations.length === 0 ? (
             <div className="text-center py-10 px-4">
@@ -99,6 +105,7 @@ export function ConversationSidebar({
                 <span className="text-[10px] text-muted-foreground shrink-0">
                   {conv.messageCount}
                 </span>
+                {/* Delete — visible on hover */}
                 <button
                   onClick={e => {
                     e.stopPropagation()

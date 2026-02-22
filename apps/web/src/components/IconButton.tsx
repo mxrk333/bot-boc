@@ -1,8 +1,12 @@
+/**
+ * Icon-only button using Material Symbols.
+ * Comes in three sizes (sm / md / lg) and supports the "filled" variant.
+ */
+
 import { cn } from '@repo/ui/utils'
 
 interface IconButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   icon: string
-  /** Use "filled" for Material Symbols filled variant */
   filled?: boolean
   size?: 'sm' | 'md' | 'lg'
 }
@@ -13,12 +17,6 @@ const sizeMap = {
   lg: 'size-12 text-2xl',
 } as const
 
-/**
- * A round/squared icon-only button using Material Symbols.
- *
- * Usage:
- *   <IconButton icon="send" onClick={handleSend} />
- */
 export function IconButton({ icon, filled, size = 'md', className, ...props }: IconButtonProps) {
   return (
     <button
