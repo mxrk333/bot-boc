@@ -13,7 +13,7 @@ import { useState, useRef, useEffect, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { doc, getDoc } from 'firebase/firestore'
 import './style.css'
-
+import { trpc } from './lib/trpc'; // or wherever it's pointing // Adjust path if needed
 import { askVertexAI } from './lib/vertexAI'
 import { db } from './lib/firebase'
 import { useAuth } from './hooks/useAuth'
@@ -120,6 +120,8 @@ export function App() {
   const { conversations, createConversation, saveMessages, deleteConversation } = useConversations(
     user?.uid
   )
+  // 👈 ADD THIS LINE HERE:
+  const botMutation = trpc.bot.ask.useMutation()
 
   const [messages, setMessages] = useState<Message[]>([WELCOME_MESSAGE])
   const [query, setQuery] = useState('')
@@ -171,34 +173,53 @@ export function App() {
     setQuery('')
   }, [])
 
-  /* ---- Send a message to Gemini AI ---- */
+
+  /* --- FIND YOUR SEND FUNCTION AND REPLACE IT WITH THIS --- */
+
   const send = async (text: string) => {
     const trimmed = text.trim()
     if (!trimmed || loading) return
 
+    // 1. Create User Message
     const userMsg: Message = {
       id: createId(),
       role: 'user',
       content: trimmed,
       timestamp: timeLabel(),
     }
+
+    // 2. Prepare History for the Backend (Mapping our local Message type to the Backend expected type)
+    const chatHistory = messages
+      .filter(m => m.id !== 'welcome') // Don't send the welcome text as history
+      .map(m => ({
+        role: m.role === 'bot' ? ('model' as const) : ('user' as const),
+        text: m.content,
+      }))
+
     const newMessages = [...messages, userMsg]
     setMessages(newMessages)
     setQuery('')
     setLoading(true)
 
     try {
-      const answer = await askVertexAI(trimmed)
+      // 3. CALL YOUR NEW RAG BACKEND (Using tRPC instead of askVertexAI)
+      const response = await botMutation.mutateAsync({
+        query: trimmed,
+        history: chatHistory,
+      })
+      console.log('🔍 DEBUG: BOC Bot Response Data:', response)
+
       const botMsg: Message = {
         id: createId(),
         role: 'bot',
-        content: answer || 'Sorry, I could not generate a response. Please try again.',
+        content: response.answer,
         timestamp: timeLabel(),
       }
+
       const finalMessages = [...newMessages, botMsg]
       setMessages(finalMessages)
 
-      // Persist to Firestore when the user is logged in
+      // 4. PERSIST TO FIRESTORE (Keep your partner's existing logic)
       if (user) {
         const chatMsgs: ChatMessage[] = finalMessages
           .filter(m => m.id !== 'welcome')
@@ -215,12 +236,14 @@ export function App() {
           await saveMessages(newId, chatMsgs, title)
         }
       }
-    } catch (err) {
-      const errText = err instanceof Error ? err.message : 'Something went wrong.'
-      setMessages(prev => [
-        ...prev,
-        { id: createId(), role: 'bot', content: `⚠️ ${errText}`, timestamp: timeLabel() },
-      ])
+    } catch (err: any) {
+      const errMsg: Message = {
+        id: createId(),
+        role: 'bot',
+        content: `⚠️ Error: ${err.message || 'The BOC server is currently unavailable.'}`,
+        timestamp: timeLabel(),
+      }
+      setMessages(prev => [...prev, errMsg])
     } finally {
       setLoading(false)
     }
@@ -268,7 +291,15 @@ export function App() {
 
       {/* ---- Main column ---- */}
       <main className="flex-1 flex flex-col relative min-w-0">
-        {/* Header bar */}
+        {/* 👈 ADD THIS ERROR OVERLAY HERE */}
+        {botMutation.error && (
+          <div className="bg-red-600 text-white p-4 text-xs z-50 overflow-auto max-h-40">
+            Click the link in your terminal or try to find it here:
+            <p className="mt-2 break-all">{botMutation.error.message}</p>
+          </div>
+        )}
+
+        {/* Header */}
         <header className="flex items-center justify-between px-4 md:px-6 py-3 border-b border-border bg-card/80 backdrop-blur-md sticky top-0 z-10">
           <div className="flex items-center gap-3">
             {/* Sidebar toggle — mobile */}

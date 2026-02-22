@@ -11,13 +11,25 @@
       "codebase": "default",
       "runtime": "nodejs22",
       "disallowLegacyRuntimeConfig": true,
-      "ignore": ["node_modules", ".git", "firebase-debug.log", "firebase-debug.*.log", "*.local"],
-      "predeploy": ["pnpm --filter @repo/functions run build"]
+      "ignore": [
+        "node_modules",
+        ".git",
+        "firebase-debug.log",
+        "firebase-debug.*.log",
+        "*.local"
+      ],
+      "predeploy": [
+        "pnpm --filter @repo/functions run build"
+      ]
     }
   ],
   "hosting": {
     "public": "apps/web/dist",
-    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
     "rewrites": [
       {
         "source": "/generateResponse",

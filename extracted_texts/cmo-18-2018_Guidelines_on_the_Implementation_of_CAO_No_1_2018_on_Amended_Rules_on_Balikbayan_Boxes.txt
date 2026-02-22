@@ -1,0 +1,1217 @@
+DEPARTMENT
+OF
+FINANCE
+BUREAU OF
+CUSTOMS
+REPUBLIC OF THE PHILIPPINES
+DEPARTMENT OF FINANCE
+BUREAU OF CUSTOMS
+INTERNAL ADMINISTRATION GROUP
+CENTRAL RECORDS MANAGEMENT DIVISION
+The Director
+Office of the National Administrative Register (ONAR)
+UP Law Center Diliman, Quezon City
+October 15, 2018
+Sir/Ma'am:
+Transmitted are three certified true copies and soft copy (word format in
+compact disc rewritable) of the following Customs Memorandum Order, to wit:
+1-
+CMO 17-2018: NATIONWIDE IMPLEMENTATION OF THE
+ASSESSMENT SYSTEM (FORMERLY KNOWN AS ENHANCED GOODS
+DECLARATION VERIFICATION SYSTEM OR EGDVS)
+CMO 18-2018: GUIDELINES ON THE IMPLEMENTATION OF CUSTOMS
+ADMINISTRATIVE ORDER (CAO) NO. 01-2018 ON AMENDED RULES ON
+CONSOLIDATED SHIPMENT OF "BALIKBAYAN BOXES"
+Thank you.
+Very truly yours,
+внавид
+GLADYS C. CABUGAWAN
+Chief, CRMD
+U.P. LAW CENTER
+OFFICE of the NATIONAL ADMINISTRATIVE REGISTER
+Administrative Rules and Regulations
+R
+OCT 16 2018
+ECEIVE
+TIME:
+BY:
+6.7. The COO III shall prepare the Order of Payment for the processing
+charges and for the duties, taxes and other charges, if any, which shall
+be presented to the BOC Cashier or to the In-House Bank for payment
+using the e2m Cash-Miscellaneous Module.
+6.8. Computation of the processing charges shall be Php125.00 multiplied
+by the number of HBLS or HAWBs in one MBL or MAWB.
+6.9. For air shipment, the goods declaration shall be forwarded by the IED
+to the BOC Cashier for payment of processing charges and for the
+duties, taxes and other charges, if any.
+6.10.The Transmittal Clerk from the BOC Cashier shall forward the gate pass
+to the wharfinger or warehouseman for his signature to effect physical
+release of shipments of Balikbayan Boxes.
+6.11. The COO III shall verify payment in the e2m Cash-Miscellaneous
+Module. After verifying that the appropriate payment has been
+collected, the COO III retrieves the data corresponding to the MBL of
+the IIDE. The COO III shall select from the e-manifest menu the
+operation "Manual Discharge" to perform manual write-off of the MBL.
+6.12. For shipments found in violation of this Order and other pertinent laws,
+the concerned COO III shall make a report of findings with the
+corresponding recommendation to the District Collector.
+Section 7. Preparation of Order of Payment. Regardless of the number of goods
+declaration lodged for a single MBL or MAWB, only one (1) Order of Payment (OP)
+shall be prepared by the COO III for that MBL or MAWB.
+Section 8. Misdeclared Shipments. Shipments declared as consolidated
+Balikbayan Boxes but are found to be otherwise shall be considered as misdeclared
+and subjected to seizure and forfeiture proceedings.
+Section 9. Repealing Clause. This CMO specifically amends or repeals previously
+issued CMOs which are inconsistent with the provisions herein stated.
+Section 10. Effectivity. This CMO shall take effect immediately.
+3
+ISIDRO S LAPEÑA, PhD, CSEE
+Commissioner
+Bureau of Custome
+ISIDRO S LAPEÑA
+Commissioner
+18-18301
+OCT 1 1 2018
+Page 9 of 19 - CMO No. 18-2018
+Certified True Copy
+'
+Raquel G. De Jesus
+SVCOO
+CRMD BOC
+U.P. LAW CENTER
+OFFICE of the NATIONAL ADMINISTRATIVE REGISTER
+Administrative Rules and Regulations
+OCT 16 2018
+RECEIVE
+THE REPUBLIC OF THE PHILIPPINES
+DEPARTMENT OF FINANCE
+BUREAU OF CUSTOMS
+Annex "A"
+INFORMATION SHEET
+for Consolidated Shipments of "Balikbayan Boxes
+Revised BOC Form No. BB-IS-001
+To be filled out by the Consolidator
+INSTRUCTIONS:
+1. To avoid delays in the processing and release of your Balikbayan Box, fill
+out ALL fields below.
+2. Write legibly in CAPITAL LETTERS and check only the appropriate boxes.
+3. Prepare three (3) sets of this Information Sheet per balikbayan box. The 1st
+copy is placed at the top-most portion inside the box; the 2nd is your copy
+as the Sender; and the 3rd copy is given to the Consolidator.
+4 Attach a photocopy of any document to show proof of your Filipino
+citizenship as you indicated in the box for Sender Information.
+5. Sign the Data Privacy Consent. Your shipment may not be processed
+without your consent to the processing of your personal information.
+A SENDER INFORMATION
+Family Name/Apelyido:
+Contact Number/Numerong Tatawagan:"
+MBL/MAWB Number:
+Tracking Number:
+TYPE OF SENDER
+☐ Non-Qualified Filipinos
+While Abroad (NQFWA)
+TYPE OF AVAILMENT H
+☐ Balikbayan Box privilege
+☐ 1st Time
+2nd Time
+3rd Time
+☐ De Minimis
+☐ None
+Qualified Filipinos
+While Abroad (QFWA)
+☐ OFW
+☐ Resident Filipino
+☐ Non-Resident Filipino
+☐ Others
+Business Name (Only for Sole Prop., Partnership, Corporation)/Pangalan ng Negosyo (Nag-iisang pagmamay-ari
+Magkasosyo, Korporasyon):
+Given Name/Pangalan:*
+Middle Name/Panggitnang Apelyido:*
+E-mail Address, if any/E-mail Address. kung mayroon man:
+Valid IDs Presented (Indicate the document showing Filipino citizenship, full name, date of birth and place of
+birth)/
+Wastong pagkakakilanlan (Isulat ang uri ng dokumento na nagpapatunay ng pagiging Pilipino at nakasulat ang
+buong pangalan, araw ng kapanganakan at lugar ng kapanganakan): (For QFWAS Only)*
+Passport No.
+Foreign Passport No.
+Permanent Resident No.
+or Equivalent Document
+Overseas Employment Certificate
+(OEC)/ OWWA Card No.
+Unified Govemment ID No.
+Suffix/Jr./Si Jatbp.:
+Date Issued/Petsa ng Pagkakaloob (mm/dd/yyyy): (For
+QFWAS Only)"
+Expiry Date/ Petsa ng Pagkawalang Bisa (mm/dd/yyyy):
+(For OFWAS Only)*
+Place Issued or Issuing Authority/ Lugar ng
+Pagkakaloob o Maykapangyarihang magkaloob (For
+QFWAS Only)*
+Complete Address in the Philippines/ Kumpletong Address sa Pilipinas:
+Work Permit No.
+Others (except Birth Certificate)
+Complete Current Address Abroad/Kasalukuyang Address sa ibang Bansa:*
+Driver's License No.
+Total Value of all contents of each Balikbayan Box (in Philippine Peso)/
+Kabuuang halaga ng lahat ng nilalaman ng bawat Balikbayan Box (Peso ng Pilipinas):*
+B. PHILIPPINE-BASED RECIPIENT
+Family Name/Apelyido:"
+Given Name/Pangalan:
+Middle Name/Panggitnang Apelyido:*
+Suffix/Jr./Sr./atbp.:
+Contact Number/Numerong Tatawagan:*
+E-mail Address, if any/E-mail Address, kung mayroon man.
+Complete Address in the Philippines/Kumpletong Address sa Pilipinas:
+Relationship to Sender (by affinity or consanguinity)/Relasyon sa Nagpadala (kamag-anak sa kasal o sa dugo):
+Spouse/Asawa ☐ Child/Anak ☐ Parent/Magulang ☐Sibling/Kapatid
+☐ Grandparent/Lolo o Lola
+Grand Niece/Nephew/Anak ng Pamangkin
+☐ Sibling of Parent/Kapatid ng Magulang ☐ 1st Cousin/Pinsan ☐ Niece/Nephew/Pamangkin
+Grandchild/Apo
+☐ Sibling of Grandparent/Kapatid ng Lolo o Lola
+Great-Grandparent/Nuno sa Tuhod
+Great Grandchild/Apo sa Tuhod
+DATA PRIVACY CONSENT (Pahintulot sa Pagproseso ng Personal at Sensitibong Impormasyon)
+(Name of Consolidator).
+(Name of Deconsolidator), the Bureau of Customs, Philippines
+I hereby agree, consent and authorize
+and its Accredited Information Processor to collect, use, disclose and process my personal or sensitive personal information set out in this form and/or otherwise provided by
+me or possessed by them which includes but is not limited to the following: (Ibinibigay ko ang aking kapahintulutan ang,
+Consolidator).
+(Pangalan ng
+((Pangalan ng Consolidator), the Bureau of Customs, at kanyang Accredited Information Processor na kumuha, ipaalam at gamitin ang
+aking personal o sensitibong impormasyon na ipinahayag ko sa papel na ito o hawak nila, kasama subalit hindi nalilimitahan sa mga sumusunod):
+1. To use the personal or sensitive personal information that I declared in the Information Sheet for customs purposes, such as during clearance of goods or investigation
+conducted by the Bureau for possible violation of customs laws, rules and regulations: (Gamitin ang personal at sensitibong impormasyon na aking inilahad sa Information
+Sheet para sa pagproseso ng aking kargamento sa Bureau of Customs o imbestigasyon na iniatas ng Customs dahil sa posibleng paglabag ng balas at ng mga regulasyon
+ng Customs;)
+2. To retain the hard copy of the Information Sheet, or electronic copy of personal and sensitive personal information obtained therefrom in the database of the Bureau within
+a period as prescribed under existing rules and regulations issued by the Bureau or the Commission on Audit. I agree that my information will be destroyed/deleted after this
+period: (Magtabi ng kopya ng information Sheet o electronic na kopya ng personal at sensitibong impormasyon sa database ng Customs sa loob ng panahon ayon sa
+regulasyon ng Bureau of Customs o ng Commission on Audit. Pumapayag ako na ang nasabing impormasyon ay sisirain o latangalin pagkatapos ng itinakdang panahon:)
+3. To share my information to necessary third parties such as Accredited Information Processor, and other government agencies authorized by law to have access thereon for
+customs purposes or to carry out the constitutionally and statutorily mandated functions of public authority. I am assured that security systems are employed to protect my
+information; (Magbahagi ng aking personal o sensitibong impormasyon sa kinakailangang third parties katulad ng Accredited Information Processor o ibang ahensya ng
+pamahalaan na pinayagan ng batas na magproseso nito, o upang maisagawa ang kanilang mandato ayon sa batas. Ako ay sinigurado na may sapat na pangangalaga sa
+aking personal o sensitibong impormasyon); and
+4. To inform me of any other processing of my personal and sensitive information that I shared with the Bureau other than those enumerated in paragraph 1 and 3 herein.
+(Ipabatid sa akin kung mayroong ibang pagproseso ng aking personal o sensitibong impormasyon na aking ibinahagi sa Bureau of Customs bukod sa inilahad sa una at
+pangatlong talata dito.)
+Page 1 (front page)
+Page 10 of 19 - CMO No.
+18-2018
+Sender's Signature over Printed Name
+Date Accomplished:
+mm/dd/yyyy
+*required fields/mga kailangang punan
+U.P. LAW CENTER
+Certified True Confice of the NATIONAL ADMINISTRATIVE REGISTER
+Борще
+kaquel G. De Jes
+SVCOO
+CRMD BOC
+-
+OFFICE
+Administrative Rules and Regulations
+OCT 16 2018
+RECEIVED
+ADDITIONAL INFORMATION:
+WHO CAN SEND BALIKBAYAN BOXES TO THE PHILIPPINES? Anyone can send
+balikbayan boxes to the Philippines. even corporations, partnerships and sole
+proprietors. But only a Qualified Filipino While Abroad (QFWA) can avail of the tax
+and duty-free privilege of balikbayan boxes under Section 800 (g) of the Customs
+Modernization and Tariff Act (CMTA).
+WHO ARE QUALIFIED FILIPINO CITIZENS WHILE ABROAD (QFWA) ?They are
+Resident Filipinos. Non-Resident Filipinos and Overseas Filipino Workers (OFWs):
+WHAT IS THE PRIVILEGE UNDER SECTION 800 (G) OF THE CMTA OR THE
+BALIKBAYAN BOX PRIVILEGE? This is the privilege given to a Qualified Filipino
+Citizen While Abroad to send Balikbayan Boxes to a Family Member or Relative, tax
+and duty free. Subject to conditions.
+HOW MANY TIMES CAN I SEND BALIKBAYAN BOXES? There is no limit unless
+you will avail of the Balikbayan Box Privilege.
+HOW MANY TIMES CAN I AVAIL OF THE BALIKBAYAN BOX PRIVILEGE? A
+Qualified Filipino Citizen While Abroad can avail of the balikbayan box privilege up to
+3 times or up to 3 shipments in a calendar year. The total value of all the shipments
+should not be more than Php150,000.00 in a calendar year.
+HOW MANY BALIKBAYAN BOXES CAN I SEND IN 1 SHIPMENT IF I WILL AVAIL
+OF THE BALIKBAYAN BOX PRIVILEGE? There is no limit to the number of
+Balikbayan Boxes that you can send per shipment but the size of the boxes must be
+not bigger than .20 cbm (about the size of an XL box) and the total value should not
+be more than Php150,000.00 in a calendar year.
+WHAT CAN I PUT IN MY BALIKBAYAN BOX IF I WANT TO AVAIL OF THE
+BALIKBAYAN BOX PRIVILEGE? You can only send household effects and personal
+effects. You cannot send items which are in commercial quantities. or send items
+which are for sale, barter or hire, or those which are prohibited or restricted
+Importations of up to 1.5 liters (1500 ml) of wines and liquor, 2 reams of cigarettes and
+50 sticks of cigars shall be subject to payment of excise lax only. Any excess is subject
+to duty, VAT and excise tax.
+WHAT HAPPENS IF UPON AVAILMENT OF THE BALIKBAYAN BOX PRIVILEGE.
+I EXCEED THE ALLOWED QUANTITIES AND VALUES? Anything in excess of the
+allowable quantity, amount or frequency shall be subject to payment of duties and
+taxes.
+WHAT IF THE VALUE OF MY SHIPMENT IS LESS THAN PHP10,000.00? You can
+avail of the De Minimis privilege and you do not need to be a Qualified Filipino While
+Abroad but you must have only 1 consignee or recipient. Even if you are a Qualified
+Filipino While Abroad, a De'Minimis Value shipment shall not be counted as an
+availment under the Balikbayan Box privilege..
+IMPORTANT THINGS YOU SHOULD KNOW:
+1. Balikbayan Box - refers to a corrugated box or other container or receptacle up to a maximum volume of two hundred thousand (200,000) gross cubic centimeters
+without regard as to the shape of the container or receptacle.
+For purposes of duty and tax exemption. the Balikbayan Box should contain only personal and household effects that shall neither be in commercial quantities nor
+intended for barter, sale or for hire sent by Qualified Filipinos While Abroad often shipped by freight forwarders specializing in Balikbayan Boxes by sea or air.
+2. Qualified Filipinos While Abroad-refers to a collective lerm used to refer to Resident Filipinos, OFWs and Non-Resident Filipinos entitled to send or bring-in balikbayan
+boxes entitled to duty and tax exemption pursuant to Section 800 (g) of the CMTA.
+3. Resident Filipinos - refers to Resident Filipino citizens who temporarily stay abroad which may include holders of student visa, holders of investors' visa, holders of tourist
+visa and similar visas which allow them to establish temporary stay abroad.
+4. Non-Resident Filipinos refers to those Filipinos who have established permanent residency abroad but have relained Filipino citizenship, whether or not they have
+availed of the benefits under Republic Act No. 9225 or the Citizenship Retention and Re-acquisition Act of 2003.
+5. Overseas Filipino Worker (OFW) - refers to a holder of a valid passport issued by the Department of Foreign Affairs (DFA) and certified by Department of Labor and
+Employment (DOLE) or Philippine Overseas Employment Administration (POEA) for overseas employment purposes. This covers all Filipinos working in a foreign country
+under employment contracts, regardless of their professions, skills or employment status in a foreign country. For purposes of this CAO, the term OFW includes Filipinos
+working abroad under job contracts who do not require a certification from the DOLE or the POEA.
+6. Family and Relatives-refers to relatives up to the fourth (4th) civil degree of consanguinity or affinity (first cousin).
+7. Calendar Year-refers to the period from January 1 to December 31 of the same year.
+8. Household Effects-refers to fumiture, dishes, linens, libraries, and similar household furnishing for personal or family use.
+9. Personal Effects - refers to commodities whether new or used, for personal use or consumption and not for commercial purposes, such as wearing apparel, personal
+adomments, electronic gadgets, toiletries, or similar items.
+10. Commercial Quantity - refers to the quantity for a given kind or class of articles which are in excess of what is compatible with and commensurate to the person's normal
+requirements for personal use. For a single sender with multiple ultimate consignees, commercial quantity of a given class shall be determined based on the total
+quantity thereof sent by the sender to all the consignees.
+11. Prohibited Importation-the importation of the following goods are prohibited:
+(a) Written or printed goods in any form containing any matter advocating or inciting treason, rebellion, insurrection, sedition against the govemment of the Philippines,
+or forcible resistance to any law of the Philippines, or written or printed goods containing any threat to take the life of, or inflict bodily harm upon any person in the
+Philippines:
+(b) Goods, instruments, drugs and substances designed, intended or adapted for producing unlawful abortion, or any printed matter which advertises, describes or gives
+direct or indirect information where, how or by whom unlawful abortion is committed;
+(c) Written or printed goods, negatives or cinematographic films. photographs, engravings, lithographs, objects, paintings, drawings or other representation of an obscene
+or immoral character;
+(d) Any goods manufactured in whole or in part of gold, silver or other precious metals or alloys and the stamp, brand or mark does not Indicate the actual fineness of
+quality of the metals or alloy;
+(e) Any adulterated or misbranded food or goods for human consumption or any adulterated or misbranded drug in violation of relevant laws and regulations;
+(f) Infringing goods as defined under the Intellectual Property Code and related laws; and
+(g) All other goods or parts thereof which importation are explicitly prohibited by law or rules and regulations issued by the competent authority.
+12. Restricted Importation except when authorized by law or regulation, the importation of the following restricted goods are prohibited:
+(a) Dynamite, gunpowder, ammunitions and other explosives, firearms and weapons of war, or parts thereof;
+(b) Roulette wheels. gambling outfits, loaded dice, marked cards, machines, apparatus or mechanical devices used in gambling or the distribution of money, cigars,
+cigarettes or other goods when such distribution is dependent on chance, including jackpot and pinball machines or similar contrivances, or parts thereof:
+(c) Lottery and sweepstakes tickets, except advertisements thereof and lists of drawings therein;
+(d) Marijuana, opium, poppies, coca leaves, heroin or other narcotics or synthetic drugs which are or may hereafter be declared habit forming by the President of the
+Philippines, or any compound, manufactured salt, derivative, or preparation thereof, except when imported by the government of the Philippines or any person duly
+authorized by the Dangerous Drugs Board, for medicinal purposes;
+(e) Opium pipes or parts thereof, of whatever material;
+(f) Any other goods whose importation are restricted;
+(g) Weapons of mass destruction and goods included in the National Strategic Goods List (NSGL) as provided under Republic Act No. 10697 or the Strategic Trade
+Management Act (STMA); and
+(h) Toxic and Hazardous goods under Republic Act No. 6969 or the "Toxic Substances and Hazardous and Nuclear Wastes Control Act of 1990. "The restriction to import
+the above stated goods shall include the restriction on their transit.
+13. De Minimis Value - FCA or FOB Value of Php10.000.00 or less for which no duty or tax is collected.
+14. Availment refers to the determination by the Bureau or by the qualified senders that the Balikbayan Boxes brought in or sent are counted as first, second or third within
+a calendar year and thus entitled to duty and tax exemption pursuant to Section 800 (g), Chapter 1, Title VIII. CMTA. Any amount in excess of the allowable non-dutiable
+and non-taxable value shall be subject to the applicable duties and taxes. Shipment that is above the de minimis threshold shall be automatically considered as one
+availment. De minimis importation shall not be included in the counting of availment; provided that the Qualified Filipinos While Abroad can only send to one ultimate
+consignee in one consolidated shipment.
+15. Regulated Importation - goods which are subject to regulation and may be imported or released only after securing the necessary clearances, permits, licenses, and
+any other requirements.
+16. Unit of Measure-e.g. pieces, dozens, pairs, boxes, bundles, bars, cans, packs, bottles, tubes, units, rolls etc.
+17. Ultimate Recipient or Consignee - refers to the Family Member or Relative of the Sender of the Balikbayan Box who will be the ultimate beneficiary of the same.
+Page 1 (back page)
+Page 11 of 19 - CMO No. 18-2018
+U.P. LAW CENTER
+OFFICE of the NATIONAL ADMINISTRATIVE REGISTER
+Certified True Copy Administrative Rules and Regulations
+HR
+OCT 16 2018
+Raquel G. De JesusECEI
+SVCOO
+CRMP ROC
+MBL/MAWB Number:
+Tracking Number:_
+To be filled out by the Consolidator
+C. ITEMIZED DESCRIPTION OF GOODS*
+(Please declare separately new and old goods. Use additional sheets if
+necessary and each additional sheet should be signed by the
+Sender/Mangyaring ilista ng hiwalay ang bago at lumang mga ipapadala.
+Gumamit ng karagdagang mga pahina kung kinakailangan at dapat ito ay
+pirmahan din ng Nagpadala)
+Goods Description
+✓
+Canned Goods
+Bag
+✓
+Shoes
+.
+Toys
+Bag
+Bar Soap
+Bed Sheets
+Blender
+Blouse
+Books
+Candies
+Canned Goods
+Carpentry Tools
+Carpet
+Chocolates
+Cigarettes
+Coffee
+Coffee Creamer
+Comforter
+Cosmetics
+Crackers/Cookies
+Curtains
+Detergent
+Diaper
+Flat Iron
+Hair Conditioner
+Hairdryer
+Jacket
+Kitchen Utensils
+Liquor
+Lotion
+Milk
+Noodles
+Painting
+Pants
+Perfume
+Pillow
+Pillow Cases
+Sandals
+School Supplies
+Shampoo
+Shirt
+Shoes
+Shorts or Trousers
+Slippers
+Socks
+Television
+Tissue
+Box
+of
+Please mark
+☑
+Quantity
+Unit of
+Measure
+New
+Used
+15
+Can
+Actual or
+Estimated
+Value
+(Philippine
+Peso)
+2,000.00
+Please mark
+Goods
+Description
+☑
+Quantity
+Unit of
+Measure
+New
+Used
+Actual or
+Estimated
+Value
+(Philippine
+Peso)
+Others, please specify
+✓
+3
+Pair
+1
+Piece
+7,500.00
+300.00
+Toothbrush
+Toothpaste
+Towel
+Toys
+TOTAL VALUE: Php_
+Declaration
+I declare, under the penalties of falsification, that this Information Sheet has been accomplished in good faith and to the best of my knowledge and belief, is true and
+correct pursuant to the provisions of the Customs Modernization and Tariff Act of the Philippines and its implementing rules and regulations. In case my shipment is randomly
+selected for physical inspection. I hereby allow the Deconsolidator or my authorized representative in the Philippines to witness the conduct of the examination. (Ako ay
+nagpapahayag, sa banta ng kaparusahan sa pagsisinungaling, na ang impormasyon na aking isinulat ay inilahad ko ng buong katapatan at sa aking kaalaman at paniniwala, ito
+ay tama at naayon sa Customs Modemization and Tariff Act ng Pilipinas at ang kaakibat na mga regulasyon nito. Kung sakaling mapili ang aking kargamento na buksan ng Bureau
+of Customs (BOC). pinahihintulutan ko ang kompanyang nag-aayos ng aking kargamento o ang aking kinatawan na maging saksi dito.)
+Page 2
+Sender's Signature over Printed Name
+Date Accomplished:¸
+nim dd YYYY
+Page 12 of 19 - CMO No.
+18-2018
+Certified True CONAL ADMINISTRATIVE REGISTER
+LAW CENTER
+Administrative Rules and Regulations
+OCT 16 2018
+kaquel G. De Jesus
+SVCOMECEIVE
+CRMD-BO
+BV.
+To be filed out by the Consolidator
+D. SHIPMENT & TRANSPORT INFORMATION
+(To be filled out by the Consolidator)
+Mode of Shipment:
+Air
+☐ Sea
+Shipment Reference
+or Load No.:
+Total No. of Boxes
+per Tracking No.:
+Total Measurement
+of Box/es (CBM):
+Date of Departure
+(mm/dd/yyyy):
+Total Gross Weight
+per Tracking No.:
+Total Net Weight
+Per Tracking No.:
+MBL/MAWB Number:
+Name of Deconsolidator/Agent:
+Complete Address of
+Deconsolidator/Agent:
+Contact Details of Deconsolidator/Agent
+Mobile/Landline Number:
+E-mail Address of Deconsolidator:
+Name of Sender:
+Original Port and Country of Loading:
+Tracking Number:
+MBL/MAWB Number:
+Tracking Number:
+Name of Consolidator:
+Complete Address of Consolidator:
+Contact Details of Consolidator
+Mobile/Landline Number:
+E-mail Address of Consolidator:
+Name of Vessel or Aircraft:
+Container Number:
+Total Freight per
+Tracking No.:
+Total Insurance per
+Tracking No.:
+Declaration
+I declare, under the penalties of falsification. that this Information Sheet has been made in good faith and to the best of my
+knowledge and belief, is true and correct pursuant to the provisions of the Customs Modernization and Tariff Act of the Philippines and its
+implementing rules and regulations.
+Consolidator or Authorized Representative
+Signature over Printed Name
+Date Accomplished:,
+E. ARRIVAL DETAILS
+(To be filled out by the Deconsolidator)
+Name of Vessel or Aircraft:
+mm dd yyyy
+Registry Number of the
+Vessel/Aircraft:
+Voyage or Flight Number:
+Port of Last Call:
+Date of Departure
+(mm/dd/yyyy):
+Container Number:
+MBL/MAWB Number:.
+Port of Discharge:
+Date of Arrival
+(mm/dd/yyyy):
+HBL/HAWB No./Tracking No.:
+Other Information:
+Declaration
+I declare, under the penalties of falsification, that this Information Sheet has been made in good faith and to the best of my
+knowledge and belief, is true and correct pursuant to the provisions of the Customs Modernization and Tariff Act of the Philippines and its
+implementing rules and regulations.
+Page 3
+Deconsolidator or Authorized Representative
+Signature over Printed Name
+Date Accomplished:_
+mm dd yyyy
+For questions and clarifications visit www.customs.gov.ph or you may contact the Bureau of Customs at (632) 705-6000/ (632) 705-6052
+A cant provect of CMIA-IRR Project Management Office and Public Information and Asardance De sm
+Page 13 of 19 - CMO No. 18-2018
+Certified True Copy
+U.P. LAW CENTER
+OFFICE of the NATIONAL ADMINISTRATIVE REGISTER
+Administrative Rules and Regulations
+OCT 16 2018
+ED
+ECEIVE
+Raquel G. De Jesus
+SVCOO
+CRMD BOC
+TIME:
+BY:
+Official letterhead and stationery of Consolidator
+CERTIFICATION OF COMPLIANCE
+Annex "B"
+To:
+Name of Shipping Line
+Port of Loading/Country
+THIS IS TO CERTIFY that the Information Sheets and other supporting documents
+pertaining to the shipment details below have been transmitted in a secure electronic
+format to the Philippine Bureau of Customs and to our duly registered designated
+deconsolidator, pursuant to the former's mandatory requirements.
+THIS IS TO CERTIFY FURTHER, that we have an existing service contract with the
+deconsolidator named below.
+Name of Consolidator
+(Shipper)
+Complete business address
+and contact details
+Contact person and
+positions/designation
+Name of
+Deconsolidator/Agent
+(Consignee)
+Complete business address
+and contact details
+(Philippines)
+Contact person and
+position/designation
+Name of shipping line
+Vessel name and voyage
+number
+Master bill of lading number
+Container number, size Total number of balikbayan
+and seal number
+boxes
+Notify Party (if different
+from consignee)
+Original Port and
+Country of Loading
+Vessel departure date/time
+(port of loading)
+We declare that all the information contained this Certification are true and correct
+and in faithful compliance with the provisions of Customs Memorandum Order
+issued by the Philippine Bureau of Customs
+Certified True Copy
+No.
+on
+entitled "
+2016.
+"1
+U.P. LAW CENTER
+OFFICE of the NATIONAL ADMINISTRATIVE REGISTER
+Administrative Rules and Regulations
+Page 14 of 19 - CMO No. 18-2018
+Raquel. De Jesus
+CRMD BOC
+R
+TIME:
+SVCOO
+-
+OCT 16 2018
+ECEIV
+BY:
+:D
+We hereby hold
+(name of shipping line)
+and its general agent in the
+Philippines free and harmless from all liabilities and any consequences thereof
+arising out of this Certification.
+We further authorize the
+Bureau of Customs.
+(name of shipping line)
+to transmit this
+Certification to its general agent in the Philippines and the Republic of the Philippines
+Date of Certification:
+Name of Consolidator:
+Printed name and signature of Consolidator/Authorized Representative:
+Page 15 of 19 - CMO No.
+18-2018
+Certified True Copy
+Raquel G. De Jesus
+SVCDO
+CRMD-BOC
+U.P. LAW CENTER
+OFFICE of the NATIONAL ADMINISTRATIVE REGISTER
+Administrative Rules and Regulations
+OCT 16 2018
+RECRIXED
+TIME
+INFORMATION SHEET DETAILS
+Annex "C"
+FILE NAME CONVENTION: <PORTCODE> + "BB" + <REGISTRY NO> + <MBL
+/ HBL> .xlsx
+All information must be completely filled out. Only fields with asterisk (*) are
+required to be filled out for the De Minimis availment.
+INFORMATION SHEEET DETAILS:
+1. Date Declaration Lodged
+2.
+MBL/MAWB
+3. Tracking No.
+A. SENDER INFORMATION
+4. Nature of Availment
+5. Number of Availment
+6. Type of Sender
+7. Business Name*
+8. Family Name*
+9. Given Name*
+10. Middle Name*
+11. Suffix*
+12. Contact No.*
+13. Email Address*
+("IB" Balikbayan/ "ID" - De Minimis/"NA" - None)
+14. Philippine Passport Number
+15. Date Issued (mm/dd/yyyy)
+16. Expiry Date (mm/dd/yyyy)
+17. Place Issued
+18. Address Abroad*
+19. Philippine Address*
+20. Total Value (Php)*
+B. PHILIPPINE-BASED RECIPIENT
+21. Family Name*
+22. Given Name*
+23. Middle Name*
+24. Suffix*
+Page 16 of 19 - CMO No.
+18-2018
+Certified True Copy
+Raquel G. De legus
+SVCOO U.P. LAW CENTER
+CRMD OFFICE of the NATIONAL ADMINISTRATIVE REGISTER
+Administrative Rules and Regulations
+OCT 16 2018
+RECEIVE
+TIME:
+BY:
+25. Contact Number*
+26. Email Address*
+27. Philippine Address*
+28. Relationship to Sender
+29. Total Number of Boxes
+30. Date Signed (mm/dd/yyyy)*
+D. SHIPMENT & TRANSPORT INFORMATION
+31. Mode of Shipment (AIR/SEA)*
+32. Shipment Reference/ Load No.*
+33. Name of Deconsolidator*
+34.Address*
+35. Contact No*
+36. Email Address*
+37. Name of Consolidator*
+38. Address*
+39. Contact No*
+40. Email Address*
+41. Total No of Boxes*
+42. Box/es Measurement (Cubic Meter)*
+43. Total Gross Weight (kgs)*
+44. Total Net Weight (kgs)*
+45. Original Port of Loading*
+46. Original Country of Loading*
+47.Total Insurance *
+48. Total Freight*
+E. ARRIVAL DETAILS
+49. Name of Vessel/Aircraft*
+50. Registry No*
+51. Voyage or Flight No*
+52. Port of Last Call*
+53. Departure Date (mm/dd/yyyy)*
+54. Port Code of Discharge*
+55. Date of Arrival (mm/dd/yyyy)*
+56. Container No.*
+57.House BL*
+58. Other Information
+Certified True Copy
+Page 17 of 19 - CMO No. 18-2018
+Raquel G. De Jesus
+SVCOO
+CRMD BOC
+U.P. LAW CENTER
+OFFICE of the NATIONAL ADMINISTRATIVE REGISTER
+Administrative Rules and Regulations
+OCT 16 2018
+RE
+ECEIVE D
+TIME
+BY
+FOR OFFICIAL USE ONLY
+Description
+TOTAL
+Annex "D"
+Quantity Dutiable
+Tariff
+Rate of
+Value
+Heading
+Duty
+Foreign
+Currency
+Peso
+(Php)
+Date of Physical Examination, if any
+Number of Boxes examined, if applicable
+SUMMARY OF CHARGES
+Customs Duty
+VAT
+Excise Tax
+Processing Charge
+Documentary Stamp
+Legal Research Fee
+Other Charges
+Surcharge
+TOTAL
+COO III
+COO V
+To be used if more space is needed:
+Page 18 of 19
+-
+CMO No. 18-2018
+DATE
+DATE
+Certified True Copy
+Raquel G. De Jesus
+SVCOO
+CRMD BOC
+U.P. LAW CENTER
+OFFICE of the NATIONAL ADMINISTRATIVE REGISTER
+Administrative Rules and Regulations
+RT
+TIME:
+OCT 16 2018
+RECEIVE
+BY:
+D
+DEPARTMENT
+BUREAU
+OF
+F FIN
+FINANCE
+CUSTOMS
+REPUBLIC OF THE PHILIPPINES
+DEPARTMENT OF FINANCE
+BUREAU OF CUSTOMS
+MANILA 1099
+CUSTOMS MEMORANDUM ORDER (CMO)
+NO.
+18-2018
+U.P. LAW CENTER
+OFFICE of the NATIONAL ADMINISTRATIVE REGISTER
+Administrative Rules and Regulations
+R
+TIME:
+OCT 16 2018
+ECEIVE
+BY:
+SUBJECT: GUIDELINES ON THE IMPLEMENTATION OF CUSTOMS
+ADMINISTRATIVE ORDER (CAO) NO. 01-2018 ON AMENDED RULES ON
+CONSOLIDATED SHIPMENT OF "BALIKBAYAN BOXES"
+Section 1. Scope. This CMO applies to consolidated shipments of Balikbayan Boxes
+entered through any port of entry, sent to families or relatives by Qualified Filipinos
+While Abroad. Balikbayan Boxes brought in through means other than Consolidated
+Shipments shall be covered by a separate CMO.
+Section 2. Objectives.
+2.1. To prescribe simplified customs clearance procedures for consolidated
+shipment of Balikbayan Boxes sent by Qualified Filipinos While Abroad
+to their families or relatives, especially the OFWs in recognition of their
+significant contribution to the Philippine economy;
+2.2. To facilitate customs clearance of consolidated shipment of Balikbayan
+Boxes without sacrificing the Bureau's core functions of revenue
+collection and border protection through application of risk
+management techniques and Information and Communication
+Technology (ICT) enabled monitoring and control systems;
+2.3. To adopt clear and transparent customs rules, regulations, policies and
+procedures, consistent with international standards and customs best
+practices;
+2.4. To prevent revenue loss from possible abuse in the availment of the
+privilege on the tax and duty-exempt importation of Balikbayan Boxes;
+and
+2.5. To guide customs personnel and stakeholders in the customs
+Certified True Copy formalities in the clearance and release of Balikbayan Box shipments.
+Raquel G. De Jesus
+SVCOO
+CRMD BOC
+-
+Page 1 of 19 - CMO No. 18-2018
+BAGGAGE INSPECTION FORM
+DEPARTME
+IN I
+ENT OF
+FINANCE
+OECUSTOMS
+Republic of the Philippines
+Department of Finance
+Bureau of Customs
+NOTICE OF INSPECTION
+MBL/MAWB No.:
+Tracking No.:
+Date of Examination (mm/dd/yyyy):
+This box was randomly selected for physical
+examination by the Bureau of Customs (BOC)
+pursuant to Section 420 of the Customs
+Modernization and Tariff Act (CMTA).
+The customs officer exercised proper care and
+observed due diligence during the examination in
+the presence of the Deconsolidator authorized by
+the sender to witness the conduct of the
+examination.
+If you have questions, comments, or concerns,
+please feel free to contact the BOC at (02)
+705-6000 or 705-6052.
+www.customs.gov.ph
+Email
+buc.cares@customs.gov.ph
+f
+Facebook
+Bureau of Customs PH
+Twitter
+@CustomsPH
+SECURITY TAMPER EVIDENT TAPE
+Annex "E"
+Certified True Copy
+Raquel G. De Jesus
+SVCOO
+CRMD-BOC
+AT OF
+DEPARTMENT
+ESTOMS
+REPUBLIC OF THE PHILIPPINES
+DEPARTMENT OF FINANCE
+BUREAU OF CUSTOMS
+DOPENEDIO
+HOICHINE
+INSPECTIE
+KIPER EVIDEN
+WORD OPENED APP
+Page 19 of 19 - CMO No. 18-2018
+OPERETTENERE
+ADMINISTRATIE REGISTER
+RS CHECK CONTENTS
+Roministrative Rules and regulations
+OCT 16 2018
+REC
+TIME:
+ECEIVE
+BY:
+D
+Section 3. General and Administrative Provisions.
+3.1. Registration of Deconsolidators. The Deconsolidator shall apply for
+registration every two (2) years with the Account Management Office
+(AMO) of the Bureau, in addition to the registration requirements
+imposed by other government agencies.
+3.2. Documents Required. The following shall be submitted:
+a. Duly accomplished AMO application form;
+b. List of Consolidators with whom the applicant Deconsolidator has
+existing Service Contracts;
+c. Copy of the individual Service Contract/s between the
+Deconsolidator and the Consolidator/s with all the annexes. The
+duly executed Service Contract/s entered into by and between the
+Deconsolidator and the Consolidator/s shall contain the following
+undertakings or provisions, that:
+i. The required Information Sheet is properly accomplished;
+ii. The Consolidator shall advise the Sender of the following:
+ii.1. That no prohibited or restricted items, or regulated items
+in commercial quantities are included in the shipment;
+ii.2. No individual shipment shall exceed the limits as to value
+and frequency as fixed by law.
+iii. Should any consolidated shipment include or contain restricted,
+prohibited or any regulated articles in commercial quantities,
+the Deconsolidator shall be held responsible therefor; and
+iv. The Deconsolidator shall ensure that their principals abroad are
+made fully aware of the need for Senders to provide
+information and documents as listed in Section 5.1.2 of CAO 5-
+2016, to enable the expeditious processing of the shipment and
+that the data will be used only for the sole purpose of sending
+the box and shall be covered by the Data Privacy Protection
+Law existing in the country of origin.
+d. Certified True Copy of the registration or accreditation certificate
+from other government agencies;
+e. An Affidavit of Undertaking stating that the Deconsolidator shall be
+Certified True Copy obliged to answer for the various charges that may be incurred by
+the Bureau such as storage, arrastre, shipping demurrage, stripping
+and stuffing charges and other incidental expenses not otherwise
+chargeable against the Forfeiture Fund, in case of implied
+abandonment of the goods; and
+Raquet G. De Jesus
+SVCOO
+CRMD BOC
+Page 2 of 19 - CMO No.
+18-2018
+U.P. LAW CENTER
+OFFICE of the NATIONAL ADMINISTRATIVE REGISTER
+Administrative Rules and Regulations
+OCT 16 2018
+f. Any other documentary requirements that may be required by the
+Bureau.
+Section 4. Operational Provisions.
+4.1. Submission of Electronic - Inward Foreign Manifest (E-IFM),
+House Bill of Lading (HBL) and House Airway Bill (HAWB).
+4.1.1. Submission of E-IFM. Submission of E-IFM shall be governed
+by provisions of existing rules and regulations of the Bureau
+relative to the submission of cargo manifest. For purposes of
+uniformity in documentation and to distinguish Consolidated
+Balikbayan Shipments from other consolidated commercial
+importations, the words "CONSOLIDATED BALIKBAYAN
+SHIPMENT" shall be indicated in the field for Description of
+Goods in the Master Bill of Lading.
+4.1.2. Submission of HBL or HAWB. The Deconsolidator shall
+submit an electronic copy of the consolidated manifest
+containing the individual HBLS to the Bureau through the
+Advanced Manifest System (AMS) within the period prescribed
+by the Bureau.
+4.2. Preparation and Submission of Information Sheet.
+4.2.1. The Sender may request copies of the Information Sheet
+(Annex "A") from the Consolidator or may download copies
+directly from the BOC website (www.customs.gov.ph) or from
+any of the following Value-Added Service Providers (VASPS):
+a. www.etrade.net.ph;
+b. www.intercommerce.com.ph; and
+c. www.ekonek.com.
+4.2.2. The Sender shall either:
+Certified True Copy
+Kaugel G. De Jesus
+SVCOO
+CRMD BOC
+a. Print the Information Sheet and fill out manually Sections
+A, B and C thereof in triplicate per Balikbayan Box; or
+b. Accomplish Sections A, B and C thereof online and print the
+accomplished form in three (3) sets.
+Page 3 of 19 - CMO No. 18-2018
+U.P. LAW CENTER
+OFFICE of the NATIONAL ADMINISTRATIVE REGISTER
+Administrative Rules and Regulations
+OCT 16 2018
+RECEIVE
+TIME:
+4.2.3. All three (3) sets of the Information Sheet must be signed by
+the Sender on page two (2) and distributed as follows:
+Certified True Copy
+Raquel G. De Jesus
+SVCOO
+CRMD BOC
+ii.
+a. First (1st) Copy - shall be placed by the sender at the top-
+most portion inside of the Balikbayan Box containing the
+goods;
+b. Second (2nd) Copy - shall be kept by the Sender; and
+c. Third (3rd) Copy - shall be furnished to the Consolidator to
+be submitted to the Bureau together with the other
+documentary requirements.
+The Information Sheet must have the following attachments:
+i. For Filipino Citizens:
+i.1. Photocopy of any documents containing the Qualified
+Filipino's citizenship, full name (First Name, Middle
+Name, Surname & Suffix), date of birth and place of
+birth, including:
+a. Pertinent page of the Philippine passport with
+personal information, picture and signature;
+b. Permanent Resident ID or equivalent document in
+other countries (e.g. Green Card, IQAMA );
+c. Overseas Employment Certificate (OEC) / OWWA
+Card;
+d. Work Permit;
+e. Unified Government ID issued by the Department of
+Labor and Employment (DOLE); and
+f. Any other equivalent document (except Birth
+Certificate):
+f.i. Any Philippine Government issued ID which
+states the Filipino citizenship; and
+f.ii. Any foreign government issued ID that show
+full name, date of birth, place of birth, and
+Filipino citizenship.
+i.2. A copy of the invoice, receipt or proof of payment of the
+goods contained in the Balikbayan Box, if available.
+For Dual Filipino Citizens without a Philippine passport:
+ii.1. A photocopy of the biographical page of the foreign
+passport where the personal information, picture and
+signature are indicated;
+U.P. LAW CENIER
+ii.2. A photocopy of proof of Filipino citizenships RACE REGISTER
+Page 4 of 19 - CMO No. 18-2018
+Administrative Rules and Regulations
+OCT 16 2018
+RECEIVE
+D
+TIME:
+DV
+ii.3. A copy of the invoice, receipt or proof of payment of
+the goods contained in the Balikbayan Box, if available.
+4.2.4. The Sender shall clearly indicate in the Information Sheet that
+he/she allows the Consolidator, Deconsolidator, the Bureau and
+its Accredited Information Processor, to process any and all
+personal or sensitive personal information voluntarily disclosed
+therein.
+The Consolidator shall not handle the delivery of the shipment
+without signing the Data Privacy Consent portion of the
+Information Sheet.
+Any information obtained in the Information Sheet shall be
+treated as confidential and shall be used for customs purposes
+only, such as during clearance of goods or investigation
+conducted by the Bureau for possible violation of customs laws,
+rules and regulation.
+4.2.5. For purposes of compliance with the Data Privacy Act of 2012,
+the collection and processing of personal data pertaining to the
+Sender shall be the responsibility of the Deconsolidator,
+including the collection of personal data by the Consolidator on
+its behalf.
+4.2.6. The Information Sheet and required attachments shall be
+submitted to the Consolidator who shall assign a unique single
+Tracking Number for every shipment of the Sender, regardless
+of the number of boxes sent by a single Sender.
+4.2.7.The Consolidator shall fill out Section D of the Information Sheet
+and electronically forward the scanned Optical Character
+Recognition (OCR) PDF copies of the complete set of the
+Information Sheet with the required attachments,
+simultaneously to the Deconsolidator and to the Bureau's AMS
+thru the VASP.
+4.2.8. For consolidated shipments by sea, the shipping line prior to
+loading of containers onto the vessel, shall require a Certificate
+of Compliance (Annex "B") from the consolidator, relative to
+the requirements stated in Section 4.2.7 of this Order.
+Certified True Copy
+Kayuel G. De Jesus
+SVCOO
+CRMD - BOC
+Page 5 of 19 - CMO No. 18-2018
+U.P. LAW CENTER
+OFFICE of the NATIONAL ADMINISTRATIVE REGISTER
+Administrative Rules and Regulations
+R
+TIME:
+OCT 15 2018
+EIY
+Section 5. Lodgement of Goods Declaration. To expedite the cargo clearance
+process, the Deconsolidator, upon filing of the goods declaration with the Informal
+Entry Division (IED) or its equivalent unit, must submit the soft copy of the Information
+Sheet details using the prescribed format in Annex "C", together with the following
+documentary requirements:
+a. Master ocean bill of lading (MBL) or master airway bill (MAWB) duly
+endorsed by the shipping agent, airline or air carrier, respectively;
+b. Consolidated Cargo Manifest;
+c. Individual HBL or HAWB duly endorsed by Deconsolidator;
+d. Accomplished Information Sheet duly signed by the Sender, Consolidator
+and Deconsolidator, and page 5 (Annex "D") thereof;
+e. Photocopy of any documents containing the Qualified Filipino's
+citizenship, full name (First Name, Middle Name, Surname & Suffix), date
+of birth and place of birth, including:
+e.1. Pertinent page of the Philippine passport with personal
+information, picture and signature or in case of dual Filipino citizen
+without Philippine passport, photocopy of foreign passport with
+personal information, picture and signature plus copy of proof of
+dual Filipino citizenship;
+e.2. Permanent Resident ID or equivalent document in other countries
+(e.g. Green Card, IQAMA);
+e.3. Overseas Employment Certificate (OEC) / OWWA Card;
+e.4. Work Permit;
+e.5. Unified Government ID issued by the Department of Labor and
+Employment (DOLE); and
+Certified True Copy e.6. Any other equivalent document (except Birth Certificate):
+Raquel G. De Jesus
+SVCOO
+CRMD BOC
+e.i. Any Philippine Government issued ID which states the Filipino
+citizenship; and
+e.ii. Any foreign government issued ID that show full name, date
+of birth, place of birth, and Filipino citizenship.
+f. Invoice, receipt or equivalent document covering the goods contained in
+the Balikbayan Box, if available; and
+g. Other documents as may be required by the Bureau.
+Based on the Information Sheets submitted in advance by the Consolidator, the COO
+III shall conduct a determination whether a Sender is qualified to avail of the tax and
+duty exemption under the De Minimis scheme or of the privilege under Section 800
+(g) of the CMTA and for the expedited clearance of his Balikbayan Box/es.
+Section 6. Cargo Clearance Procedures. Until such time that the Bureau has
+implemented an electronic processing system for clearance of consolidated shipments
+of Balikbayan Boxes, cargo clearance shall be governed by the following procedures:
+Page 6 of 19 - CMO No. 18-2018
+PW CENTER
+OFFICE of the NATIONAL ADMINISTRATIVE REGISTER
+Administrative Rules and Regulations
+OCT 16 2018
+RECEIVE
+6.1. The Deconsolidator shall lodge separate informal entries for Balikbayan
+Boxes falling under each type of availment i.e. De Minimis, Section 800
+(g) of the CMTA or not qualified for availment, on a per container basis
+in a given consolidated shipment.
+Example: One MBL covering two containers. Separate informal entries
+shall be filed for every type of availment for each container.
+6.2. The individual HBLS or HAWBS together with the Information Sheets
+which shall serve as the packing lists and invoices, and all other
+documentary requirements in Section 5 of this Order shall be attached
+to the goods declaration.
+6.3. The IED or its equivalent unit shall verify the completeness of the
+submitted documentary requirements, match the submitted
+BL/AWB/HBL/HAWB with the Manifest System and/or Manifest Data,
+assign the entry number and forward the same to the Assessment
+Section.
+6.4. The COO III shall match the declaration filed by the Deconsolidator
+against the Information Sheet electronically submitted by the
+Consolidator to check the veracity and to determine if there are
+inconsistencies in the information stated in the Information Sheet
+attached to the entry. Matching of the declaration shall be made for
+Balikbayan Boxes subject to alert orders, derogatory information and
+any other relevant information received. This is without prejudice to
+any risk parameters that the Bureau may establish upon automation
+of the clearance process of the Balikbayan Boxes.
+6.5. All Consolidated Balikbayan Shipments processed under this Order
+shall be subject to mandatory non-intrusive inspection by, or under the
+supervision of, BOC personnel;
+Certified True Copy
+Raquel G. De Jesus
+SVCOO
+CKMD BOC
+6.5.1. If the x-ray image is tagged "no suspect" and the print out
+thereof is stamped by the X-Ray Image Analysis Inspector with
+the notation "IMAGE APPEARS TO BE REGULAR", the COO III
+shall indicate his findings on the Informal Import Declaration
+and Entry Form (IIDE); assess duties and taxes and other
+charges due thereon, if any; affix his signature; and forward
+the same to the COO V; or
+6.5.2. In cases where the x-ray image is tagged "suspect" and the
+print out thereof is stamped by the X-Ray Image Analysis
+Inspector with the notation "FOR VERIFICATION", the X-Ray
+Image Analysis Inspector shall identify and mark the portion
+of the container with possible violation and the COO III shall
+subject said portion to 100% physical examinationNTER
+Page 7 of 19 - CMO No.
+18-2018
+OFFICE of the NATIONAL ADMINISTRATIVE REGISTER
+Administrative Rules and Regulations
+OCT 16 2018
+6.5.3. The Deconsolidator shall request the stripping of the container
+to enable the conduct of 100% physical examination of the
+Balikbayan Boxes located in the suspected and marked portion
+of the container.
+However, upon request of the Deconsolidator and with the
+approval of the District Collector, the Bureau may allow the
+conditional release of the container for the conduct of 100%
+examination of Balikbayan Boxes located in the suspected and
+marked portion of the container at the warehouse of the
+Deconsolidator subject to the following conditions:
+a. The suspected image is not clear;
+b. There is no derogatory information that the Balikbayan
+Boxes contain prohibited, restricted or regulated goods;
+and
+c. Upon submission of an Affidavit of Undertaking by the
+Deconsolidator subject to existing customs laws, rules and
+regulations.
+6.5.4. If no discrepancy is found after the conduct of 100% physical
+examination on the suspected and marked portion, the COO
+III shall assess duties, taxes and other charges due thereon,
+if any, affix his signature on the goods declaration and forward
+the same to the COO V.
+Certified True Copy
+Certi
+Raquel G. De Jesus
+SVCOO
+CRMD BOC
+6.5.5. If discrepancy is found after physical examination by the COO
+III, Balikbayan Box/es with violation shall be segregated and
+released only upon compliance with existing rules and
+regulations.
+6.5.6. The remaining Balikbayan Boxes without violation shall be
+allowed continuous processing and released following the
+procedures set forth in Section 6.5.4 of this Order.
+For purposes of transparency and notification to the
+consignee, the COO III who conducted the examination shall
+place a Notice of Inspection (Annex "E") inside the
+balikbayan boxes that have been inspected and shall seal said
+boxes with the Customs Security Tape (Annex "E").
+6.6. The COO V shall review the entry documents, tariff classification,
+appraisal, computation of duties, taxes and other charges, affix his
+signature on the goods declaration and return the same to the COO III
+for preparation of the Order of Payment.
+Page 8 of 19 - CMO No.
+18-2018
+U.P. LAW CENTER
+OFFICE of the NATIONAL ADMINISTRATIVE REGISTER
+Administrative Rules and Regulations
+R
+OCT 16 2018
+ECEIVE

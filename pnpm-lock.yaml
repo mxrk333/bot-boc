@@ -32,31 +32,57 @@ importers:
 
   apps/functions:
     dependencies:
+<<<<<<< HEAD
       '@google/genai':
         specifier: ^1.42.0
         version: 1.42.0
       '@repo/shared':
         specifier: workspace:^
+=======
+      '@google-cloud/vertexai':
+        specifier: ^1.10.0
+        version: 1.10.0
+      '@google/generative-ai':
+        specifier: ^0.24.1
+        version: 0.24.1
+      '@repo/config':
+        specifier: workspace:*
+        version: link:../../packages/config
+      '@repo/shared':
+        specifier: workspace:*
+>>>>>>> 22275c3 (feat: wire up RAG pipeline with Vertex AI embeddings and Firestore vector search)
         version: link:../../packages/shared
       '@trpc/server':
         specifier: ^11.0.0-rc.660
         version: 11.8.1(typescript@5.5.4)
+      cors:
+        specifier: ^2.8.6
+        version: 2.8.6
       firebase-admin:
         specifier: ^13.6.1
         version: 13.6.1
       firebase-functions:
         specifier: ^7.0.5
         version: 7.0.5(firebase-admin@13.6.1)
+      google-auth-library:
+        specifier: ^10.5.0
+        version: 10.5.0
       zod:
         specifier: ^3.23.8
         version: 3.25.76
     devDependencies:
+<<<<<<< HEAD
       '@repo/config':
         specifier: workspace:^
         version: link:../../packages/config
       '@repo/eslint-config':
         specifier: workspace:*
         version: link:../../packages/eslint-config
+=======
+      '@types/cors':
+        specifier: ^2.8.19
+        version: 2.8.19
+>>>>>>> 22275c3 (feat: wire up RAG pipeline with Vertex AI embeddings and Firestore vector search)
       esbuild:
         specifier: ^0.27.3
         version: 0.27.3
@@ -1741,6 +1767,11 @@ packages:
       - utf-8-validate
     dev: false
 
+  /@google/generative-ai@0.24.1:
+    resolution: {integrity: sha512-MqO+MLfM6kjxcKoy0p1wRzG3b4ZZXtPI+z2IE26UogS2Cm/XHO+7gGRBh6gcJsOiIVoH93UwKvW4HdgiOZCy9Q==}
+    engines: {node: '>=18.0.0'}
+    dev: false
+
   /@grpc/grpc-js@1.14.3:
     resolution: {integrity: sha512-Iq8QQQ/7X3Sac15oB6p0FmUg/klxQvXLeileoqrTRGJYLV+/9tubbr9ipz0GKHjmXVsgFPo/+W+2cA8eNcR+XA==}
     engines: {node: '>=12.10.0'}
@@ -2243,7 +2274,6 @@ packages:
     resolution: {integrity: sha512-mFNylyeyqN93lfe/9CSxOGREz8cpzAhH+E93xJ4xWQf62V8sQ/24reV2nyzUWM6H6Xji+GGHpkbLe7pVoUEskg==}
     dependencies:
       '@types/node': 25.2.3
-    dev: false
 
   /@types/debug@4.1.12:
     resolution: {integrity: sha512-vIChWdVG3LG1SMxEvI/AK+FWJthlrqlTu7fbrlywTkkaONwk/UAGaULXRlf8vkzFBLVm0zkMdCquhL5aOjhXPQ==}
@@ -2332,7 +2362,6 @@ packages:
     resolution: {integrity: sha512-m0jEgYlYz+mDJZ2+F4v8D1AyQb+QzsNqRuI7xg1VQX/KlKS0qT9r1Mo16yo5F/MtifXFgaofIFsdFMox2SxIbQ==}
     dependencies:
       undici-types: 7.16.0
-    dev: false
 
   /@types/prop-types@15.7.15:
     resolution: {integrity: sha512-F6bEyamV9jKGAFBEmlQnesRPGOQqS2+Uwi0Em15xenOxHaf2hv6L8YCVn3rPdPJOiJfPiCnLIRyvwVaqMY3MIw==}
@@ -3174,6 +3203,11 @@ packages:
 
   /csstype@3.2.3:
     resolution: {integrity: sha512-z1HGKcYy2xA8AGQfwrn0PAy+PB7X/GSj3UVJW9qKyn43xWa+gl5nXmU4qqLMRzWVLFC8KusUX8T/0kCiOYpAIQ==}
+
+  /data-uri-to-buffer@4.0.1:
+    resolution: {integrity: sha512-0R9ikRb668HB7QDxT1vkpuUBtqc53YyAwMwGeUFKRojY/NWKvdZ+9UYtRfGmhqNbRkTSVpMbmyhXipFFv2cb/A==}
+    engines: {node: '>= 12'}
+    dev: false
 
   /data-uri-to-buffer@4.0.1:
     resolution: {integrity: sha512-0R9ikRb668HB7QDxT1vkpuUBtqc53YyAwMwGeUFKRojY/NWKvdZ+9UYtRfGmhqNbRkTSVpMbmyhXipFFv2cb/A==}
@@ -7014,7 +7048,6 @@ packages:
 
   /undici-types@7.16.0:
     resolution: {integrity: sha512-Zz+aZWSj8LE6zoxD+xrjh4VfkIG8Ya6LvYkZqtUQGJPZjYl53ypCaUwWqo7eI0x66KBGeRo+mlBEkMSeSZ38Nw==}
-    dev: false
 
   /unicorn-magic@0.3.0:
     resolution: {integrity: sha512-+QBBXBCvifc56fsbuxZQ6Sic3wqqc3WWaqxs58gvJrcOuN83HGTCwz3oS5phzU9LthRNE9VrJCFCLUgHeeFnfA==}
