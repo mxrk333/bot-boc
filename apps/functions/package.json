@@ -9,7 +9,7 @@
     "./router": "./src/trpc/router.ts"
   },
   "scripts": {
-    "build": "esbuild src/index.ts --bundle --platform=node --target=node22 --outdir=dist --format=esm --external:firebase-functions --external:firebase-admin --external:@google-cloud/vertexai --external:@trpc/server --external:zod",
+    "build": "esbuild src/index.ts --bundle --platform=node --target=node22 --outdir=dist --format=esm --external:firebase-functions --external:firebase-admin --external:@google-cloud/vertexai --external:@trpc/server --external:zod --external:google-auth-library",
     "dev": "tsc --watch",
     "lint": "eslint \"src/**/*.{ts,tsx}\"",
     "typecheck": "tsc --noEmit",
@@ -17,12 +17,18 @@
   },
   "dependencies": {
     "@google-cloud/vertexai": "^1.10.0",
+    "@google/generative-ai": "^0.24.1",
+    "@repo/config": "workspace:*",
+    "@repo/shared": "workspace:*",
     "@trpc/server": "^11.0.0-rc.660",
+    "cors": "^2.8.6",
     "firebase-admin": "^13.6.1",
     "firebase-functions": "^7.0.5",
+    "google-auth-library": "^10.5.0",
     "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@types/cors": "^2.8.19",
     "esbuild": "^0.27.3",
     "eslint": "^8.57.0",
     "typescript": "5.5.4",

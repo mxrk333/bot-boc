@@ -1,59 +1,50 @@
-// Firebase Functions entry point
-// This file serves as the entry point for Firebase Cloud Functions
-
 import { onRequest } from 'firebase-functions/v2/https'
-import { VertexAI } from '@google-cloud/vertexai'
+import { fetchRequestHandler } from '@trpc/server/adapters/fetch'
+import { appRouter } from './trpc/router.js'
+import { createContext } from './trpc/context.js'
 
-export { appRouter, type AppRouter } from './trpc/router.js'
-
-const project = process.env.GCLOUD_PROJECT || 'boc-bot'
-const functionRegion = 'asia-southeast1'
-const vertexLocation = 'us-central1'
-
-// Gemini AI - generateResponse HTTP function
-export const generateResponse = onRequest(
-  { cors: true, region: functionRegion },
+export const api = onRequest(
+  {
+    cors: true,
+    region: 'us-central1',
+    timeoutSeconds: 120,
+    memory: '512MiB',
+  },
   async (req, res) => {
-    const userQuery = req.body.query
+    // 🛡️ MANUAL CORS FIX:
+    res.set('Access-Control-Allow-Origin', '*')
+    res.set('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
+    res.set('Access-Control-Allow-Headers', 'Content-Type, Authorization, trpc-batch')
 
-    if (!userQuery) {
-      res.json({ answer: 'No query provided.' })
+    // Handle Preflight request
+    if (req.method === 'OPTIONS') {
+      res.status(204).send('')
       return
     }
 
-    const vertexAI = new VertexAI({ project, location: vertexLocation })
-    const model = vertexAI.getGenerativeModel({ model: 'gemini-2.0-flash' })
+    // 🎯 THE FIX: In the emulator, req.url is usually "/trpc/bot.ask..."
+    // We point the Request object to localhost so the fetch adapter can parse it.
+    const fullUrl = `http://localhost${req.url}`
 
-    const maxRetries = 2
-    for (let attempt = 0; attempt <= maxRetries; attempt++) {
-      try {
-        const result = await model.generateContent(userQuery)
-        const answer =
-          result.response?.candidates?.[0]?.content?.parts?.map(part => part.text).join('') ?? ''
-
-        console.log('Query received:', userQuery)
-        console.log('Gemini response:', answer)
-
-        res.json({ answer })
-        return
-      } catch (error) {
-        const message = error instanceof Error ? error.message : 'Unknown error'
-        const isRateLimit = message.includes('429') || message.includes('quota')
-
-        if (isRateLimit && attempt < maxRetries) {
-          const delay = (attempt + 1) * 15_000 // 15s, 30s
-          console.warn(
-            `Rate limited (attempt ${attempt + 1}/${maxRetries + 1}), retrying in ${delay / 1000}s...`
-          )
-          await new Promise(resolve => setTimeout(resolve, delay))
-          continue
-        }
-
-        console.error('Gemini AI error:', error)
-        const status = isRateLimit ? 429 : 500
-        res.status(status).json({ answer: `Gemini AI error: ${message}` })
-        return
-      }
+    try {
+      return fetchRequestHandler({
+        // 🎯 THE MATCH: This tells tRPC to strip "/trpc" and find "bot.ask"
+        endpoint: '/trpc',
+        req: new Request(fullUrl, {
+          method: req.method,
+          headers: req.headers as any,
+          body: ['POST', 'PUT', 'PATCH'].includes(req.method) ? (req.rawBody as BodyInit) : null,
+        }),
+        router: appRouter,
+        createContext: () => createContext({ req, res }),
+      }).then(async response => {
+        res.status(response.status)
+        response.headers.forEach((v, k) => res.setHeader(k, v))
+        res.send(await response.text())
+      })
+    } catch (error) {
+      console.error('tRPC Error:', error)
+      res.status(500).send('Internal Server Error')
     }
   }
 )
