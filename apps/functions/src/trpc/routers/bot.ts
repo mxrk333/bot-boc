@@ -29,8 +29,11 @@ async function withRetry<T>(fn: () => Promise<T>, retries = 3, delayMs = 15000):
   for (let i = 0; i < retries; i++) {
     try {
       return await fn()
-    } catch (err: any) {
-      const is429 = err?.stackTrace?.code === 429 || err?.code === 429
+    } catch (err: unknown) {
+      const errorObj = err as Record<string, unknown>
+      const is429 =
+        (errorObj?.stackTrace as { code?: number })?.code === 429 || errorObj?.code === 429
+
       if (is429 && i < retries - 1) {
         const wait = delayMs * (i + 1)
         console.log(`⏳ Rate limited, retrying in ${wait / 1000}s... (attempt ${i + 1}/${retries})`)
@@ -102,12 +105,21 @@ export const botRouter = router({
           })
           .get()
 
+        // Extract unique sources from chunk metadata for attribution
+        const sourcesMap = new Map<string, { name: string; url: string }>()
         const contextText = snapshot.docs
           .map(doc => {
             const data = doc.data()
-            return `--- SOURCE: ${data.metadata?.source || 'BOC Official Document'} ---\n${data.text}`
+            const sourceName = data.metadata?.source || data.source || 'BOC Official Document'
+            const sourceUrl = data.metadata?.url || data.url || ''
+            if (sourceName && !sourcesMap.has(sourceName)) {
+              sourcesMap.set(sourceName, { name: sourceName, url: sourceUrl })
+            }
+            return `--- SOURCE: ${sourceName} ---\n${data.text}`
           })
           .join('\n\n')
+
+        const sources = Array.from(sourcesMap.values())
 
         const chatModel = vertexAI.getGenerativeModel({ model: 'gemini-2.0-flash' })
 
@@ -141,12 +153,12 @@ export const botRouter = router({
         const result = await withRetry(() => chatModel.generateContent(prompt))
 
         const answer =
-          result.response?.candidates?.[0]?.content?.parts?.[0]?.text ||
+          result?.response?.candidates?.[0]?.content?.parts?.[0]?.text ||
           'Pasensya na, hindi ko mahanap ang impormasyon na yan.'
 
         console.log('📤 BOT ANSWERED:', answer.substring(0, 50) + '...')
 
-        return { answer }
+        return { answer, sources }
       } catch (err) {
         console.error('❌ BOT ROUTER ERROR:', err)
         throw new TRPCError({

@@ -3,6 +3,8 @@
  *
  * Enter sends the message; Shift+Enter inserts a newline.
  * The textarea grows up to ~4 lines then scrolls internally.
+ *
+ * Supports a `compact` prop for the inline chat panel (slimmer padding).
  */
 
 import { useRef, useEffect } from 'react'
@@ -15,6 +17,7 @@ interface ChatInputProps {
   onSend: () => void
   disabled?: boolean
   placeholder?: string
+  compact?: boolean
   className?: string
 }
 
@@ -26,6 +29,7 @@ export function ChatInput({
   onSend,
   disabled,
   placeholder = 'Type your question here…',
+  compact = false,
   className,
 }: ChatInputProps) {
   const textareaRef = useRef<HTMLTextAreaElement>(null)
@@ -43,6 +47,34 @@ export function ChatInput({
       e.preventDefault()
       onSend()
     }
+  }
+
+  if (compact) {
+    return (
+      <div
+        className={cn(
+          'flex items-center gap-2 bg-secondary/30 border border-border rounded-xl p-1.5 pl-4 focus-within:ring-2 focus-within:ring-primary/20 focus-within:border-primary transition-all',
+          className
+        )}
+      >
+        <input
+          type="text"
+          value={value}
+          onChange={e => onChange(e.target.value)}
+          onKeyDown={handleKeyDown}
+          placeholder={placeholder}
+          disabled={disabled}
+          className="flex-1 bg-transparent border-none focus:ring-0 focus:outline-none text-sm py-2 text-foreground placeholder:text-muted-foreground"
+        />
+        <button
+          onClick={onSend}
+          disabled={disabled || !value.trim()}
+          className="w-10 h-10 bg-primary text-primary-foreground rounded-lg flex items-center justify-center hover:bg-primary/90 transition-colors shrink-0 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          <span className="material-symbols-outlined text-[20px]">send</span>
+        </button>
+      </div>
+    )
   }
 
   return (

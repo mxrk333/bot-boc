@@ -36,39 +36,38 @@ export function ConversationSidebar({
 
       <aside
         className={cn(
-          'fixed md:static inset-y-0 left-0 z-40',
-          'w-72 bg-card border-r border-border',
+          'fixed md:relative inset-y-0 left-0 z-40',
+          'bg-card border-r border-border shrink-0',
           'flex flex-col',
-          'transition-transform duration-300 ease-in-out',
-          'md:translate-x-0',
-          open ? 'translate-x-0' : '-translate-x-full'
+          'transition-all duration-300 ease-in-out overflow-hidden',
+          open ? 'w-72 translate-x-0 border-r' : 'w-0 -translate-x-full md:translate-x-0 border-r-0'
         )}
       >
         {/* Sidebar header */}
         <div className="flex items-center justify-between px-4 py-3 border-b border-border">
           <h2 className="text-sm font-semibold text-foreground">Conversations</h2>
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-1.5 focus:outline-none focus:ring-0">
             <button
-              onClick={onNew}
+              onClick={onClose}
               className={cn(
                 'size-8 rounded-lg flex items-center justify-center',
                 'hover:bg-muted transition-colors cursor-pointer',
                 'text-muted-foreground hover:text-foreground'
               )}
+              title="Toggle sidebar"
+            >
+              <span className="material-symbols-outlined text-lg">menu</span>
+            </button>
+            <button
+              onClick={onNew}
+              className={cn(
+                'size-8 rounded-lg flex items-center justify-center',
+                'bg-primary/10 hover:bg-primary/20 transition-colors cursor-pointer',
+                'text-primary'
+              )}
               title="New chat"
             >
               <span className="material-symbols-outlined text-lg">add</span>
-            </button>
-            {/* Close button — mobile only */}
-            <button
-              onClick={onClose}
-              className={cn(
-                'size-8 rounded-lg flex items-center justify-center md:hidden',
-                'hover:bg-muted transition-colors cursor-pointer',
-                'text-muted-foreground hover:text-foreground'
-              )}
-            >
-              <span className="material-symbols-outlined text-lg">close</span>
             </button>
           </div>
         </div>

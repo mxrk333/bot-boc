@@ -1,5 +1,7 @@
-// No need to import inferAsyncReturnType anymore
-export async function createContext({ req, res }: { req: any; res: any }) {
+import type { Request } from 'firebase-functions/v2/https'
+import type { Response } from 'express'
+
+export async function createContext({ req, res }: { req: Request; res: Response }) {
   return {
     req,
     res,

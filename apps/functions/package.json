@@ -28,7 +28,9 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@repo/eslint-config": "workspace:^",
     "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
     "esbuild": "^0.27.3",
     "eslint": "^8.57.0",
     "typescript": "5.5.4",

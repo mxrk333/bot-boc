@@ -27,12 +27,21 @@ export const api = onRequest(
     const fullUrl = `http://localhost${req.url}`
 
     try {
+      const headersInit: HeadersInit = {}
+      for (const [key, value] of Object.entries(req.headers)) {
+        if (typeof value === 'string') {
+          headersInit[key] = value
+        } else if (Array.isArray(value)) {
+          headersInit[key] = value.join(', ')
+        }
+      }
+
       return fetchRequestHandler({
         // 🎯 THE MATCH: This tells tRPC to strip "/trpc" and find "bot.ask"
         endpoint: '/trpc',
         req: new Request(fullUrl, {
           method: req.method,
-          headers: req.headers as any,
+          headers: headersInit,
           body: ['POST', 'PUT', 'PATCH'].includes(req.method) ? (req.rawBody as BodyInit) : null,
         }),
         router: appRouter,
