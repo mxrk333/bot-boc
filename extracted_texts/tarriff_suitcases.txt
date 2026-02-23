@@ -1,0 +1,8 @@
+AHTN Code: 4202.11.10
+Product Description: Suitcases and Briefcases (travel bags, luggage)
+Note: Closest available AHTN code for general suitcases and briefcases. 
+Specifically covers dimensions of 56cm x 45cm x 25cm. Other sizes 
+and bag types under heading 42.02 may have different rates.
+Applicable Tariff Rate (MFN): 15%
+Trade Agreement: MFN
+Source: https://finder.tariffcommission.gov.ph/search-by-code
