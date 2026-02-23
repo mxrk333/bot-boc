@@ -1,0 +1,6 @@
+AHTN Code: 6404.11.20
+Product Description: Sports Footwear / Shoes (e.g., tennis shoes, basketball shoes, gym shoes, training shoes)
+Note: Closest available AHTN code for general sports footwear. Exact code 6404.11 is a heading and does not have a directly queryable tariff rate.
+Applicable Tariff Rate (MFN): 15%
+Trade Agreement: MFN
+Source: https://finder.tariffcommission.gov.ph/search-by-code

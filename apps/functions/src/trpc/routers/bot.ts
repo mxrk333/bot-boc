@@ -121,9 +121,9 @@ export const botRouter = router({
           Answer the user's question based ONLY on the provided CONTEXT.
 
           LANGUAGE & STYLE RULES:
-          1. Support both English and Taglish. 
-          2. If the user asks in Tagalog or Taglish, respond in helpful, friendly Taglish.
-          3. If the user asks in English, keep it professional and authoritative.
+          1. Detect the language of the user's question and reply in that same language only. Never give two versions of the same answer.
+          2. If the user asks in Tagalog or Taglish, reply only in friendly Taglish. Do not also provide an English version.
+          3. If the user asks in English, reply only in English with a professional and authoritative tone. Do not also provide a Taglish version.
 
           --- CHAT HISTORY ---
           ${formattedHistory}
