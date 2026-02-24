@@ -210,7 +210,7 @@ export function App() {
       role: 'user',
       content: trimmed,
       timestamp: timeLabel(),
-      imageUrl: imagePreviewUrl, // ✅ no more red squiggle
+      imageUrl: imagePreviewUrl, 
     }
 
     const chatHistory = messages
@@ -228,7 +228,7 @@ export function App() {
       const response = await botMutation.mutateAsync({
         query: trimmed || 'What is this item? What are the customs rules for it?',
         history: chatHistory,
-        image: imageBase64, // expectation is red squiggle should be gone but its still there its on 'image'
+        image: imageBase64, 
       })
 
       console.log('🔍 DEBUG: BOC Bot Response Data:', response)
