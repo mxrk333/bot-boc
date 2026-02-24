@@ -142,6 +142,90 @@ export const botRouter = router({
 
         console.log('Vector length:', queryVector.length)
 
+        /* -------------------------------------------------------------- */
+        /*  Source Registry — maps known doc labels to display names/URLs  */
+        /* -------------------------------------------------------------- */
+        const SOURCE_REGISTRY: Record<string, { name: string; url: string }> = {
+          // Major BOC laws / orders (from PDF ingest)
+          'CMTA-RA-10863': {
+            name: 'CMTA RA 10863',
+            url: 'https://customs.gov.ph/wp-content/uploads/2023/01/CMTA-RA-10863-2.pdf',
+          },
+          CMTA_RA_10863: {
+            name: 'CMTA RA 10863',
+            url: 'https://customs.gov.ph/wp-content/uploads/2023/01/CMTA-RA-10863-2.pdf',
+          },
+          DE_MINIMIS_CAO_02_2016: {
+            name: 'CAO 02-2016 (De Minimis)',
+            url: 'https://customs.gov.ph/wp-content/uploads/2023/01/CAO-2-2016-ONAR-DE-MINIMIS.pdf',
+          },
+          CAO_DE_MINIMIS: {
+            name: 'CAO 02-2016 (De Minimis)',
+            url: 'https://customs.gov.ph/wp-content/uploads/2023/01/CAO-2-2016-ONAR-DE-MINIMIS.pdf',
+          },
+          'CMO-18-2018_GUIDELINES_ON_THE_IMPLEMENTATION_OF_CAO_NO_1_2018_ON_AMENDED_RULES_ON_BALIKBAYAN_BOXES':
+            {
+              name: 'CMO 18-2018 (Balikbayan Boxes)',
+              url: 'https://customs.gov.ph/wp-content/uploads/2023/01/cmo-18-2018_Guidelines_on_the_Implementation_of_CAO_No_1_2018_on_Amended_Rules_on_Balikbayan_Boxes.pdf',
+            },
+          // Tariff data files (from batch-seed)
+          TARIFF_SMARTPHONES: {
+            name: 'Tariff: Smartphones',
+            url: 'https://finder.tariffcommission.gov.ph/search-by-code',
+          },
+          TARRIFF_SHOES: {
+            name: 'Tariff: Shoes',
+            url: 'https://finder.tariffcommission.gov.ph/search-by-code',
+          },
+          TARRIFF_COCOA_POWDER: {
+            name: 'Tariff: Cocoa Powder',
+            url: 'https://finder.tariffcommission.gov.ph/search-by-code',
+          },
+          TARRIFF_LAPTOPS: {
+            name: 'Tariff: Laptops',
+            url: 'https://finder.tariffcommission.gov.ph/search-by-code',
+          },
+          TARRIFF_PERFUMES: {
+            name: 'Tariff: Perfumes',
+            url: 'https://finder.tariffcommission.gov.ph/search-by-code',
+          },
+          TARRIFF_SUITCASES: {
+            name: 'Tariff: Suitcases',
+            url: 'https://finder.tariffcommission.gov.ph/search-by-code',
+          },
+          TARRIFF_TELEVISION: {
+            name: 'Tariff: Television',
+            url: 'https://finder.tariffcommission.gov.ph/search-by-code',
+          },
+          TARRIFF_VITAMIN_C: {
+            name: 'Tariff: Vitamin C',
+            url: 'https://finder.tariffcommission.gov.ph/search-by-code',
+          },
+        }
+
+        /** Attempt to resolve a source label to a display entry. */
+        const resolveSource = (label: string): { name: string; url: string } | null => {
+          // Direct match first
+          if (SOURCE_REGISTRY[label]) return SOURCE_REGISTRY[label]
+
+          // Case-insensitive match
+          const upper = label.toUpperCase()
+          const match = Object.keys(SOURCE_REGISTRY).find(k => k.toUpperCase() === upper)
+          if (match) return SOURCE_REGISTRY[match]
+
+          // Partial / fuzzy fallback — check if any registry key is contained
+          const fuzzy = Object.keys(SOURCE_REGISTRY).find(
+            k => upper.includes(k.toUpperCase()) || k.toUpperCase().includes(upper)
+          )
+          if (fuzzy) return SOURCE_REGISTRY[fuzzy]
+
+          // Unknown source — still show it generically so it's never silently dropped
+          return { name: label.replace(/_/g, ' '), url: '' }
+        }
+
+        /* -------------------------------------------------------------- */
+        /*  Vector similarity search                                       */
+        /* -------------------------------------------------------------- */
         const collectionRef = db.collection('faq_chunks')
         const snapshot = await collectionRef
           .findNearest({
@@ -152,47 +236,46 @@ export const botRouter = router({
           })
           .get()
 
-        // User explicitly requested to use these static sources instead of Firebase metadata
-        const STATIC_SOURCES = [
-          {
-            name: 'CMTA RA 10863',
-            url: 'https://customs.gov.ph/wp-content/uploads/2023/01/CMTA-RA-10863-2.pdf',
-            description:
-              'The main customs law, covers everything from duties, taxes, penalties, to OFW exemptions',
-          },
-          {
-            name: 'CMO 18-2018',
-            url: 'https://customs.gov.ph/wp-content/uploads/2023/01/cmo-18-2018_Guidelines_on_the_Implementation_of_CAO_No_1_2018_on_Amended_Rules_on_Balikbayan_Boxes.pdf',
-            description:
-              'This is the updated guide specifically for Balikbayan boxes. It tells customs officers (and senders) exactly how to process, check, and grant exemptions for Balikbayan box shipments.',
-          },
-          {
-            name: 'CAO-2-2016-ONAR-DE-MINIMIS',
-            url: 'https://customs.gov.ph/wp-content/uploads/2023/01/CAO-2-2016-ONAR-DE-MINIMIS.pdf',
-            description:
-              "This is the rule that says if your package is worth PHP 10,000 or below, you don't have to pay any duties or taxes. Simple as that — small shipments get a free pass.",
-          },
-          {
-            name: 'About Tariff',
-            url: 'https://finder.tariffcommission.gov.ph/search-by-code',
-            description:
-              'Philippine Tariff Finder is an online tool that helps you find the tariff rate for a specific product. It is a free service provided by the Philippine Tariff Commission.',
-          },
-        ]
+        /* -------------------------------------------------------------- */
+        /*  Build context text AND extract dynamic sources                 */
+        /* -------------------------------------------------------------- */
+        const seenSourceKeys = new Set<string>()
+        const dynamicSources: { name: string; url: string }[] = []
 
         const contextText = snapshot.docs
           .map(doc => {
             const data = doc.data()
-            return `--- FIREBASE CONTEXT CHUNK ---\n${data.text}`
+            const sourceLabel: string = data.metadata?.source || ''
+            const page: number | undefined = data.metadata?.page ?? data.metadata?.chunk_index
+
+            // Track unique sources for the response
+            if (sourceLabel && !seenSourceKeys.has(sourceLabel.toUpperCase())) {
+              seenSourceKeys.add(sourceLabel.toUpperCase())
+              const resolved = resolveSource(sourceLabel)
+              if (resolved) dynamicSources.push(resolved)
+            }
+
+            const attribution = sourceLabel
+              ? `[Source: ${sourceLabel}${page !== undefined ? `, page/chunk ${page}` : ''}]`
+              : ''
+            return `--- CONTEXT CHUNK ${attribution} ---\n${data.text}`
           })
           .join('\n\n')
 
-        const staticSourcesContext = STATIC_SOURCES.map(
-          s => `--- SOURCE OVERVIEW: ${s.name} ---\n${s.description}`
-        ).join('\n\n')
+        // Deduplicate by name (some labels map to the same display name)
+        const uniqueSources = Array.from(
+          dynamicSources
+            .reduce((map, s) => {
+              if (!map.has(s.name)) map.set(s.name, s)
+              return map
+            }, new Map<string, { name: string; url: string }>())
+            .values()
+        )
 
-        // We now always return these fixed sources to the frontend as requested
-        const sources = STATIC_SOURCES.map(s => ({ name: s.name, url: s.url }))
+        console.log(
+          '📚 Dynamic sources from vector search:',
+          uniqueSources.map(s => s.name)
+        )
 
         const chatModel = vertexAI.getGenerativeModel({ model: 'gemini-2.0-flash' })
 
@@ -200,6 +283,8 @@ export const botRouter = router({
           input.history
             ?.map(h => `${h.role === 'user' ? 'Customer' : 'Assistant'}: ${h.text}`)
             .join('\n') || 'No previous history.'
+
+        const sourceList = uniqueSources.map(s => `• ${s.name}`).join('\n')
 
         const prompt = `
           You are an expert Philippine Bureau of Customs (BOC) Assistant. 
@@ -210,14 +295,15 @@ export const botRouter = router({
           2. If the user asks in Tagalog or Taglish, reply only in friendly Taglish. Do not also provide an English version.
           3. If the user asks in English, reply only in English with a professional and authoritative tone. Do not also provide a Taglish version.
 
+          AVAILABLE REFERENCE DOCUMENTS (from context):
+          ${sourceList || 'No specific source documents matched.'}
+
           ${imageDescription ? `IDENTIFIED ITEM FROM IMAGE: ${imageDescription}` : ''}
 
           --- CHAT HISTORY ---
           ${formattedHistory}
 
-          --- CONTEXT FROM BOC LAWS ---
-          ${staticSourcesContext}
-
+          --- CONTEXT FROM BOC DOCUMENTS ---
           ${contextText}
 
           USER QUESTION: 
@@ -235,7 +321,7 @@ export const botRouter = router({
 
         console.log('📤 BOT ANSWERED:', answer.substring(0, 50) + '...')
 
-        return { answer, sources }
+        return { answer, sources: uniqueSources }
       } catch (err) {
         console.error('❌ BOT ROUTER ERROR:', err)
         throw new TRPCError({
