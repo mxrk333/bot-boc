@@ -30,6 +30,7 @@ import { TariffCalculatorInline } from './components/TariffCalculatorInline'
 import { TermsOfServiceModal } from './components/TermsOfServiceModal'
 import { PrivacyPolicyModal } from './components/PrivacyPolicyModal'
 import { SuggestionCard } from './components/SuggestionCard'
+import { ThemeToggle } from './components/ThemeToggle'
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
@@ -158,26 +159,70 @@ export function App() {
     prevUserRef.current = user
   }, [user])
 
-  /* ---- Load a saved conversation ---- */
-  const loadConversation = useCallback(async (convId: string) => {
-    try {
-      const snap = await getDoc(doc(db, 'conversations', convId))
-      if (snap.exists()) {
-        const msgs: Message[] = snap.data().messages || []
-        setMessages(msgs.length > 0 ? msgs : [WELCOME_MESSAGE])
-        setActiveConvId(convId)
+  /* ---- Clean up an empty conversation when navigating away from it ---- */
+  const cleanupEmptyConversation = useCallback(
+    async (convId: string | null) => {
+      if (!convId || !user) return
+      const conv = conversations.find(c => c.id === convId)
+      if (conv && conv.messageCount === 0) {
+        try {
+          await deleteConversation(convId)
+        } catch {
+          // silent — best effort cleanup
+        }
       }
-    } catch (err) {
-      console.error('Failed to load conversation:', err)
-    }
-  }, [])
+    },
+    [user, conversations, deleteConversation]
+  )
 
-  /* ---- Reset to a blank chat ---- */
-  const startNewChat = useCallback(() => {
+  /* ---- Load a saved conversation ---- */
+  const loadConversation = useCallback(
+    async (convId: string) => {
+      // Clean up the current conversation if it's empty before switching
+      await cleanupEmptyConversation(activeConvId)
+
+      try {
+        const snap = await getDoc(doc(db, 'conversations', convId))
+        if (snap.exists()) {
+          const msgs: Message[] = snap.data().messages || []
+          setMessages(msgs.length > 0 ? msgs : [WELCOME_MESSAGE])
+          setActiveConvId(convId)
+        }
+      } catch (err) {
+        console.error('Failed to load conversation:', err)
+      }
+    },
+    [activeConvId, cleanupEmptyConversation]
+  )
+
+  /* ---- Create a new chat and immediately show it in the sidebar ---- */
+  const startNewChat = useCallback(async () => {
+    // If we're already on an empty "New chat", just reset — don't create another
+    if (activeConvId) {
+      const current = conversations.find(c => c.id === activeConvId)
+      if (current && current.messageCount === 0) {
+        setMessages([WELCOME_MESSAGE])
+        setQuery('')
+        return
+      }
+    }
+
     setMessages([WELCOME_MESSAGE])
-    setActiveConvId(null)
     setQuery('')
-  }, [])
+
+    if (user) {
+      try {
+        const newId = await createConversation('New chat')
+        setActiveConvId(newId)
+        setSidebarOpen(true)
+      } catch (err) {
+        console.error('Failed to create new conversation:', err)
+        setActiveConvId(null)
+      }
+    } else {
+      setActiveConvId(null)
+    }
+  }, [user, activeConvId, conversations, createConversation])
 
   function fileToBase64(file: File): Promise<string> {
     return new Promise((resolve, reject) => {
@@ -367,6 +412,8 @@ export function App() {
               <span className="material-symbols-outlined text-base">calculate</span>
               <span className="hidden sm:inline">Tariff Calculator</span>
             </button>
+
+            <ThemeToggle />
 
             {isLoggedIn ? (
               <>

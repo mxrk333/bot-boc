@@ -167,8 +167,48 @@ export function ChatInput({
 
   return (
     <div className={cn('flex flex-col gap-2 w-full', className)}>
-      <div className={cn('relative flex items-center gap-2')}>
-        <div className="relative shrink-0">
+      <div className={cn('relative flex items-center w-full')}>
+        {attachedImage && (
+          <div className="absolute left-10 bottom-full mb-2 z-10 bg-card p-1 rounded-xl shadow-lg border border-border animate-in fade-in slide-in-from-bottom-2">
+            <div className="relative">
+              <img
+                src={attachedImage}
+                alt="preview"
+                className="h-16 w-16 object-cover rounded-lg"
+              />
+              <button
+                onClick={() => {
+                  setAttachedImage(null)
+                  setAttachedFile(null)
+                }}
+                className="absolute -top-2 -right-2 bg-slate-800 text-white w-5 h-5 rounded-full flex items-center justify-center shadow-md hover:bg-slate-700 transition-colors cursor-pointer"
+                title="Remove attachment"
+              >
+                <span className="material-symbols-outlined text-[14px]">close</span>
+              </button>
+            </div>
+          </div>
+        )}
+
+        <textarea
+          ref={textareaRef}
+          value={value}
+          onChange={e => onChange(e.target.value)}
+          onKeyDown={handleKeyDown}
+          placeholder={placeholder}
+          disabled={disabled}
+          rows={1}
+          className={cn(
+            'w-full resize-none bg-card border border-border shadow-lg transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary disabled:opacity-50',
+            'text-foreground placeholder:text-muted-foreground',
+            compact
+              ? 'pl-11 pr-12 py-3 rounded-xl min-h-[44px] text-[13px]'
+              : 'pl-12 pr-14 py-4 rounded-2xl min-h-[56px] text-sm'
+          )}
+        />
+
+        {/* Attach Button (Inside left) */}
+        <div className="absolute left-1.5 top-1/2 -translate-y-1/2 z-10 flex">
           <button
             type="button"
             onClick={() => {
@@ -180,8 +220,8 @@ export function ChatInput({
             }}
             disabled={disabled}
             className={cn(
-              'flex items-center justify-center bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-400 hover:text-primary hover:border-primary/30 transition-all shrink-0 shadow-sm disabled:opacity-50 disabled:cursor-not-allowed',
-              compact ? 'size-10 rounded-xl' : 'size-12 rounded-2xl'
+              'flex items-center justify-center text-slate-400 hover:text-primary hover:bg-muted transition-all shrink-0 disabled:opacity-50 disabled:cursor-not-allowed',
+              compact ? 'size-8 rounded-lg' : 'size-10 rounded-xl'
             )}
             aria-label="Attach file"
           >
@@ -212,58 +252,20 @@ export function ChatInput({
           )}
         </div>
 
-        <div className="relative flex-1 flex items-center">
-          {attachedImage && (
-            <div className="absolute left-4 bottom-full mb-2 z-10 bg-card p-1 rounded-xl shadow-lg border border-border animate-in fade-in slide-in-from-bottom-2">
-              <div className="relative">
-                <img
-                  src={attachedImage}
-                  alt="preview"
-                  className="h-16 w-16 object-cover rounded-lg"
-                />
-                <button
-                  onClick={() => {
-                    setAttachedImage(null)
-                    setAttachedFile(null)
-                  }}
-                  className="absolute -top-2 -right-2 bg-slate-800 text-white w-5 h-5 rounded-full flex items-center justify-center shadow-md hover:bg-slate-700 transition-colors cursor-pointer"
-                  title="Remove attachment"
-                >
-                  <span className="material-symbols-outlined text-[14px]">close</span>
-                </button>
-              </div>
-            </div>
+        {/* Send button (right) */}
+        <IconButton
+          icon="send"
+          onClick={() => doSend()}
+          disabled={disabled || !value.trim()}
+          className={cn(
+            'absolute bg-primary hover:bg-primary/90 text-primary-foreground shadow-md hover:scale-105 active:scale-95 z-10',
+            compact
+              ? 'right-1.5 top-1/2 -translate-y-1/2 size-[32px]'
+              : 'right-1.5 top-1/2 -translate-y-1/2'
           )}
-          <textarea
-            ref={textareaRef}
-            value={value}
-            onChange={e => onChange(e.target.value)}
-            onKeyDown={handleKeyDown}
-            placeholder={placeholder}
-            disabled={disabled}
-            rows={1}
-            className={cn(
-              'w-full resize-none bg-card border border-border shadow-lg transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary disabled:opacity-50',
-              'text-foreground placeholder:text-muted-foreground',
-              compact
-                ? 'pl-4 pr-12 py-3 rounded-xl min-h-[44px] text-[13px]'
-                : 'pl-5 pr-14 py-4 rounded-2xl min-h-[56px] text-sm'
-            )}
-          />
-
-          {/* Send button (right) */}
-          <IconButton
-            icon="send"
-            onClick={() => doSend()}
-            disabled={disabled || !value.trim()}
-            className={cn(
-              'absolute bg-primary hover:bg-primary/90 text-primary-foreground shadow-md hover:scale-105 active:scale-95 z-10',
-              compact ? 'right-1.5 bottom-1.5 size-[32px]' : 'right-2 bottom-2'
-            )}
-            size={compact ? undefined : 'sm'}
-            aria-label="Send message"
-          />
-        </div>
+          size={compact ? undefined : 'sm'}
+          aria-label="Send message"
+        />
       </div>
 
       {showWarning && (

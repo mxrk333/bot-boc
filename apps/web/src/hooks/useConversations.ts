@@ -104,14 +104,25 @@ export function useConversations(uid: string | undefined) {
     async (conversationId: string, messages: ChatMessage[], title?: string) => {
       if (!uid) return
 
-      const payload: {
-        messages: ChatMessage[]
-        messageCount: number
-        updatedAt: ReturnType<typeof serverTimestamp>
-        title?: string
-      } = {
-        messages,
-        messageCount: messages.length,
+      // Firestore rejects explicitly `undefined` properties.
+      // We must strip them out (e.g., `imageUrl` if it wasn't provided).
+      const cleanMessages = messages.map(m => {
+        const clean: Partial<ChatMessage> = {
+          id: m.id,
+          role: m.role,
+          content: m.content,
+          timestamp: m.timestamp,
+        }
+        if (m.imageUrl !== undefined) {
+          clean.imageUrl = m.imageUrl
+        }
+        return clean as ChatMessage
+      })
+
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const payload: Record<string, any> = {
+        messages: cleanMessages,
+        messageCount: cleanMessages.length,
         updatedAt: serverTimestamp(),
       }
       if (title) payload.title = title

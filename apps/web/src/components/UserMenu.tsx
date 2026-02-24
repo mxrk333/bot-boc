@@ -2,7 +2,7 @@
  * User avatar + dropdown menu (header, top-right).
  *
  * Shows the user's photo or initials. Clicking opens a dropdown
- * with their name, email, and a logout button.
+ * with their name, email, appearance toggle, and a logout button.
  * Closes on outside click.
  */
 
@@ -10,9 +10,11 @@ import { useState, useRef, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { cn } from '@repo/ui/utils'
 import { useAuth } from '../hooks/useAuth'
+import { useTheme } from '../hooks/useTheme'
 
 export function UserMenu() {
   const { user, logout } = useAuth()
+  const { theme, setTheme } = useTheme()
   const navigate = useNavigate()
   const [open, setOpen] = useState(false)
   const menuRef = useRef<HTMLDivElement>(null)
@@ -45,6 +47,12 @@ export function UserMenu() {
     navigate('/')
   }
 
+  const themeOptions = [
+    { value: 'light' as const, icon: 'light_mode', label: 'Light' },
+    { value: 'dark' as const, icon: 'dark_mode', label: 'Dark' },
+    { value: 'system' as const, icon: 'desktop_windows', label: 'System' },
+  ]
+
   return (
     <div className="relative" ref={menuRef}>
       {/* Avatar trigger */}
@@ -68,7 +76,8 @@ export function UserMenu() {
 
       {/* Dropdown panel */}
       {open && (
-        <div className="absolute right-0 top-12 w-64 rounded-xl border border-border bg-card shadow-xl z-50 overflow-hidden animate-in fade-in slide-in-from-top-1 duration-150">
+        <div className="absolute right-0 top-12 w-72 rounded-xl border border-border bg-card shadow-xl z-50 overflow-hidden animate-in fade-in slide-in-from-top-1 duration-150">
+          {/* User info */}
           <div className="px-4 py-3 border-b border-border">
             <p className="text-sm font-semibold text-foreground truncate">
               {user.displayName || 'User'}
@@ -76,6 +85,31 @@ export function UserMenu() {
             <p className="text-xs text-muted-foreground truncate">{user.email}</p>
           </div>
 
+          {/* Appearance section */}
+          <div className="px-4 py-3 border-b border-border">
+            <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-2">
+              Appearance
+            </p>
+            <div className="flex items-center gap-1 bg-muted/50 rounded-lg p-1">
+              {themeOptions.map(opt => (
+                <button
+                  key={opt.value}
+                  onClick={() => setTheme(opt.value)}
+                  className={cn(
+                    'flex-1 flex items-center justify-center gap-1.5 px-2 py-1.5 rounded-md text-xs font-medium transition-all cursor-pointer',
+                    theme === opt.value
+                      ? 'bg-card text-foreground shadow-sm'
+                      : 'text-muted-foreground hover:text-foreground'
+                  )}
+                >
+                  <span className="material-symbols-outlined text-sm">{opt.icon}</span>
+                  {opt.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Logout */}
           <div className="p-1.5">
             <button
               onClick={handleLogout}

@@ -152,21 +152,47 @@ export const botRouter = router({
           })
           .get()
 
-        // Extract unique sources from chunk metadata for attribution
-        const sourcesMap = new Map<string, { name: string; url: string }>()
+        // User explicitly requested to use these static sources instead of Firebase metadata
+        const STATIC_SOURCES = [
+          {
+            name: 'CMTA RA 10863',
+            url: 'https://customs.gov.ph/wp-content/uploads/2023/01/CMTA-RA-10863-2.pdf',
+            description:
+              'The main customs law, covers everything from duties, taxes, penalties, to OFW exemptions',
+          },
+          {
+            name: 'CMO 18-2018',
+            url: 'https://customs.gov.ph/wp-content/uploads/2023/01/cmo-18-2018_Guidelines_on_the_Implementation_of_CAO_No_1_2018_on_Amended_Rules_on_Balikbayan_Boxes.pdf',
+            description:
+              'This is the updated guide specifically for Balikbayan boxes. It tells customs officers (and senders) exactly how to process, check, and grant exemptions for Balikbayan box shipments.',
+          },
+          {
+            name: 'CAO-2-2016-ONAR-DE-MINIMIS',
+            url: 'https://customs.gov.ph/wp-content/uploads/2023/01/CAO-2-2016-ONAR-DE-MINIMIS.pdf',
+            description:
+              "This is the rule that says if your package is worth PHP 10,000 or below, you don't have to pay any duties or taxes. Simple as that — small shipments get a free pass.",
+          },
+          {
+            name: 'About Tariff',
+            url: 'https://finder.tariffcommission.gov.ph/search-by-code',
+            description:
+              'Philippine Tariff Finder is an online tool that helps you find the tariff rate for a specific product. It is a free service provided by the Philippine Tariff Commission.',
+          },
+        ]
+
         const contextText = snapshot.docs
           .map(doc => {
             const data = doc.data()
-            const sourceName = data.metadata?.source || data.source || 'BOC Official Document'
-            const sourceUrl = data.metadata?.url || data.url || ''
-            if (sourceName && !sourcesMap.has(sourceName)) {
-              sourcesMap.set(sourceName, { name: sourceName, url: sourceUrl })
-            }
-            return `--- SOURCE: ${sourceName} ---\n${data.text}`
+            return `--- FIREBASE CONTEXT CHUNK ---\n${data.text}`
           })
           .join('\n\n')
 
-        const sources = Array.from(sourcesMap.values())
+        const staticSourcesContext = STATIC_SOURCES.map(
+          s => `--- SOURCE OVERVIEW: ${s.name} ---\n${s.description}`
+        ).join('\n\n')
+
+        // We now always return these fixed sources to the frontend as requested
+        const sources = STATIC_SOURCES.map(s => ({ name: s.name, url: s.url }))
 
         const chatModel = vertexAI.getGenerativeModel({ model: 'gemini-2.0-flash' })
 
@@ -190,6 +216,8 @@ export const botRouter = router({
           ${formattedHistory}
 
           --- CONTEXT FROM BOC LAWS ---
+          ${staticSourcesContext}
+
           ${contextText}
 
           USER QUESTION: 
