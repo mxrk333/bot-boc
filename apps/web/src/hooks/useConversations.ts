@@ -31,6 +31,7 @@ export interface ChatMessage {
   role: 'bot' | 'user'
   content: string
   timestamp: string
+  imageUrl?: string
 }
 
 export interface Conversation {

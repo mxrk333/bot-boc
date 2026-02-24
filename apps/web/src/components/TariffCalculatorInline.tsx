@@ -22,22 +22,14 @@ interface TariffItem {
 const TARIFF_ITEMS: TariffItem[] = [
   { label: 'Cocoa powder, containing added sugar or other sweetening matter', rate: 7, year: 2025 },
   { label: 'Laptops including notebooks and subnotebooks', rate: 0, year: 2026 },
-  { label: 'Perfumes and toilet waters', rate: 7, year: 2025 },
-  { label: 'Smartphones', rate: 0, year: 2025 },
-  { label: 'Suit-Case or brief-case (max 56x45x25 cm)', rate: 15, year: 2025 },
-  { label: 'Transmission Apparatus', rate: 0, year: 2025 },
-  { label: 'Vitamin C and its derivatives', rate: 1, year: 2025 },
+  { label: 'Perfumes and toilet waters', rate: 7, year: 2026 },
+  { label: 'Smartphones', rate: 0, year: 2026 },
+  { label: 'Suit-Case or brief-case (max 56x45x25 cm)', rate: 15, year: 2026 },
+  { label: 'Television sets (colour, for home use)', rate: 15, year: 2026 },
+  { label: 'Vitamin C and its derivatives', rate: 1, year: 2026 },
 ]
 
-const TRADE_AGREEMENTS = [
-  'MFN (Most Favoured Nation)',
-  'ATIGA (ASEAN Goods)',
-  'ACFTA (ASEAN-China)',
-  'AKFTA (ASEAN-Korea)',
-  'AJCEP (ASEAN-Japan)',
-  'AIFTA (ASEAN-India)',
-  'AANZFTA (ASEAN-AUS-NZ)',
-]
+const TRADE_AGREEMENTS = ['MFN (Most Favoured Nation)']
 
 const MAX_DECLARED_VALUE = 100_000_000 // 100M PHP limit
 const MIN_DECLARED_VALUE = 1 // Minimum 1 PHP

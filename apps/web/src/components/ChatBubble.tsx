@@ -27,6 +27,7 @@ interface ChatBubbleProps {
   children: React.ReactNode
   timestamp?: string
   sources?: Source[]
+  imageUrl?: string
   compact?: boolean
   className?: string
 }
@@ -36,6 +37,7 @@ export function ChatBubble({
   children,
   timestamp,
   sources,
+  imageUrl,
   compact = false,
   className,
 }: ChatBubbleProps) {
@@ -82,6 +84,12 @@ export function ChatBubble({
                 )
           )}
         >
+          {imageUrl && (
+            <div className="mb-3 rounded-lg overflow-hidden border border-black/10 dark:border-white/10 max-w-xs">
+              <img src={imageUrl} alt="Attached" className="w-full h-auto object-cover" />
+            </div>
+          )}
+
           {/* Bot messages: render markdown. User messages: plain text. */}
           {isBot && typeof children === 'string' ? (
             <div className="prose prose-sm max-w-none text-card-foreground break-words">

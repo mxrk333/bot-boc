@@ -14,10 +14,11 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { doc, getDoc } from 'firebase/firestore'
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'
 import { cn } from '@repo/ui/utils'
 import './style.css'
 import { trpc } from './lib/trpc' // or wherever it's pointing // Adjust path if needed
-import { db } from './lib/firebase'
+import { db, storage } from './lib/firebase'
 import { useAuth } from './hooks/useAuth'
 import { useConversations, type ChatMessage } from './hooks/useConversations'
 import { AuthButton } from './components/AuthButton'
@@ -43,6 +44,7 @@ interface Message {
   content: string
   timestamp: string
   sources?: Source[]
+  imageUrl?: string
 }
 
 /* ------------------------------------------------------------------ */
@@ -65,8 +67,8 @@ const QUICK_CHIPS = [
     prompt: 'What are the standard Balikbayan box size and weight limits?',
   },
   {
-    label: '🥫 Prohibited Food Items',
-    prompt: 'What food items are prohibited in Balikbayan boxes?',
+    label: '🥫 Prohibited Items ',
+    prompt: 'What items are prohibited in Balikbayan boxes?',
   },
   {
     label: '📱 Sending Gadgets',
@@ -174,15 +176,31 @@ export function App() {
   }, [])
 
   /* ---- Send a message ---- */
-  const send = async (text: string) => {
+  const send = async (text: string, file?: File | null) => {
     const trimmed = text.trim()
-    if (!trimmed || loading) return
+    if ((!trimmed && !file) || loading) return
+
+    setLoading(true)
+
+    let uploadedImageUrl: string | undefined
+    if (file) {
+      try {
+        const ext = file.name.split('.').pop() || 'jpg'
+        const uidSegment = user?.uid || 'anonymous'
+        const storageRef = ref(storage, `chat-attachments/${uidSegment}/${createId()}.${ext}`)
+        await uploadBytes(storageRef, file)
+        uploadedImageUrl = await getDownloadURL(storageRef)
+      } catch (err) {
+        console.error('Image upload failed:', err)
+      }
+    }
 
     const userMsg: Message = {
       id: createId(),
       role: 'user',
       content: trimmed,
       timestamp: timeLabel(),
+      imageUrl: uploadedImageUrl,
     }
 
     const chatHistory = messages
@@ -195,7 +213,6 @@ export function App() {
     const newMessages = [...messages, userMsg]
     setMessages(newMessages)
     setQuery('')
-    setLoading(true)
 
     try {
       const response = await botMutation.mutateAsync({
@@ -219,7 +236,13 @@ export function App() {
       if (user) {
         const chatMsgs: ChatMessage[] = finalMessages
           .filter(m => m.id !== 'welcome')
-          .map(m => ({ id: m.id, role: m.role, content: m.content, timestamp: m.timestamp }))
+          .map(m => ({
+            id: m.id,
+            role: m.role,
+            content: m.content,
+            timestamp: m.timestamp,
+            imageUrl: m.imageUrl,
+          }))
 
         const firstUserMsg = finalMessages.find(m => m.role === 'user')
         const title = firstUserMsg ? titleFromMessage(firstUserMsg.content) : 'New chat'
@@ -439,6 +462,7 @@ export function App() {
                       role={msg.role}
                       timestamp={msg.timestamp}
                       sources={msg.sources}
+                      imageUrl={msg.imageUrl}
                       compact={calculatorOpen}
                     >
                       {msg.content}
@@ -516,7 +540,7 @@ export function App() {
               </a>
               <a
                 className="text-xs text-muted-foreground hover:text-primary transition-colors"
-                href="#"
+                href="https://client.customs.gov.ph/"
               >
                 Official Portal
               </a>
