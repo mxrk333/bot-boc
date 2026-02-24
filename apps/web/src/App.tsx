@@ -14,11 +14,10 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { doc, getDoc } from 'firebase/firestore'
-import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'
 import { cn } from '@repo/ui/utils'
 import './style.css'
 import { trpc } from './lib/trpc' // or wherever it's pointing // Adjust path if needed
-import { db, storage } from './lib/firebase'
+import { db } from './lib/firebase'
 import { useAuth } from './hooks/useAuth'
 import { useConversations, type ChatMessage } from './hooks/useConversations'
 import { AuthButton } from './components/AuthButton'
@@ -175,6 +174,18 @@ export function App() {
     setQuery('')
   }, [])
 
+   function fileToBase64(file: File): Promise<string> {
+     return new Promise((resolve, reject) => {
+       const reader = new FileReader()
+       reader.onload = () => {
+         const base64 = (reader.result as string).split(',')[1]
+         resolve(base64)
+       }
+       reader.onerror = reject
+       reader.readAsDataURL(file)
+     })
+   }
+
   /* ---- Send a message ---- */
   const send = async (text: string, file?: File | null) => {
     const trimmed = text.trim()
@@ -182,16 +193,15 @@ export function App() {
 
     setLoading(true)
 
-    let uploadedImageUrl: string | undefined
+    // Convert file to base64 first (used for both preview and backend)
+    let imageBase64: string | undefined
+    let imagePreviewUrl: string | undefined
     if (file) {
       try {
-        const ext = file.name.split('.').pop() || 'jpg'
-        const uidSegment = user?.uid || 'anonymous'
-        const storageRef = ref(storage, `chat-attachments/${uidSegment}/${createId()}.${ext}`)
-        await uploadBytes(storageRef, file)
-        uploadedImageUrl = await getDownloadURL(storageRef)
+        imageBase64 = await fileToBase64(file)
+        imagePreviewUrl = `data:${file.type};base64,${imageBase64}` // for display in chat
       } catch (err) {
-        console.error('Image upload failed:', err)
+        console.error('Failed to convert image to base64:', err)
       }
     }
 
@@ -200,7 +210,7 @@ export function App() {
       role: 'user',
       content: trimmed,
       timestamp: timeLabel(),
-      imageUrl: uploadedImageUrl,
+      imageUrl: imagePreviewUrl, // ✅ no more red squiggle
     }
 
     const chatHistory = messages
@@ -216,9 +226,11 @@ export function App() {
 
     try {
       const response = await botMutation.mutateAsync({
-        query: trimmed,
+        query: trimmed || 'What is this item? What are the customs rules for it?',
         history: chatHistory,
+        image: imageBase64, // expectation is red squiggle should be gone but its still there its on 'image'
       })
+
       console.log('🔍 DEBUG: BOC Bot Response Data:', response)
 
       const botMsg: Message = {
@@ -232,7 +244,6 @@ export function App() {
       const finalMessages = [...newMessages, botMsg]
       setMessages(finalMessages)
 
-      // Persist to Firestore
       if (user) {
         const chatMsgs: ChatMessage[] = finalMessages
           .filter(m => m.id !== 'welcome')
@@ -502,7 +513,7 @@ export function App() {
                   <ChatInput
                     value={query}
                     onChange={setQuery}
-                    onSend={() => send(query)}
+                    onSend={file => send(query, file)}
                     disabled={loading}
                     placeholder="Ask about tariffs..."
                     compact={calculatorOpen}
