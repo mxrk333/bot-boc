@@ -52,6 +52,7 @@ export const botRouter = router({
     .input(
       z.object({
         query: z.string(),
+        image: z.string().optional(), // base64 encoded image
         history: z
           .array(
             z.object({
@@ -66,6 +67,52 @@ export const botRouter = router({
       console.log('📥 RECEIVED QUERY:', input.query)
 
       try {
+        let imageDescription = ''
+        let searchQuery = input.query
+
+        // If image is provided, identify it with Gemini Vision first
+        if (input.image) {
+          console.log('🖼️ Image received, identifying with Gemini Vision...')
+          const visionModel = vertexAI.getGenerativeModel({ model: 'gemini-2.0-flash' })
+          const visionResult = await withRetry(() =>
+            visionModel.generateContent({
+              contents: [
+                {
+                  role: 'user',
+                  parts: [
+                    {
+                      inlineData: {
+                        mimeType: 'image/jpeg',
+                        data: input.image!,
+                      },
+                    },
+                    {
+                      text: `Look at this image and identify the item.
+                      Return ONLY a JSON object in this exact format, no markdown, no backticks:
+                      {"item": "item name here", "category": "category here"}`,
+                    },
+                  ],
+                },
+              ],
+            })
+          )
+
+          const visionText = visionResult.response?.candidates?.[0]?.content?.parts?.[0]?.text || ''
+          console.log('🔍 Vision raw response:', visionText)
+
+          try {
+            const parsed = JSON.parse(visionText.trim())
+            imageDescription = `${parsed.item} (${parsed.category})`
+            // Combine image item + user query for richer vector search
+            searchQuery = `${parsed.item} ${input.query} balikbayan tariff rate`
+            console.log('✅ Identified item:', imageDescription)
+          } catch {
+            // If JSON parse fails, just use the raw vision text
+            imageDescription = visionText.trim()
+            searchQuery = `${imageDescription} ${input.query}`
+            console.log('⚠️ Could not parse vision JSON, using raw text:', imageDescription)
+          }
+        }
         // Use REST API directly for embeddings (more reliable than SDK)
         const accessToken = await getAccessToken()
         const embedResponse = await withRetry(() =>
@@ -78,7 +125,7 @@ export const botRouter = router({
                 'Content-Type': 'application/json',
               },
               body: JSON.stringify({
-                instances: [{ content: input.query }],
+                instances: [{ content: searchQuery }], // 👈 uses enriched search query
               }),
             }
           ).then(res => res.json())
@@ -124,6 +171,8 @@ export const botRouter = router({
           1. Detect the language of the user's question and reply in that same language only. Never give two versions of the same answer.
           2. If the user asks in Tagalog or Taglish, reply only in friendly Taglish. Do not also provide an English version.
           3. If the user asks in English, reply only in English with a professional and authoritative tone. Do not also provide a Taglish version.
+
+          ${imageDescription ? `IDENTIFIED ITEM FROM IMAGE: ${imageDescription}` : ''}
 
           --- CHAT HISTORY ---
           ${formattedHistory}
