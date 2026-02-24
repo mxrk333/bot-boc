@@ -165,38 +165,10 @@ export function ChatInput({
     }
   }
 
-  if (compact) {
-    return (
-      <div
-        className={cn(
-          'flex items-center gap-2 bg-secondary/30 border border-border rounded-xl p-1.5 pl-4 focus-within:ring-2 focus-within:ring-primary/20 focus-within:border-primary transition-all',
-          className
-        )}
-      >
-        <input
-          type="text"
-          value={value}
-          onChange={e => onChange(e.target.value)}
-          onKeyDown={handleKeyDown}
-          placeholder={placeholder}
-          disabled={disabled}
-          className="flex-1 bg-transparent border-none focus:ring-0 focus:outline-none text-sm py-2 text-foreground placeholder:text-muted-foreground"
-        />
-        <button
-          onClick={() => doSend()}
-          disabled={disabled || !value.trim()}
-          className="w-10 h-10 bg-primary text-primary-foreground rounded-lg flex items-center justify-center hover:bg-primary/90 transition-colors shrink-0 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-          <span className="material-symbols-outlined text-[20px]">send</span>
-        </button>
-      </div>
-    )
-  }
-
   return (
     <div className={cn('flex flex-col gap-2 w-full', className)}>
-      <div className="relative flex items-end gap-2">
-        <div className="relative">
+      <div className={cn('relative flex items-center gap-2')}>
+        <div className="relative shrink-0">
           <button
             type="button"
             onClick={() => {
@@ -207,10 +179,17 @@ export function ChatInput({
               setShowMenu(prev => !prev)
             }}
             disabled={disabled}
-            className="size-12 mb-1 flex items-center justify-center rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-400 hover:text-primary hover:border-primary/30 transition-all shrink-0 shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
+            className={cn(
+              'flex items-center justify-center bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-400 hover:text-primary hover:border-primary/30 transition-all shrink-0 shadow-sm disabled:opacity-50 disabled:cursor-not-allowed',
+              compact ? 'size-10 rounded-xl' : 'size-12 rounded-2xl'
+            )}
             aria-label="Attach file"
           >
-            <span className="material-symbols-outlined">add_circle</span>
+            <span
+              className={cn('material-symbols-outlined', compact ? 'text-[20px]' : 'text-[24px]')}
+            >
+              add_circle
+            </span>
           </button>
 
           {showMenu && (
@@ -233,7 +212,7 @@ export function ChatInput({
           )}
         </div>
 
-        <div className="relative flex-1">
+        <div className="relative flex-1 flex items-center">
           {attachedImage && (
             <div className="absolute left-4 bottom-full mb-2 z-10 bg-card p-1 rounded-xl shadow-lg border border-border animate-in fade-in slide-in-from-bottom-2">
               <div className="relative">
@@ -264,13 +243,11 @@ export function ChatInput({
             disabled={disabled}
             rows={1}
             className={cn(
-              'w-full pl-5 pr-14 py-4 rounded-2xl resize-none',
-              'bg-card border border-border shadow-lg',
-              'text-sm text-foreground placeholder:text-muted-foreground',
-              'focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary',
-              'transition-all duration-150',
-              'min-h-[56px]',
-              'disabled:opacity-50'
+              'w-full resize-none bg-card border border-border shadow-lg transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary disabled:opacity-50',
+              'text-foreground placeholder:text-muted-foreground',
+              compact
+                ? 'pl-4 pr-12 py-3 rounded-xl min-h-[44px] text-[13px]'
+                : 'pl-5 pr-14 py-4 rounded-2xl min-h-[56px] text-sm'
             )}
           />
 
@@ -280,11 +257,10 @@ export function ChatInput({
             onClick={() => doSend()}
             disabled={disabled || !value.trim()}
             className={cn(
-              'absolute right-2 bottom-2',
-              'bg-primary hover:bg-primary/90 text-primary-foreground',
-              'shadow-md hover:scale-105 active:scale-95'
+              'absolute bg-primary hover:bg-primary/90 text-primary-foreground shadow-md hover:scale-105 active:scale-95 z-10',
+              compact ? 'right-1.5 bottom-1.5 size-[32px]' : 'right-2 bottom-2'
             )}
-            size="sm"
+            size={compact ? undefined : 'sm'}
             aria-label="Send message"
           />
         </div>

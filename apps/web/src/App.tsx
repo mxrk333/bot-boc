@@ -27,6 +27,9 @@ import { ConversationSidebar } from './components/ConversationSidebar'
 import { QuickChip } from './components/QuickChip'
 import { UserMenu } from './components/UserMenu'
 import { TariffCalculatorInline } from './components/TariffCalculatorInline'
+import { TermsOfServiceModal } from './components/TermsOfServiceModal'
+import { PrivacyPolicyModal } from './components/PrivacyPolicyModal'
+import { SuggestionCard } from './components/SuggestionCard'
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
@@ -117,6 +120,8 @@ export function App() {
   const [activeConvId, setActiveConvId] = useState<string | null>(null)
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [calculatorOpen, setCalculatorOpen] = useState(false)
+  const [showTos, setShowTos] = useState(false)
+  const [showPrivacy, setShowPrivacy] = useState(false)
   const chatEndRef = useRef<HTMLDivElement>(null)
 
   // Redirect to onboarding if the user hasn't finished it yet
@@ -174,17 +179,17 @@ export function App() {
     setQuery('')
   }, [])
 
-   function fileToBase64(file: File): Promise<string> {
-     return new Promise((resolve, reject) => {
-       const reader = new FileReader()
-       reader.onload = () => {
-         const base64 = (reader.result as string).split(',')[1]
-         resolve(base64)
-       }
-       reader.onerror = reject
-       reader.readAsDataURL(file)
-     })
-   }
+  function fileToBase64(file: File): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader()
+      reader.onload = () => {
+        const base64 = (reader.result as string).split(',')[1]
+        resolve(base64)
+      }
+      reader.onerror = reject
+      reader.readAsDataURL(file)
+    })
+  }
 
   /* ---- Send a message ---- */
   const send = async (text: string, file?: File | null) => {
@@ -210,7 +215,7 @@ export function App() {
       role: 'user',
       content: trimmed,
       timestamp: timeLabel(),
-      imageUrl: imagePreviewUrl, 
+      imageUrl: imagePreviewUrl,
     }
 
     const chatHistory = messages
@@ -228,7 +233,7 @@ export function App() {
       const response = await botMutation.mutateAsync({
         query: trimmed || 'What is this item? What are the customs rules for it?',
         history: chatHistory,
-        image: imageBase64, 
+        image: imageBase64,
       })
 
       console.log('🔍 DEBUG: BOC Bot Response Data:', response)
@@ -385,8 +390,8 @@ export function App() {
         </header>
 
         {/* ---- Two-column content area ---- */}
-        <div className="flex-1 overflow-x-hidden overflow-y-auto w-full">
-          <div className="max-w-7xl mx-auto w-full px-4 py-8 h-full">
+        <div className="flex-1 overflow-x-hidden overflow-y-auto w-full pb-8">
+          <div className="max-w-[1400px] mx-auto w-full px-6 py-6 h-[calc(100vh-140px)] min-h-[700px]">
             <div className="flex flex-col lg:flex-row gap-8 items-start h-full relative">
               {/* Left column — Manual Tariff Calculator */}
               <div
@@ -431,18 +436,18 @@ export function App() {
               {/* Right column — AI Chat Assistant */}
               <div
                 className={cn(
-                  'flex flex-col flex-1 min-w-0 h-[700px] bg-card rounded-xl shadow-sm border border-border overflow-hidden transition-all duration-500 ease-in-out relative z-20'
+                  'flex flex-col flex-1 w-full h-full min-w-0 bg-card rounded-2xl shadow-sm border border-border overflow-hidden transition-all duration-500 ease-in-out relative z-20'
                 )}
               >
                 {/* Chat Header */}
                 <div className="p-4 border-b border-border flex items-center justify-between bg-secondary/30">
                   <div className="flex items-center gap-3">
                     <div className="relative">
-                      <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center shrink-0 border-2 border-primary/20 p-0.5 overflow-hidden">
+                      <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center shrink-0 border border-border shadow-sm p-1 overflow-hidden">
                         <img
                           src="/bot.png"
                           alt="BOC Assistant"
-                          className="w-full h-full object-cover rounded-[10px] scale-150"
+                          className="w-full h-full object-contain"
                         />
                       </div>
                       <span className="absolute bottom-0 right-0 w-3 h-3 bg-emerald-500 border-2 border-card rounded-full" />
@@ -466,7 +471,58 @@ export function App() {
                 </div>
 
                 {/* Chat Messages Area */}
-                <div className="flex-1 overflow-y-auto p-4 space-y-4 chat-scroll">
+                <div className="flex-1 overflow-y-auto p-6 space-y-6 chat-scroll cursor-default">
+                  {messages.length === 0 && (
+                    <div className="flex flex-col items-center justify-center text-center space-y-7 my-12 animate-in fade-in zoom-in duration-500 max-w-3xl mx-auto px-4">
+                      {/* Bot Icon Wrapper */}
+                      <div className="w-[84px] h-[84px] rounded-[24px] bg-[#f0ecf6] dark:bg-primary/20 flex items-center justify-center p-3 shadow-sm border border-[#e0dbea] dark:border-primary/30 mt-6">
+                        <img
+                          src="/bot.png"
+                          alt="BOC Bot"
+                          className="w-full h-full object-contain"
+                        />
+                      </div>
+
+                      {/* Header Titles */}
+                      <div className="space-y-3">
+                        <h2 className="text-3xl font-bold text-slate-900 dark:text-slate-100 tracking-tight">
+                          Mabuhay! Welcome to the Guide
+                        </h2>
+                        <p className="text-[15px] text-slate-600 dark:text-slate-400 max-w-lg mx-auto leading-relaxed">
+                          Get instant answers about your Balikbayan boxes and Philippines Customs
+                          regulations. No registration is required to start chatting.
+                        </p>
+                      </div>
+
+                      {/* Suggestion Cards Grid */}
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-5 w-full pt-4 max-w-[600px] mx-auto">
+                        <SuggestionCard
+                          icon="inventory_2"
+                          title="What can I send?"
+                          subtitle="Check restricted items list"
+                          iconBg="bg-[#f0f4fd] dark:bg-primary/20 text-primary"
+                          iconColor="text-inherit"
+                          onClick={() => send('What can I send? Check restricted items list')}
+                        />
+                        <SuggestionCard
+                          icon="payments"
+                          title="Is it tax-free?"
+                          subtitle="Rules for Balikbayan boxes"
+                          iconBg="bg-[#fcfbee] dark:bg-amber-900/40 text-[#b69512] dark:text-amber-400"
+                          iconColor="text-inherit"
+                          onClick={() => send('Is it tax-free? Rules for Balikbayan boxes')}
+                        />
+                      </div>
+
+                      {/* Covered Items Disclaimer */}
+                      <p className="text-xs text-muted-foreground mt-8 bg-muted/40 px-5 py-2.5 rounded-full border border-border flex items-center gap-2">
+                        <span className="material-symbols-outlined text-sm">inventory</span>
+                        <strong>Covered for now:</strong> Shoes, TV, Cocoa Powder, Laptop,
+                        Smartphone, Vitamin C, Suitcase & Briefcase, and Perfumes.
+                      </p>
+                    </div>
+                  )}
+
                   {messages.map(msg => (
                     <ChatBubble
                       key={msg.id}
@@ -537,18 +593,18 @@ export function App() {
               </span>
             </div>
             <div className="flex gap-8">
-              <a
-                className="text-xs text-muted-foreground hover:text-primary transition-colors"
-                href="#"
+              <button
+                className="text-xs text-muted-foreground hover:text-primary transition-colors cursor-pointer"
+                onClick={() => setShowTos(true)}
               >
                 Terms of Service
-              </a>
-              <a
-                className="text-xs text-muted-foreground hover:text-primary transition-colors"
-                href="#"
+              </button>
+              <button
+                className="text-xs text-muted-foreground hover:text-primary transition-colors cursor-pointer"
+                onClick={() => setShowPrivacy(true)}
               >
                 Privacy Policy
-              </a>
+              </button>
               <a
                 className="text-xs text-muted-foreground hover:text-primary transition-colors"
                 href="https://client.customs.gov.ph/"
@@ -562,6 +618,11 @@ export function App() {
           </div>
         </footer>
       </main>
+
+      {/* Terms of Service Modal */}
+      <TermsOfServiceModal open={showTos} onClose={() => setShowTos(false)} />
+      {/* Privacy Policy Modal */}
+      <PrivacyPolicyModal open={showPrivacy} onClose={() => setShowPrivacy(false)} />
     </div>
   )
 }

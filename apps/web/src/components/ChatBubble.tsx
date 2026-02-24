@@ -50,14 +50,10 @@ export function ChatBubble({
         <div
           className={cn(
             'rounded-xl flex items-center justify-center shrink-0 shadow-md overflow-hidden bg-white',
-            compact ? 'size-8 p-0.5' : 'size-12 p-0.5'
+            compact ? 'size-8 p-0.5' : 'size-12 p-1'
           )}
         >
-          <img
-            src="/bot.png"
-            alt="BOC AI bot"
-            className="w-full h-full object-cover rounded-[10px] scale-150"
-          />
+          <img src="/bot.png" alt="BOC AI bot" className="w-full h-full object-contain" />
         </div>
       )}
 

@@ -17,6 +17,8 @@ import { doc, setDoc, getDoc } from 'firebase/firestore'
 import { cn } from '@repo/ui/utils'
 import { useAuth } from '../hooks/useAuth'
 import { db } from '../lib/firebase'
+import { TermsOfServiceModal } from '../components/TermsOfServiceModal'
+import { PrivacyPolicyModal } from '../components/PrivacyPolicyModal'
 
 /* ------------------------------------------------------------------ */
 /*  Types & Constants                                                  */
@@ -118,6 +120,8 @@ export function Onboarding() {
   const { user, sendVerification, refreshUser, logout } = useAuth()
   const [step, setStep] = useState(0)
   const [busy, setBusy] = useState(false)
+  const [showTos, setShowTos] = useState(false)
+  const [showPrivacy, setShowPrivacy] = useState(false)
   const [verifyMsg, setVerifyMsg] = useState('')
   const [checking, setChecking] = useState(false)
   const [answers, setAnswers] = useState<OnboardingAnswers>({
@@ -590,7 +594,7 @@ export function Onboarding() {
               </div>
 
               <button
-                onClick={handleFinish}
+                onClick={() => setShowTos(true)}
                 disabled={busy}
                 className="w-full rounded-lg bg-primary py-3 text-sm font-semibold text-primary-foreground shadow-sm transition-all hover:opacity-90 active:scale-[0.98] disabled:opacity-50 cursor-pointer"
               >
@@ -634,6 +638,28 @@ export function Onboarding() {
           )}
         </div>
       </div>
+
+      {/* Terms of Service Requirement before finishing Onboarding */}
+      <TermsOfServiceModal
+        open={showTos}
+        onClose={() => setShowTos(false)}
+        requireAcceptance
+        onAccept={() => {
+          setShowTos(false)
+          setShowPrivacy(true)
+        }}
+      />
+
+      {/* Privacy Policy Requirement before finishing Onboarding */}
+      <PrivacyPolicyModal
+        open={showPrivacy}
+        onClose={() => setShowPrivacy(false)}
+        requireAcceptance
+        onAccept={() => {
+          setShowPrivacy(false)
+          handleFinish()
+        }}
+      />
     </div>
   )
 }
