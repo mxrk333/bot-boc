@@ -21,10 +21,10 @@
     "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
     "rewrites": [
       {
-        "source": "/generateResponse",
+        "source": "/api/**",
         "function": {
-          "functionId": "generateResponse",
-          "region": "asia-southeast1"
+          "functionId": "api",
+          "region": "us-central1"
         }
       },
       {

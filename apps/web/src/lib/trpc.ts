@@ -16,7 +16,8 @@ export const trpc = createTRPCReact<AppRouter>()
 export const trpcClient = trpc.createClient({
   links: [
     httpBatchLink({
-      url: import.meta.env.VITE_API_URL,
+      url:
+        import.meta.env.VITE_API_URL ?? 'https://us-central1-boc-bot.cloudfunctions.net/api/trpc',
     }),
   ],
 })
