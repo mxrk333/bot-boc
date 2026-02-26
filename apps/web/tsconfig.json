@@ -1,6 +1,10 @@
 {
-  "extends": "@repo/config/tsconfig.json",
+  "extends": "../../packages/typescript-config/tsconfig.json",
   "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@repo/shared": ["../../packages/shared/src/index.ts"]
+    },
     "moduleResolution": "bundler",
     "jsx": "react-jsx",
     "types": ["vitest/globals"]

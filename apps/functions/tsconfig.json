@@ -1,13 +1,14 @@
 {
-  "extends": "@repo/config/tsconfig.json",
+  "extends": "../../packages/typescript-config/tsconfig.json",
   "compilerOptions": {
-    "module": "ESNext",
-    "moduleResolution": "bundler",
-    "target": "ES2022",
     "outDir": "./dist",
     "rootDir": "./src",
-    "noEmit": false,
-    "allowImportingTsExtensions": false
+    "baseUrl": ".",
+    "paths": {
+      "@repo/shared": ["../../packages/shared/src/index.ts"]
+    },
+    "module": "ESNext",
+    "moduleResolution": "bundler"
   },
   "include": ["src"]
 }

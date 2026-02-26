@@ -26,6 +26,8 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@repo/shared": "workspace:*",
+    "@repo/typescript-config": "workspace:*",
     "@types/cors": "^2.8.19",
     "@types/express": "^4.17.21",
     "esbuild": "^0.27.3",

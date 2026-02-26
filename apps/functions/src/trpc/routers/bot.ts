@@ -54,7 +54,7 @@ export const botRouter = router({
   ask: publicProcedure
     .input(
       z.object({
-        query: z.string(),
+        query: z.string().min(1, 'Query cannot be empty'),
         image: z.string().optional(), // base64 encoded image
         history: z
           .array(
