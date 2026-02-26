@@ -1,323 +1,140 @@
-# The Hytel Way: Monorepo Stack
+# 📦 BOC AI Assistant: Monorepo Stack
 
-A production-ready monorepo template featuring React, TypeScript, Tailwind CSS, Shadcn UI, tRPC, and TanStack Query. Built with pnpm and Turborepo for optimal developer experience.
+An AI-powered Philippine Bureau of Customs (BOC) Assistant built with a production-grade **RAG (Retrieval-Augmented Generation)** pipeline. This bot identifies items via Gemini Vision and provides authoritative tariff information using Vertex AI and Firestore Vector Search.
 
-## Stack Overview
+## 🎭 The BOC Bot Production
 
-Think of building a web app like putting on a theater production!
+Building an AI assistant is like putting on a high-tech theater production!
 
-| Tool               | Role            | Analogy                                        |
-| ------------------ | --------------- | ---------------------------------------------- |
-| **pnpm**           | Package Manager | The super-organized prop master                |
-| **Turborepo**      | Build System    | The stage manager coordinating tasks           |
-| **React + Vite**   | Frontend        | The stage and lighting system                  |
-| **TypeScript**     | Type Safety     | The script ensuring everyone knows their lines |
-| **Tailwind CSS**   | Styling         | The costume designer's fabric swatches         |
-| **Shadcn UI**      | Components      | Pre-made costume patterns                      |
-| **tRPC**           | API Layer       | The messenger between actors                   |
-| **TanStack Query** | Data Fetching   | Smart caching (remembers the script!)          |
-| **Vitest**         | Testing         | Dress rehearsals before the show               |
-| **Zod**            | Validation      | The bouncer checking IDs                       |
+| Tool                        | Role           | The "BOC Bot" Analogy                                            |
+| --------------------------- | -------------- | ---------------------------------------------------------------- |
+| **Gemini 2.0 Flash**        | The Lead Actor | The "brain" that reads the laws and answers the user.            |
+| **Vertex AI (Embeddings)**  | The Librarian  | Translates questions into math (vectors) to find the right laws. |
+| **Firestore Vector Search** | The Archive    | The massive shelf of BOC documents and tariff rates.             |
+| **tRPC**                    | The Script     | Ensures the Frontend and Backend speak the same language.        |
+| **React + Tailwind**        | The Stage      | The user interface where the "Customs Assistant" performs.       |
+| **Turborepo**               | Stage Manager  | Coordinates the monorepo tasks so everything runs in sync.       |
 
-## Monorepo Structure
+---
 
-```
-├── .github/
-│   ├── workflows/        # CI/CD pipelines (ready to use!)
-│   ├── CODEOWNERS        # Auto-assign reviewers
-│   └── ISSUE_TEMPLATE/   # Issue & PR templates
-│
+## 🧠 Knowledge Scope & Capabilities
+
+The BOC AI Assistant is specifically grounded in the **Customs Modernization and Tariff Act (CMTA)** and official BOC administrative orders.
+
+### ✅ What the bot CAN answer:
+
+- **Balikbayan Boxes:** Rules for OFWs and Qualifying Residents (e.g., the ₱150,000 annual exemption).
+- **De Minimis Value:** Tax-free import limits for small items (₱10,000 and below).
+- **Tariff Identification:** Estimating duty rates for specific items (electronics, luxury goods, etc.).
+- **Prohibited vs. Restricted:** What items require permits (SRA, NTC, FDA) and what is flat-out banned.
+- **Passenger Guidelines:** Currency limits ($10k USD / ₱50k PHP) and duty-free allowances for travelers.
+
+### 🚫 Current Limitations (Out of Scope)
+
+- **Real-time Parcel Tracking:** The bot does not have access to the BOC Parcel Tracking System.
+- **Legal Representation:** Guidance is informational and not a substitute for a licensed Customs Broker.
+- **Dynamic Exchange Rates:** Calculations are based on static tariff percentages.
+
+---
+
+## 🏗️ Project Architecture (RAG Pipeline)
+
+The app uses **Retrieval-Augmented Generation (RAG)** to ensure the AI doesn't hallucinate.
+
+1. **Vision Phase:** User uploads an image; Gemini 2.0 Flash Vision identifies the item.
+2. **Vector Search:** We convert the query into a 768-dimension vector using `text-embedding-004`.
+3. **Context Injection:** We perform a **COSINE similarity search** in Firestore to find relevant BOC law chunks.
+4. **Generation:** Gemini provides a professional answer based **only** on the provided BOC context.
+
+---
+
+## 🛠️ Technical Specifications
+
+| Feature           | Model / Service         | Purpose                                            |
+| ----------------- | ----------------------- | -------------------------------------------------- |
+| **LLM Engine**    | `gemini-2.0-flash`      | Fast, bilingual generation and reasoning.          |
+| **Vision Model**  | `gemini-2.0-flash`      | High-fidelity OCR and object identification.       |
+| **Embeddings**    | `text-embedding-004`    | Semantic document retrieval.                       |
+| **Vector Search** | Firestore Vector Search | Native vector similarity matching.                 |
+| **Backend**       | Cloud Functions v2      | Hosted in `us-central1` for low-latency AI access. |
+
+---
+
+## 📂 Monorepo Structure
+
+```bash
 ├── apps/
 │   ├── web/              # React frontend (Vite + Tailwind)
-│   │   ├── src/
-│   │   │   ├── App.tsx   # Main application component
-│   │   │   ├── hooks/    # Custom React hooks
-│   │   │   ├── lib/      # Utilities (tRPC client, query client)
-│   │   │   └── providers/# Context providers
-│   │   └── public/       # Static assets
+│   │   ├── src/App.tsx   # Main Chat UI & Conversation Logic
+│   │   └── src/hooks/    # useAuth, useConversations (Firestore logic)
 │   │
-│   └── functions/        # tRPC backend
-│       └── src/trpc/     # API routers and procedures
+│   └── functions/        # Cloud Functions (tRPC Backend)
+│       ├── src/index.ts  # api function gateway (us-central1)
+│       └── src/trpc/     # botRouter.ts (Gemini & Vector Search logic)
 │
 ├── packages/
-│   ├── ui/               # Shared React components
-│   │   ├── components/
-│   │   │   ├── Header.tsx
-│   │   │   ├── Counter.tsx
-│   │   │   └── ui/       # Shadcn UI components (Button, Card)
-│   │   └── lib/utils.ts  # Tailwind class merging utility
-│   │
-│   ├── shared/           # Shared Zod schemas & types
-│   │   └── src/schemas/  # User schemas, validation rules
-│   │
-│   ├── eslint-config/    # Shared ESLint configuration
-│   └── typescript-config/# Shared TypeScript configuration
+│   ├── ui/               # Shared UI Components (Calculator, ChatPanel)
+│   ├── shared/           # Zod schemas (Validation for Chat queries)
+│   └── typescript-config/# Shared TS configurations
 │
-├── docs/ci-cd/           # CI/CD documentation
-├── scripts/              # Setup scripts (WIF, etc.)
-├── turbo.json            # Turborepo pipeline configuration
-├── pnpm-workspace.yaml   # Workspace definition
-└── package.json          # Root scripts
+├── firebase.json         # Hosting rewrites & Cloud Run configuration
+└── turbo.json            # Monorepo pipeline
+
 ```
 
-## Quick Start
+---
 
-### Prerequisites
+## 🚀 Development & Deployment
 
-- Node.js 20+
-- pnpm 8+
-
-### Installation
+### Local Setup
 
 ```bash
-# Clone the repository
-git clone <your-repo-url>
-cd hytel-react-boilerplate
-
-# Install dependencies
+# 1. Install dependencies
 pnpm install
-```
 
-### Development
+# 2. Configure .env.local in apps/web
+VITE_API_URL=https://us-central1-boc-bot.cloudfunctions.net/api/trpc
 
-```bash
-# Start the development server
+# 3. Start dev servers
 pnpm dev
-# Opens at http://localhost:5173
 
-# Run all quality checks
-pnpm precheck
+```
 
-# Run tests
-pnpm test
+### Production Deployment
 
-# Build for production
+```bash
+# Deploy Backend Logic
+firebase deploy --only functions
+
+# Deploy Frontend Website
 pnpm build
+firebase deploy --only hosting
 
-# Lint code
-pnpm lint
+# Update Security Rules
+firebase deploy --only firestore:rules
 
-# Format code
-pnpm format
-```
-
-## Key Features
-
-### Shared Components (`packages/ui`)
-
-Components in `@repo/ui` can be used by any app in the monorepo:
-
-```tsx
-import { Header } from '@repo/ui/Header'
-import { Button } from '@repo/ui/Button'
-import { Card, CardHeader, CardContent } from '@repo/ui/Card'
-```
-
-### Type-Safe API (`apps/functions`)
-
-tRPC provides end-to-end type safety:
-
-```tsx
-// Backend (apps/functions)
-export const userRouter = router({
-  create: publicProcedure
-    .input(CreateUserSchema)
-    .mutation(({ input }) => ({ id: 'new-id', ...input })),
-})
-
-// Frontend (apps/web)
-const { mutate } = trpc.user.create.useMutation()
-```
-
-### Shared Schemas (`packages/shared`)
-
-Zod schemas shared between frontend and backend:
-
-```tsx
-import { UserSchema, CreateUserSchema } from '@repo/shared'
-
-// Type-safe validation everywhere!
-const user = UserSchema.parse(data)
-```
-
-## Scripts Reference
-
-| Command              | Description                                   |
-| -------------------- | --------------------------------------------- |
-| `pnpm dev`           | Start development servers                     |
-| `pnpm build`         | Build all packages for production             |
-| `pnpm test`          | Run all tests                                 |
-| `pnpm test:coverage` | Run tests with coverage report                |
-| `pnpm lint`          | Lint all packages                             |
-| `pnpm lint:fix`      | Auto-fix lint issues                          |
-| `pnpm format`        | Format code with Prettier                     |
-| `pnpm format:check`  | Check code formatting                         |
-| `pnpm typecheck`     | Run TypeScript type checking                  |
-| `pnpm precheck`      | Run all checks (lint, typecheck, build, test) |
-| `pnpm changeset`     | Create a changeset for versioning             |
-| `pnpm sync:lint`     | Check dependency version consistency          |
-| `pnpm sync:fix`      | Fix dependency version mismatches             |
-
----
-
-## CI/CD Pipeline
-
-This template includes a **fully configured CI/CD pipeline** using GitHub Actions and Workload Identity Federation (WIF) for secure deployments.
-
-### Branch Strategy
-
-| Branch  | Environment | Deployment                 |
-| ------- | ----------- | -------------------------- |
-| `dev`   | Development | Auto on push               |
-| `stage` | Staging     | Auto on push               |
-| `main`  | Production  | Manual (with confirmation) |
-
-### GitHub Actions Workflows
-
-| Workflow                | Trigger         | Purpose                              |
-| ----------------------- | --------------- | ------------------------------------ |
-| `ci.yml`                | PR & push       | Lint, typecheck, build, test         |
-| `deploy-dev.yml`        | Push to `dev`   | Deploy to development                |
-| `deploy-stage.yml`      | Push to `stage` | Deploy to staging                    |
-| `deploy-main.yml`       | Manual          | Deploy to production                 |
-| `release.yml`           | Push to `main`  | Automated versioning with Changesets |
-| `dependency-review.yml` | PR              | Check for vulnerable dependencies    |
-
-### Workload Identity Federation (WIF)
-
-All deployments use **keyless authentication** with GCP:
-
-- No stored service account keys
-- Short-lived tokens (expire in ~1 hour)
-- Full audit trail in GCP
-
-### Required GitHub Secrets
-
-Configure these in your repository settings:
-
-| Secret                           | Description           |
-| -------------------------------- | --------------------- |
-| `GCP_WORKLOAD_IDENTITY_PROVIDER` | WIF provider path     |
-| `GCP_SA_EMAIL`                   | Service account email |
-
-### Setup Instructions
-
-1. **Configure WIF** using `scripts/setup-wif.sh`
-2. **Add secrets** to GitHub repository settings
-3. **Create environments** (`dev`, `stage`, `main`) in GitHub settings
-4. **Push to branches** to trigger deployments
-
-See [docs/ci-cd/CI-CD-Pipeline-Guide.md](docs/ci-cd/CI-CD-Pipeline-Guide.md) for detailed setup instructions.
-
----
-
-## Development Tools
-
-### Git Hooks (Husky)
-
-Pre-commit hooks automatically run:
-
-- ESLint on staged `.ts`/`.tsx` files
-- Prettier on staged files
-
-### Changesets
-
-Semantic versioning for the monorepo:
-
-```bash
-# Create a changeset when you make changes
-pnpm changeset
-
-# The release workflow handles version bumps automatically
-```
-
-### Syncpack
-
-Dependency consistency across packages:
-
-```bash
-pnpm sync:lint   # Check for mismatches
-pnpm sync:fix    # Auto-fix mismatches
-pnpm sync:list   # List all versions
 ```
 
 ---
 
-## Testing
+## 🔒 Security & Data Protection
 
-Each package has its own tests:
-
-```bash
-# Run all tests
-pnpm test
-
-# Run tests for specific package
-pnpm --filter web test
-pnpm --filter @repo/ui test
-pnpm --filter @repo/shared test
-pnpm --filter @repo/functions test
-
-# Run with coverage
-pnpm test:coverage
-```
+- **CORS:** Restricted to the production domain to prevent API "leaking."
+- **Firestore Rules:** `faq_chunks` (Knowledge Base) is set to `allow read, write: if false;` to prevent scraping.
+- **User Data:** Conversations are protected by `request.auth.uid` checks.
+- **Vertex AI:** Secured via Google Service Accounts (ADC) with short-lived tokens.
 
 ---
 
-## Adding New Packages
+## 💬 Example Prompts to Try
 
-### New App
-
-```bash
-mkdir apps/new-app
-cd apps/new-app
-pnpm init
-```
-
-### New Shared Package
-
-```bash
-mkdir packages/new-package
-cd packages/new-package
-pnpm init
-```
-
-Packages are auto-discovered via `pnpm-workspace.yaml` (configured for `apps/*` and `packages/*`).
+- _"May tax ba ang sapatos na nagkakahalaga ng 8,000 pesos galing abroad?"_
+- _"How many times a year can an OFW send a Balikbayan box duty-free?"_
+- _"Anong requirements para mag-uwi ng dalawang laptop sa airport?"_
+- _(Upload an image)_: _"Magkano ang tariff rate para sa item na ito?"_
 
 ---
 
-## Version Requirements
-
-| Tool         | Minimum Version        |
-| ------------ | ---------------------- |
-| Node.js      | 20.x                   |
-| pnpm         | 8.x                    |
-| Turbo        | 2.x                    |
-| TypeScript   | 5.x                    |
-| Vitest       | 2.x                    |
-| ESLint       | 8.x                    |
-| Prettier     | 3.x                    |
-| Firebase CLI | 13.x (for deployment)  |
-| gcloud CLI   | Latest (for WIF setup) |
+Built with ❤️ for BOC AI Assistant Project.
 
 ---
-
-## Useful Links
-
-- [Turborepo Documentation](https://turbo.build/repo/docs)
-- [Shadcn UI Components](https://ui.shadcn.com)
-- [tRPC Documentation](https://trpc.io)
-- [TanStack Query](https://tanstack.com/query)
-- [Tailwind CSS](https://tailwindcss.com)
-- [Vite](https://vitejs.dev)
-- [Changesets](https://github.com/changesets/changesets)
-- [Workload Identity Federation](https://cloud.google.com/iam/docs/workload-identity-federation)
-
----
-
-## Contributing
-
-See [CONTRIBUTING.md](CONTRIBUTING.md) for development workflow and guidelines.
-
----
-
-Built with ❤️ using Turborepo
