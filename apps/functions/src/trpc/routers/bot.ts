@@ -5,8 +5,8 @@ import { VertexAI } from '@google-cloud/vertexai'
 import { TRPCError } from '@trpc/server'
 import { GoogleAuth } from 'google-auth-library'
 
-const project = process.env.GCLOUD_PROJECT || 'boc-bot'
-const location = 'us-central1'
+const project = process.env.PROJECT_ID
+const location = process.env.LOCATION
 const vertexAI = new VertexAI({ project, location })
 
 /* ------------------------------------------------------------------ */

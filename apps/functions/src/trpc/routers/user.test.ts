@@ -1,6 +1,26 @@
 import { describe, it, expect } from 'vitest'
 import { appRouter } from '../router'
 import { createCallerFactory } from '../trpc'
+import { vi } from 'vitest'
+
+// 1. Mock VertexAI to prevent the top-level constructor crash
+vi.mock('@google-cloud/vertexai', () => ({
+  VertexAI: vi.fn().mockImplementation(() => ({
+    getGenerativeModel: vi.fn().mockReturnValue({
+      generateContent: vi.fn(),
+      embedContent: vi.fn(),
+    }),
+  })),
+}))
+
+// 2. Mock Google Auth (used by the getAccessToken helper)
+vi.mock('google-auth-library', () => ({
+  GoogleAuth: vi.fn().mockImplementation(() => ({
+    getClient: vi.fn().mockResolvedValue({
+      getAccessToken: vi.fn().mockResolvedValue({ token: 'fake-token' }),
+    }),
+  })),
+}))
 
 const createCaller = createCallerFactory(appRouter)
 const caller = createCaller({})
