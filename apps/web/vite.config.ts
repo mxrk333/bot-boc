@@ -6,7 +6,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/generateResponse': {
-        target: 'https://asia-southeast1-boc-bot.cloudfunctions.net',
+        target: 'http://127.0.0.1:5001/boc-bot/asia-southeast1',
         changeOrigin: true,
       },
     },
